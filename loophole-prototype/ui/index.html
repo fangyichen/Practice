@@ -87,6 +87,7 @@ button { font: inherit; color: inherit; }
 .stat .k { font-size: 12px; color: var(--muted); letter-spacing: .08em; }
 .stat .v { font-family: var(--f-num); font-size: 18px; font-variant-numeric: tabular-nums; }
 .season-tag { font-family: var(--f-display); font-size: 22px; color: var(--gold); }
+.sn { font-family: var(--f-num); font-size: .72em; margin: 0 .15em; vertical-align: .08em; }
 .bar { display: flex; gap: 2px; }
 .bar i { width: 9px; height: 14px; background: #463d5e; display: block; }
 .bar i.on { background: var(--jade); }
@@ -135,7 +136,7 @@ canvas#scene { width: 100%; height: auto; display: block; image-rendering: pixel
 
 /* 村民账本 */
 .ledger-wrap { overflow-x: auto; }
-table.ledger { width: 100%; border-collapse: collapse; font-size: 13.5px; font-variant-numeric: tabular-nums; min-width: 560px; }
+table.ledger { width: 100%; border-collapse: collapse; font-size: 13.5px; font-variant-numeric: tabular-nums; }
 .ledger th { text-align: left; font-weight: 400; color: var(--muted); font-size: 12px; padding: 4px 6px; border-bottom: 2px solid #463d5e; letter-spacing: .06em; }
 .ledger td { padding: 5px 6px; border-bottom: 1px dashed #3d3554; vertical-align: top; }
 .ledger td.num { text-align: right; font-family: var(--f-num); font-size: 12px; }
@@ -205,9 +206,71 @@ table.ledger { width: 100%; border-collapse: collapse; font-size: 13.5px; font-v
 pre.history { white-space: pre-wrap; font-family: var(--f-body); font-size: 13px; background: var(--ink); padding: 12px; margin: 0; max-height: 46vh; overflow-y: auto; }
 .vtype { font-family: var(--f-display); font-size: 44px; color: var(--seal); line-height: 1; }
 
+.tabs { display: none; }
+.ledger .sub-note { font-size: 11.5px; color: var(--muted); }
+
+/* —— 手机 —— */
 @media (max-width: 900px) {
   .main { grid-template-columns: minmax(0, 1fr); }
   .brand { font-size: 26px; }
+  .tabs { display: flex; gap: 4px; padding: 4px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + var(--hud-h, 0px) + 6px); z-index: 20; }
+  .tabs button { flex: 1; min-height: 40px; border: 0; background: transparent; font-family: var(--f-display); font-size: 17px; cursor: pointer; position: relative; padding: 0 2px; }
+  .tabs button[aria-pressed="true"] { background: var(--line); color: var(--ink); }
+  .tabs button.ping::after { content: ""; position: absolute; top: 6px; right: 6px; width: 8px; height: 8px; background: var(--seal); }
+  [data-panel] { display: none; }
+  body[data-tab="ledger"] [data-panel="ledger"], body[data-tab="code"] [data-panel="code"],
+  body[data-tab="tort"] [data-panel="tort"], body[data-tab="ticker"] [data-panel="ticker"],
+  body[data-tab="dex"] [data-panel="dex"] { display: block; }
+  .ticker { max-height: none; }
+}
+@media (max-width: 640px) {
+  body { padding-block: 8px calc(84px + env(safe-area-inset-bottom, 0px)); font-size: 14px; }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--ink); }
+  .app { gap: 10px; }
+  .hud { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 25; display: grid; gap: 4px 10px; padding: 8px 10px;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-areas: "b b s s m m" "p p p t t t" "h h h c c c"; align-items: center; }
+  .hud .brand { grid-area: b; font-size: 22px; }
+  .hud .brand small, .hud .spacer { display: none; }
+  .hud .season-tag { grid-area: s; font-size: 18px; justify-self: center; white-space: nowrap; }
+  .hud #bMenu { grid-area: m; justify-self: end; }
+  .hud .st-pop { grid-area: p; } .hud .st-tre { grid-area: t; } .hud .st-hap { grid-area: h; } .hud .st-civ { grid-area: c; }
+  .hud .stat { white-space: nowrap; gap: 6px; }
+  .hud .stat .v { font-size: 15px; }
+  .bar i { width: 6px; height: 11px; }
+  .pips i { width: 7px; height: 7px; }
+  .stage { padding: 6px; }
+  .controls { position: fixed; left: 0; right: 0; bottom: 0; z-index: 40; margin: 0; background: var(--panel);
+    border-top: 4px solid var(--line);
+    padding: 8px max(12px, env(safe-area-inset-right, 0px)) calc(8px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px)); }
+  .controls .mode-hint { display: none; }
+  .controls { flex-wrap: nowrap; gap: 4px; }
+  .controls .phase-chip { display: none; }
+  .controls .btn { min-height: 42px; margin: 3px 2px; }
+  .speed .btn { padding: 6px 7px; }
+  #bAuto { padding: 6px 8px; }
+  #bNext { margin-left: auto; flex: 1; min-width: 0; padding-inline: 8px; }
+  .btn.small { padding: 6px 10px; }
+  .panel { padding: 10px 12px; }
+  .panel h2 { font-size: 18px; }
+  .modal { place-items: end center; padding-bottom: max(10px, env(safe-area-inset-bottom, 0px)); }
+  .modal-box { padding: 14px; gap: 10px; max-height: calc(100% - 8px); }
+  .modal-box h3 { font-size: 22px; }
+  .offers { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .offer { padding: 10px; gap: 2px; grid-template-columns: auto 1fr; align-items: baseline; column-gap: 8px; }
+  .offer .tier { grid-row: span 2; }
+  .offer .nm { font-size: 19px; }
+  .offer .id { display: none; }
+  .offer .tx { grid-column: 2; }
+  .event { padding: 8px; gap: 8px; font-size: 13px; }
+  .event .stamp { font-size: 16px; }
+  .logo { font-size: 64px; }
+  .demos { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 6px; }
+  .demo { padding: 8px; }
+  .demo b { font-size: 17px; }
+  .demo span { font-size: 12px; }
+  table.ledger { font-size: 13px; }
+  .ledger td, .ledger th { padding: 5px 4px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .law.new, .big-combo .card { animation: none; }
@@ -218,10 +281,10 @@ pre.history { white-space: pre-wrap; font-family: var(--f-body); font-size: 13px
   <header class="hud px" id="hud">
     <div class="brand">漏洞<small>LOOPHOLE</small></div>
     <div class="season-tag" id="hSeason">—</div>
-    <div class="stat"><span class="k">人口</span><span class="v" id="hPop">–</span><span class="delta" id="dPop"></span></div>
-    <div class="stat"><span class="k">村库</span><span class="v" id="hTre">–</span><span class="delta" id="dTre"></span></div>
-    <div class="stat"><span class="k">幸福</span><div class="bar" id="hHap"></div><span class="v" id="hHapV" style="font-size:13px">–</span></div>
-    <div class="stat"><span class="k">文明</span><div class="pips" id="hCiv"></div><span class="v" id="hCivV" style="font-size:13px">–</span></div>
+    <div class="stat st-pop"><span class="k">人口</span><span class="v" id="hPop">–</span><span class="delta" id="dPop"></span></div>
+    <div class="stat st-tre"><span class="k">村库</span><span class="v" id="hTre">–</span><span class="delta" id="dTre"></span></div>
+    <div class="stat st-hap"><span class="k">幸福</span><div class="bar" id="hHap"></div><span class="v" id="hHapV" style="font-size:13px">–</span></div>
+    <div class="stat st-civ"><span class="k">文明</span><div class="pips" id="hCiv"></div><span class="v" id="hCivV" style="font-size:13px">–</span></div>
     <div class="spacer"></div>
     <button class="btn small" id="bMenu" type="button">主菜单</button>
   </header>
@@ -232,7 +295,7 @@ pre.history { white-space: pre-wrap; font-family: var(--f-body); font-size: 13px
         <canvas id="scene" width="960" height="540"></canvas>
         <div class="controls">
           <span class="phase-chip" id="phase">TITLE</span>
-          <span class="grow hint" id="modeHint"></span>
+          <span class="grow hint mode-hint" id="modeHint"></span>
           <div class="speed" role="group" aria-label="速度">
             <button class="btn small" type="button" data-speed="1" aria-pressed="true">1×</button>
             <button class="btn small" type="button" data-speed="2" aria-pressed="false">2×</button>
@@ -242,26 +305,33 @@ pre.history { white-space: pre-wrap; font-family: var(--f-body); font-size: 13px
           <button class="btn primary" id="bNext" type="button" disabled>下一季 ▶</button>
         </div>
       </section>
-      <section class="panel px">
+      <nav class="tabs px" id="tabs" aria-label="面板">
+        <button type="button" data-tab="ledger" aria-pressed="true">账本</button>
+        <button type="button" data-tab="code" aria-pressed="false">法典</button>
+        <button type="button" data-tab="tort" aria-pressed="false">乌龟</button>
+        <button type="button" data-tab="ticker" aria-pressed="false">村志</button>
+        <button type="button" data-tab="dex" aria-pressed="false">图鉴</button>
+      </nav>
+      <section class="panel px" data-panel="ledger">
         <h2>村民账本 <span class="sub" id="ledgerSub">本季每个人白天和夜里做了什么</span></h2>
         <div class="ledger-wrap"><table class="ledger" id="ledger"><tbody><tr><td class="empty">还没开始。</td></tr></tbody></table></div>
       </section>
     </div>
     <div class="col">
-      <section class="panel px">
+      <section class="panel px" data-panel="code">
         <h2>法典 <span class="sub" id="codeSub">0 条</span></h2>
         <ul class="code" id="code"><li class="empty">法典是空的。</li></ul>
         <div id="contra"></div>
       </section>
-      <section class="panel px">
+      <section class="panel px" data-panel="tort">
         <h2>乌龟 <span class="sub">它只做合法的事</span></h2>
         <div class="tort" id="tort"><span class="empty">乌龟还在打盹。</span></div>
       </section>
-      <section class="panel px">
+      <section class="panel px" data-panel="ticker">
         <h2>村志</h2>
         <div class="ticker" id="ticker" aria-live="polite"></div>
       </section>
-      <section class="panel px">
+      <section class="panel px" data-panel="dex">
         <h2>图鉴 <span class="sub" id="dexSub">0 / 10</span></h2>
         <div class="dex" id="dex"></div>
       </section>
@@ -287,12 +357,25 @@ const TRAIT_COLOR = { "贪": "#e2b23c", "懒": "#7d8db3", "守法": "#3f5fb0", "
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const lawName = id => LAWS[id] ? `${id}《${LAWS[id].name}》` : id;
+const seasonLabel = (i, name) => `第<span class="sn">${i + 1}</span>季 · ${name}`;
 const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 // ───────────────────────── 画布与像素工具 ─────────────────────────
-const W = 240, H = 135, U = 4;
+const W = 240, H = 135;
+let U = 4;
 const cv = $("scene"), g = cv.getContext("2d");
-g.imageSmoothingEnabled = false;
+// 窄屏用半分辨率：精灵在屏幕上一样大，但名字、数字这些文字相对变大，手机上也读得清
+function fitCanvas() {
+  const u = cv.clientWidth && cv.clientWidth < 620 ? 2 : 4;
+  if (u === U && cv.width === W * U) return;
+  U = u; cv.width = W * U; cv.height = H * U; g.imageSmoothingEnabled = false; bgCache.clear();
+}
+function measureHud() {
+  const hud = $("hud");
+  const h = getComputedStyle(hud).position === "sticky" ? hud.offsetHeight + 8 : 0;
+  document.documentElement.style.setProperty("--hud-h", h + "px");
+}
+addEventListener("resize", () => { fitCanvas(); measureHud(); });
 const px = (x, y, w, h, c) => { g.fillStyle = c; g.fillRect(Math.round(x) * U, Math.round(y) * U, w * U, h * U); };
 function sprite(rows, pal, x, y, ctx = g) {
   for (let j = 0; j < rows.length; j++) for (let i = 0; i < rows[j].length; i++) {
@@ -484,6 +567,7 @@ function syncActors(list) {
   list.forEach((v, i) => {
     let a = scene.actors.get(v.vid);
     if (!a) { a = makeActor(v, i); a.x = a.fx = a.tx = -8; scene.actors.set(v.vid, a); moveTo(a, ...LOC.HOME(i), 900); }
+    a.slot = i;
     a.name = v.name; a.traits = v.traits_text;
   });
 }
@@ -549,9 +633,10 @@ function draw() {
     g.globalAlpha = 1;
   }
   // 名字、气泡
-  g.font = "15px DotGothic16, 'Noto Sans SC', sans-serif"; g.textAlign = "center"; g.textBaseline = "top";
+  g.font = `${U === 2 ? 12 : 15}px DotGothic16, 'Noto Sans SC', sans-serif`; g.textAlign = "center"; g.textBaseline = "top";
   for (const a of actors) {
-    const nx = a.x * U + 2, ny = (a.y + 1) * U;
+    // 小画布上相邻的人名字会撞：奇数位的名字往下挪一行
+    const nx = a.x * U + U / 2, ny = (a.y + 1 + (U === 2 && (a.slot || 0) % 2 ? 6 : 0)) * U;
     g.lineWidth = 3; g.strokeStyle = "rgba(20,16,30,.9)"; g.strokeText(a.name, nx, ny);
     g.fillStyle = a.tortoise ? "#9ff0c0" : "#fff3dc"; g.fillText(a.name, nx, ny);
     if (a.bubble && !a.moving) {
@@ -568,7 +653,7 @@ function draw() {
     const k = (now() - f.t0) / f.dur;
     const y = (f.y - 14 - k * 10) * U;
     g.globalAlpha = 1 - Math.max(0, k - .6) / .4;
-    g.lineWidth = 4; g.strokeStyle = "#1b1829"; g.strokeText(f.text, f.x * U + 2, y);
+    g.lineWidth = U === 2 ? 3 : 4; g.strokeStyle = "#1b1829"; g.strokeText(f.text, f.x * U + 2, y);
     g.fillStyle = f.color; g.fillText(f.text, f.x * U + 2, y);
     g.globalAlpha = 1;
   }
@@ -583,11 +668,11 @@ function draw() {
     const k = tween(0, scene.banner.t0, scene.banner.dur);
     if (k >= 1) scene.banner = null;
     else {
-      const y = H * U / 2 - 44;
-      g.fillStyle = "rgba(20,16,30,.85)"; g.fillRect(0, y, W * U, 88);
-      g.fillStyle = scene.banner.color; g.fillRect(0, y, W * U, 6); g.fillRect(0, y + 82, W * U, 6);
-      g.font = "52px 'ZCOOL QingKe HuangYou', 'Noto Sans SC', sans-serif"; g.textAlign = "center"; g.textBaseline = "middle";
-      g.fillStyle = scene.banner.color; g.fillText(scene.banner.text, W * U / 2, y + 46);
+      const bh = 22 * U, y = H * U / 2 - bh / 2;
+      g.fillStyle = "rgba(20,16,30,.85)"; g.fillRect(0, y, W * U, bh);
+      g.fillStyle = scene.banner.color; g.fillRect(0, y, W * U, 1.5 * U); g.fillRect(0, y + bh - 1.5 * U, W * U, 1.5 * U);
+      g.font = `${13 * U}px 'ZCOOL QingKe HuangYou', 'Noto Sans SC', sans-serif`; g.textAlign = "center"; g.textBaseline = "middle";
+      g.fillStyle = scene.banner.color; g.fillText(scene.banner.text, W * U / 2, y + bh / 2 + U / 2);
     }
   }
   requestAnimationFrame(draw);
@@ -655,12 +740,12 @@ function renderLedger(log) {
     if (v.robot_income) notes.push(`机器人进账 +${v.robot_income.toFixed(1)}`);
     if (v.mimic_of) notes.push(`模仿${esc(v.mimic_of)}`);
     if (v.violations) notes.push(`<span class="neg">违法×${v.violations}</span>`);
-    return `<tr><td><div class="who"><span class="swatch" style="background:${v.tortoise ? "#3f8f5a" : sw}"></span>${v.tortoise ? "🐢 " : ""}${esc(v.name)}</div><div class="traits">${esc(v.traits_text)}</div></td>
+    return `<tr><td><div class="who"><span class="swatch" style="background:${v.tortoise ? "#3f8f5a" : sw}"></span>${v.tortoise ? "🐢 " : ""}${esc(v.name)}</div><div class="traits">${esc(v.traits_text)}</div>${notes.length ? `<div class="sub-note">${notes.join("，")}</div>` : ""}</td>
       <td>${ACT[v.day]}</td><td>${ACT[v.night]}</td>
       <td class="num ${v.gain > 0 ? "pos" : v.gain < 0 ? "neg" : ""}">${v.gain > 0 ? "+" : ""}${v.gain.toFixed(1)}</td>
-      <td class="num">${v.wealth.toFixed(1)}</td><td class="note">${notes.join("，")}</td></tr>`;
+      <td class="num">${v.wealth.toFixed(1)}</td></tr>`;
   }).join("");
-  $("ledger").innerHTML = `<thead><tr><th>村民</th><th>白天</th><th>夜里</th><th style="text-align:right">收益</th><th style="text-align:right">财富</th><th>备注</th></tr></thead><tbody>${rows}</tbody>`;
+  $("ledger").innerHTML = `<thead><tr><th>村民</th><th>白天</th><th>夜里</th><th style="text-align:right">收益</th><th style="text-align:right">财富</th></tr></thead><tbody>${rows}</tbody>`;
   $("ledgerSub").textContent = `第 ${log.season + 1} 季 · ${log.season_name}　机器人 ${log.robots} 台`;
 }
 function tick(text, cls = "") {
@@ -728,7 +813,7 @@ function preSeason(p) {
   if (p.event === "旱灾") scene.drought = 2;
   scene.waterEmpty = false; scene.crack = false;
   if (typeof p.robots === "number") scene.robots = p.robots;
-  $("hSeason").textContent = `第${p.season + 1}季 · ${p.season_name}`;
+  $("hSeason").innerHTML = seasonLabel(p.season, p.season_name);
   setHud(p.before, null);
   syncActors(p.villagers);
   renderCode(p.code, null, null);
@@ -738,7 +823,7 @@ function placeFor(log, phaseKey) {
   const groups = {}; const targets = new Map();
   const byName = new Map(log.villagers.map(v => [v.name, v]));
   log.villagers.forEach(v => { const a = v[phaseKey]; if (a === "STEAL") return; (groups[a] = groups[a] || []).push(v); });
-  for (const [act, vs] of Object.entries(groups)) vs.forEach((v, i) => targets.set(v.vid, (LOC[act] || LOC.HOME)(i)));
+  for (const [act, vs] of Object.entries(groups)) vs.forEach((v, i) => { targets.set(v.vid, (LOC[act] || LOC.HOME)(i)); const a = scene.actors.get(v.vid); if (a) a.slot = i; });
   const used = new Set();
   log.villagers.filter(v => v[phaseKey] === "STEAL").forEach((v, i) => {
     const st = log.steals.findIndex((s, k) => s[0] === v.name && !used.has(k));
@@ -765,7 +850,7 @@ async function playPhase(log, key, label) {
 async function playSeason(log) {
   S.busy = true; $("bNext").disabled = true;
   const prevBefore = log.before;
-  tick(`第${log.season + 1}季 · ${log.season_name}${log.festival ? " · 节日" : ""}`, "season");
+  tick(`${seasonLabel(log.season, log.season_name)}${log.festival ? " · 节日" : ""}`, "season");
   if (log.event) tick(`事件：${esc(log.event)} —— ${esc(log.event_text)}`);
   if (log.chosen) tick(`立法：${esc(lawName(log.chosen))}　${esc(LAWS[log.chosen].text)}`, "good");
   else tick("本季不立法");
@@ -774,6 +859,8 @@ async function playSeason(log) {
   renderCode(log.code, log.contradictions, fresh);
   if (log.new_contradiction) tick("⚠ 法典里出现了新的矛盾（具体是哪两条，自己想）", "bad");
   renderTortoise(log.tortoise);
+  if (log.tortoise && log.tortoise.acted && log.tortoise.found) ping("tort");
+  if (fresh.length || log.new_contradiction) ping("code");
 
   setNight(0, 300);
   await playPhase(log, "day", "DAY");
@@ -797,6 +884,7 @@ async function playSeason(log) {
     }
     await wait(2100);
   }
+  if (log.invocations.length || log.steals.length) ping("ticker");
   if (log.exiled.length) tick(`三振出局，流放：${log.exiled.map(esc).join("、")}`, "bad");
   if (log.joined.length) tick(`新来的人：${log.joined.map(esc).join("、")}`);
   if (log.left.length) tick(`离开的人：${log.left.map(esc).join("、")}`, "bad");
@@ -819,14 +907,14 @@ async function playSeason(log) {
   setNight(0, 700); $("phase").textContent = "DAWN";
   for (const a of scene.actors.values()) a.bubble = null;
   const alive = log.villagers.filter(v => !log.exiled.includes(v.name) && !log.left.includes(v.name));
-  alive.forEach((v, i) => { const a = scene.actors.get(v.vid); if (a) moveTo(a, ...LOC.HOME(i), 900); });
+  alive.forEach((v, i) => { const a = scene.actors.get(v.vid); if (a) { a.slot = i; moveTo(a, ...LOC.HOME(i), 900); } });
   for (const v of log.villagers) if (log.exiled.includes(v.name) || log.left.includes(v.name)) {
     const a = scene.actors.get(v.vid); if (a) moveTo(a, -10, 98, 1400);
   }
   await wait(900);
 
   for (const c of log.new_combos) {
-    S.dex.push(c); renderDex();
+    S.dex.push(c); renderDex(); ping("dex");
     tick(`★ 新组合卡 ${esc(c.text)}`, "combo");
     await comboPopup(c);
   }
@@ -853,7 +941,7 @@ function shopModal(p, opts) {
     const footer = opts.live
       ? `<div class="row"><span class="grow hint">点一张卡立法。法律越多，乌龟出手越勤。</span><button class="btn" type="button" id="bSkip">这季不立法</button></div>${repeal}`
       : `<div class="row"><span class="grow hint">${opts.chosen ? "录像里这一季选了：" + esc(lawName(opts.chosen)) : "录像里这一季没有立法"}</span>${S.auto ? "" : `<button class="btn" type="button" id="bAutoM">自动播放到底</button>`}<button class="btn primary" type="button" id="bGo">看这一季 ▶</button></div>`;
-    modal(`<h3>第${p.season + 1}季 · ${p.season_name}${p.festival ? " · 节日" : ""}</h3>${eventBlock(p)}<div class="offers">${cards}</div>${footer}`);
+    modal(`<h3>${seasonLabel(p.season, p.season_name)}${p.festival ? " · 节日" : ""}</h3>${eventBlock(p)}<div class="offers">${cards}</div>${footer}`);
     let done = false; const fin = v => { if (done) return; done = true; closeModal(); res(v); };
     if (opts.live) {
       $("modalBox").querySelectorAll("[data-law]").forEach(b => b.onclick = () => fin({ choice: "pick", law: b.dataset.law }));
@@ -972,10 +1060,27 @@ document.addEventListener("keydown", e => {
   if (e.key === " " && !$("bNext").disabled && $("modal").hidden && document.activeElement?.tagName !== "INPUT") { e.preventDefault(); $("bNext").click(); }
 });
 
+// 手机上的面板切换；有新东西时在标签上点个红点
+function setTab(name) {
+  document.body.dataset.tab = name;
+  document.querySelectorAll("[data-tab]").forEach(b => {
+    if (b.tagName !== "BUTTON") return;
+    b.setAttribute("aria-pressed", b.dataset.tab === name);
+    if (b.dataset.tab === name) b.classList.remove("ping");
+  });
+}
+function ping(name) {
+  if (document.body.dataset.tab === name) return;
+  const b = document.querySelector(`.tabs [data-tab="${name}"]`); if (b) b.classList.add("ping");
+}
+document.querySelectorAll(".tabs [data-tab]").forEach(b => b.onclick = () => setTab(b.dataset.tab));
+setTab("ledger");
+
 // ───────────────────────── 启动 ─────────────────────────
 async function boot() {
+  fitCanvas(); measureHud();
   renderDex(); setHud({ pop: 7, treasury: 20, happiness: 60, civ: 1 }, null);
-  $("hSeason").textContent = "第1季 · 春";
+  $("hSeason").innerHTML = seasonLabel(0, "春");
   syncActors([{ vid: 1, name: "阿福", traits_text: "贪/造物" }, { vid: 2, name: "小翠", traits_text: "守法/迷信" },
     { vid: 3, name: "老王", traits_text: "懒/模仿" }, { vid: 4, name: "乌龟", traits_text: "贪/造物", tortoise: true }]);
   scene.robots = 3;
