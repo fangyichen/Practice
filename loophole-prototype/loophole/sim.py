@@ -95,7 +95,16 @@ def _tax_rates(state, ex):
     return out
 
 
-def run_season(state, rng, chooser, history, force=None, out=None) -> SeasonLog:
+@dataclass
+class Pending:
+    """一季的前半段（事件 + 商店）已经发生，等玩家立法。"""
+    log: SeasonLog
+    ectx: dict
+    before: dict
+    offers: list
+
+
+def begin_season(state, rng) -> Pending:
     start_season(state)
     before = _snapshot(state)
     ectx = {"joined": [], "left": [], "notes": []}
@@ -110,11 +119,21 @@ def run_season(state, rng, chooser, history, force=None, out=None) -> SeasonLog:
     # 2. 商店
     offers = draw_offers(state.civ, rng, state.laws, 4 if state.extra_offer else 3)
     log.offers = [law.id for law in offers]
+    return Pending(log, ectx, before, offers)
+
+
+def run_season(state, rng, chooser, history, force=None, out=None) -> SeasonLog:
+    pending = begin_season(state, rng)
     if force and state.season_idx in force:
         pick = force[state.season_idx]
         choice = ("pick", LAWS_BY_ID[pick]) if pick else ("skip", None)
     else:
-        choice = chooser(offers, state, rng)
+        choice = chooser(pending.offers, state, rng)
+    return finish_season(state, rng, pending, choice, history, out)
+
+
+def finish_season(state, rng, pending, choice, history, out=None) -> SeasonLog:
+    log, ectx, before = pending.log, pending.ectx, pending.before
     if choice[0] == "pick" and choice[1] is not None:
         _enact(state, choice[1])
         log.chosen = choice[1].id
@@ -307,6 +326,42 @@ def auto_chooser(strategy):
     return choose
 
 
+def end_reason(state):
+    if state.pop <= 1:
+        return "人口 ≤ 1，村子散了"
+    if state.consecutive_collapse >= 2 and state.civ == 1:
+        return "文明连续崩塌跌到 1"
+    return None
+
+
+class Game:
+    """一局可以一季一季推进的游戏（给网页界面用）。随机序列和 run_game 完全一致。"""
+
+    def __init__(self, seed=42, seasons=12, laws=None):
+        self.seed, self.seasons = seed, seasons
+        self.rng = random.Random(seed)
+        self.state = setup(seed, self.rng, laws)
+        self.history = []
+        self.result = None
+        self.pending = begin_season(self.state, self.rng)
+
+    def step(self, choice):
+        log = finish_season(self.state, self.rng, self.pending, choice, self.history)
+        reason = end_reason(self.state)
+        if reason is None and len(self.history) >= self.seasons:
+            reason = f"{self.seasons} 季跑完"
+        if reason:
+            compendium = [c for lg in self.history for c in lg.new_combos]
+            vt = classify_village(self.state, self.history, compendium)
+            self.result = GameResult(self.seed, "human", self.history, self.state, reason, vt,
+                                     compendium=compendium)
+            self.result.text = village_history(self.result)
+            self.pending = None
+        else:
+            self.pending = begin_season(self.state, self.rng)
+        return log
+
+
 def run_game(seed=42, strategy="greedy", seasons=12, laws=None, chooser=None,
              force=None, out=None, tortoise_traits=None) -> GameResult:
     rng = random.Random(seed)
@@ -325,11 +380,9 @@ def run_game(seed=42, strategy="greedy", seasons=12, laws=None, chooser=None,
     end = "12 季跑完" if seasons == 12 else f"{seasons} 季跑完"
     for _ in range(seasons):
         run_season(state, rng, chooser, history, force=force, out=emit)
-        if state.pop <= 1:
-            end = "人口 ≤ 1，村子散了"
-            break
-        if state.consecutive_collapse >= 2 and state.civ == 1:
-            end = "文明连续崩塌跌到 1"
+        reason = end_reason(state)
+        if reason:
+            end = reason
             break
     compendium = [c for log in history for c in log.new_combos]
     vt = classify_village(state, history, compendium)

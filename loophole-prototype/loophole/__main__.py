@@ -95,6 +95,11 @@ def cmd_replay(args):
     print(f"重跑组合检测：{len(seen)} 个图鉴条目（原局记录 {len(footer['compendium'])} 个）")
 
 
+def cmd_serve(args):
+    from .server import serve
+    serve(args.host, args.port)
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(prog="loophole")
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -114,8 +119,11 @@ def main(argv=None):
     rp = sub.add_parser("replay")
     rp.add_argument("path")
     rp.add_argument("-v", "--verbose", action="store_true")
+    sv = sub.add_parser("serve", help="启动像素风网页界面")
+    sv.add_argument("--host", default="127.0.0.1")
+    sv.add_argument("--port", type=int, default=8000)
     args = p.parse_args(argv)
-    {"run": cmd_run, "batch": cmd_batch, "replay": cmd_replay}[args.cmd](args)
+    {"run": cmd_run, "batch": cmd_batch, "replay": cmd_replay, "serve": cmd_serve}[args.cmd](args)
 
 
 if __name__ == "__main__":

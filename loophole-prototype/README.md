@@ -8,6 +8,17 @@
 
 实验结果和验收对照见 [`results/REPORT.md`](results/REPORT.md)。
 
+## 像素风界面
+
+```bash
+python -m loophole serve            # 打开 http://127.0.0.1:8000
+```
+
+- **亲自立法**：每季从三（或四）张法案里选一张、跳过，或花 5 村库废除一条。界面通过本地服务调用同一个 Python 模拟器，结果和命令行一致。
+- **录像**：6 局用模拟器真实跑出来的局（偷窃潮、布道与禁言的崩塌、金卡化解、机器人村、元法律造出的矛盾、随手立法），不需要本地服务也能看。
+- 画面里村民白天、夜里各走到自己动作的地点（田、集市、井、祠堂、作坊、粮仓、矿洞）。乌龟引爆矛盾时法典碑会裂开、全屏震动；新的组合卡会弹出来收进图鉴。
+- 界面文件在 `ui/`：`index.html` 是页面，`data.js` 由 `python ui/build_data.py` 生成（法律表 + 录像）。
+
 ## 运行
 
 ```bash
@@ -27,7 +38,8 @@ python -m unittest -v                                         # 测试（约 45 
 
 ```
 loophole/
-  __main__.py        CLI：run / batch / replay
+  __main__.py        CLI：run / batch / replay / serve
+  server.py          本地网页服务（标准库 http.server）
   model.py           枚举、Law / Filter / Effect / MetaRule、ConcreteRule、Villager、State
   expand.py          expand_code(laws)：先应用橙卡，再用紫卡改写白/蓝卡（纯函数）
   engine.py          结算引擎：收益 / 税 / REDIRECT / 执法 / INVOKE 裁决 / 季末结算
@@ -43,6 +55,7 @@ loophole/
 tests/               test_expand / test_contradiction / test_tortoise / test_determinism
 experiments/         run_all.py：生成 results/
 results/             实验输出（日志、JSONL、批量汇总、报告）
+ui/                  像素风网页界面（index.html、data.js、build_data.py）
 ```
 
 和规格的关键对应：
