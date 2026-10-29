@@ -1,0 +1,772 @@
+[
+ {
+  "seed": 0,
+  "strategy": "cautious",
+  "seasons": 12,
+  "end_reason": "12 季跑完",
+  "civ": 3,
+  "pop": 5,
+  "treasury": 99.7,
+  "happiness": 43.8,
+  "collapses": 0,
+  "resolutions": 0,
+  "tortoise_acted": 10,
+  "tortoise_success": 7,
+  "robots": 1,
+  "code": [
+   "b07",
+   "b02",
+   "b04",
+   "b03",
+   "b01",
+   "w05",
+   "w01",
+   "b08",
+   "b10",
+   "b05",
+   "b06",
+   "w03"
+  ],
+  "village_type": "prophet",
+  "combos": [
+   "prophet_village",
+   "double_tax"
+  ],
+  "compendium": [
+   "《先知村》[蓝] —— b08《法定布道》",
+   "《苛税》[蓝] —— b02《商税》 × b06《富人税》"
+  ]
+ },
+ {
+  "seed": 1,
+  "strategy": "cautious",
+  "seasons": 12,
+  "end_reason": "12 季跑完",
+  "civ": 5,
+  "pop": 13,
+  "treasury": 228.8,
+  "happiness": 82.2,
+  "collapses": 0,
+  "resolutions": 0,
+  "tortoise_acted": 8,
+  "tortoise_success": 6,
+  "robots": 1,
+  "code": [
+   "b01",
+   "g03",
+   "b02",
+   "b07",
+   "g01",
+   "b06",
+   "b09",
+   "b05",
+   "b10",
+   "b08",
+   "b03",
+   "b04"
+  ],
+  "village_type": "prophet",
+  "combos": [
+   "prophet_village",
+   "prophet_village",
+   "double_tax",
+   "prophet_village"
+  ],
+  "compendium": [
+   "《先知村》[蓝] —— b01《产出归造物者》 × 村民二丫",
+   "《先知村》[蓝] —— b01《产出归造物者》 × 村民石头",
+   "《苛税》[蓝] —— b02《商税》 × b06《富人税》",
+   "《先知村》[白] —— 村民老王"
+  ]
+ },
+ {
+  "seed": 2,
+  "strategy": "cautious",
+  "seasons": 12,
+  "end_reason": "12 季跑完",
+  "civ": 6,
+  "pop": 2,
+  "treasury": 537.2,
+  "happiness": 7.9,
+  "collapses": 0,
+  "resolutions": 0,
+  "tortoise_acted": 11,
+  "tortoise_success": 11,
+  "robots": 13,
+  "code": [
+   "b06",
+   "b01",
+   "b08",
+   "b03",
+   "b10",
+   "b07",
+   "w06",
+   "b09",
+   "g02",
+   "b04",
+   "g01",
+   "b02"
+  ],
+  "village_type": "ruin",
+  "combos": [
+   "robot_proxy",
+   "robot_proxy",
+   "robot_proxy",
+   "robot_proxy",
+   "robot_proxy",
+   "robot_proxy",
+   "law_abiding_poverty",
+   "double_tax"
+  ],
+  "compendium": [
+   "《机器人代工》[蓝] —— b01《产出归造物者》 × 村民石头",
+   "《机器人代工》[蓝] —— b01《产出归造物者》 × 村民乌龟",
+   "《机器人代工》[蓝] —— b01《产出归造物者》 × b03《农税》 × 村民二丫",
+   "《机器人代工》[蓝] —— b01《产出归造物者》 × b03《农税》 × 村民石头",
+   "《机器人代工》[蓝] —— b01《产出归造物者》 × b03《农税》 × 村民铁柱",
+   "《机器人代工》[蓝] —— b01《产出归造物者》 × b03《农税》 × 村民乌龟",
+   "《清贫》[蓝] —— b04《冬令禁交易》 × 村民乌龟",
+   "《苛税》[蓝] —— b02《商税》 × b06《富人税》"
+  ]
+ },
+ {
+  "seed": 3,
+  "strategy": "cautious",
+  "seasons": 12,
+  "end_reason": "12 季跑完",
+  "civ": 3,
+  "pop": 8,
+  "treasury": 143.1,
+  "happiness": 62.8,
+  "collapses": 0,
+  "resolutions": 0,
+  "tortoise_acted": 8,
+  "tortoise_success": 4,
+  "robots": 0,
+  "code": [
+   "b05",
+   "b02",
+   "w05",
+   "b08",
+   "g03",
+   "b04",
+   "w03",
+   "w01",
+   "b10",
+   "b06",
+   "b03",
+   "b07"
+  ],
+  "village_type": "prophet",
+  "combos": [
+   "double_tax"
+  ],
+  "compendium": [
+   "《苛税》[蓝] —— b02《商税》 × b06《富人税》"
+  ]
+ },
+ {
+  "seed": 4,
+  "strategy": "cautious",
+  "seasons": 12,
+  "end_reason": "12 季跑完",
+  "civ": 2,
+  "pop": 6,
+  "treasury": 134.2,
+  "happiness": 0.0,
+  "collapses": 0,
+  "resolutions": 0,
+  "tortoise_acted": 8,
+  "tortoise_success": 8,
+  "robots": 0,
+  "code": [
+   "b04",
+   "b07",
+   "g03",
+   "b03",
+   "b10",
+   "w07",
+   "w08",
+   "b05",
+   "g02",
+   "b08",
+   "b09",
+   "b01"
+  ],
+  "village_type": "ruin",
+  "combos": [
+   "law_abiding_poverty"
+  ],
+  "compendium": [
+   "《清贫》[蓝] —— b04《冬令禁交易》 × w07《禁止文工》 × 村民阿福"
+  ]
+ },
+ {
+  "seed": 5,
+  "strategy": "cautious",
+  "seasons": 12,
+  "end_reason": "12 季跑完",
+  "civ": 2,
+  "pop": 4,
+  "treasury": 106.5,
+  "happiness": 0.0,
+  "collapses": 0,
+  "resolutions": 0,
+  "tortoise_acted": 8,
+  "tortoise_success": 8,
+  "robots": 1,
+  "code": [
+   "b07",
+   "b03",
+   "g02",
+   "b02",
+   "b01",
+   "b05",
+   "g01",
+   "w05",
+   "b08",
+   "b10",
+   "b04",
+   "b06"
+  ],
+  "village_type": "ruin",
+  "combos": [
+   "double_tax"
+  ],
+  "compendium": [
+   "《苛税》[蓝] —— b02《商税》 × b06《富人税》"
+  ]
+ },
+ {
+  "seed": 6,
+  "strategy": "cautious",
+  "seasons": 12,
+  "end_reason": "12 季跑完",
+  "civ": 4,
+  "pop": 6,
+  "treasury": 207.5,
+  "happiness": 47.6,
+  "collapses": 0,
+  "resolutions": 0,
+  "tortoise_acted": 6,
+  "tortoise_success": 6,
+  "robots": 13,
+  "code": [
+   "b07",
+   "w03",
+   "w02",
+   "b02",
+   "b01",
+   "b05",
+   "b09",
+   "b08",
+   "b10",
+   "b04",
+   "b03",
+   "w01"
+  ],
+  "village_type": "robot",
+  "combos": [
+   "law_abiding_poverty",
+   "robot_proxy",
+   "robot_proxy",
+   "robot_proxy"
+  ],
+  "compendium": [
+   "《清贫》[白] —— w02《禁夜间取水》 × w03《禁囤货》 × 村民小翠",
+   "《机器人代工》[蓝] —— b01《产出归造物者》 × b02《商税》 × 村民阿福",
+   "《机器人代工》[蓝] —— b01《产出归造物者》 × b02《商税》 × 村民乌龟",
+   "《机器人代工》[蓝] —— b01《产出归造物者》 × b03《农税》 × 村民阿福"
+  ]
+ },
+ {
+  "seed": 7,
+  "strategy": "cautious",
+  "seasons": 12,
+  "end_reason": "12 季跑完",
+  "civ": 1,
+  "pop": 2,
+  "treasury": 55.2,
+  "happiness": 1.0,
+  "collapses": 0,
+  "resolutions": 0,
+  "tortoise_acted": 9,
+  "tortoise_success": 3,
+  "robots": 1,
+  "code": [
+   "w07",
+   "g03",
+   "b06",
+   "g02",
+   "b09",
+   "b10",
+   "b08",
+   "b04",
+   "w09",
+   "b01",
+   "b03",
+   "b07"
+  ],
+  "village_type": "ruin",
+  "combos": [],
+  "compendium": []
+ },
+ {
+  "seed": 8,
+  "strategy": "cautious",
+  "seasons": 12,
+  "end_reason": "12 季跑完",
+  "civ": 2,
+  "pop": 4,
+  "treasury": 62.8,
+  "happiness": 25.7,
+  "collapses": 0,
+  "resolutions": 0,
+  "tortoise_acted": 7,
+  "tortoise_success": 4,
+  "robots": 0,
+  "code": [
+   "w08",
+   "b07",
+   "b02",
+   "b01",
+   "g02",
+   "b05",
+   "b10",
+   "g03",
+   "b08",
+   "b09",
+   "w09",
+   "b04"
+  ],
+  "village_type": "artisan",
+  "combos": [
+   "law_abiding_poverty"
+  ],
+  "compendium": [
+   "《清贫》[蓝] —— b04《冬令禁交易》 × 村民春花"
+  ]
+ },
+ {
+  "seed": 9,
+  "strategy": "cautious",
+  "seasons": 12,
+  "end_reason": "12 季跑完",
+  "civ": 6,
+  "pop": 6,
+  "treasury": 221.5,
+  "happiness": 18.2,
+  "collapses": 0,
+  "resolutions": 0,
+  "tortoise_acted": 6,
+  "tortoise_success": 6,
+  "robots": 17,
+  "code": [
+   "w03",
+   "b06",
+   "w07",
+   "b09",
+   "b01",
+   "g02",
+   "b07",
+   "w09",
+   "w04",
+   "b10",
+   "b04",
+   "g03"
+  ],
+  "village_type": "ruin",
+  "combos": [
+   "prophet_village",
+   "robot_proxy",
+   "robot_proxy",
+   "prophet_village",
+   "robot_proxy",
+   "robot_proxy"
+  ],
+  "compendium": [
+   "《先知村》[白] —— 村民二丫",
+   "《机器人代工》[蓝] —— b01《产出归造物者》 × 村民阿福",
+   "《机器人代工》[蓝] —— b01《产出归造物者》 × 村民铁柱",
+   "《先知村》[白] —— 村民小翠",
+   "《机器人代工》[蓝] —— b01《产出归造物者》 × w04《禁宣讲》 × 村民阿福",
+   "《机器人代工》[蓝] —— b01《产出归造物者》 × w04《禁宣讲》 × 村民二丫"
+  ]
+ },
+ {
+  "seed": 10,
+  "strategy": "cautious",
+  "seasons": 12,
+  "end_reason": "12 季跑完",
+  "civ": 7,
+  "pop": 10,
+  "treasury": 460.9,
+  "happiness": 27.0,
+  "collapses": 0,
+  "resolutions": 0,
+  "tortoise_acted": 9,
+  "tortoise_success": 9,
+  "robots": 19,
+  "code": [
+   "b07",
+   "b01",
+   "b09",
+   "b03",
+   "b04",
+   "g01",
+   "b06",
+   "b02",
+   "b10",
+   "g03",
+   "b05",
+   "b08"
+  ],
+  "village_type": "robot",
+  "combos": [
+   "prophet_village",
+   "robot_proxy",
+   "prophet_village",
+   "double_tax",
+   "robot_proxy"
+  ],
+  "compendium": [
+   "《先知村》[白] —— 村民小翠",
+   "《机器人代工》[蓝] —— b01《产出归造物者》 × b03《农税》 × 村民阿福",
+   "《先知村》[白] —— 村民铁柱",
+   "《苛税》[蓝] —— b02《商税》 × b06《富人税》",
+   "《机器人代工》[蓝] —— b01《产出归造物者》 × b03《农税》 × 村民秀才"
+  ]
+ },
+ {
+  "seed": 11,
+  "strategy": "cautious",
+  "seasons": 12,
+  "end_reason": "12 季跑完",
+  "civ": 2,
+  "pop": 6,
+  "treasury": 83.3,
+  "happiness": 27.4,
+  "collapses": 0,
+  "resolutions": 0,
+  "tortoise_acted": 8,
+  "tortoise_success": 8,
+  "robots": 0,
+  "code": [
+   "g03",
+   "b04",
+   "g01",
+   "b05",
+   "b08",
+   "b09",
+   "w07",
+   "b10",
+   "b03",
+   "b02",
+   "w01",
+   "b06"
+  ],
+  "village_type": "prophet",
+  "combos": [
+   "double_tax"
+  ],
+  "compendium": [
+   "《苛税》[蓝] —— b02《商税》 × b06《富人税》"
+  ]
+ },
+ {
+  "seed": 12,
+  "strategy": "cautious",
+  "seasons": 12,
+  "end_reason": "12 季跑完",
+  "civ": 10,
+  "pop": 12,
+  "treasury": 242.3,
+  "happiness": 70.0,
+  "collapses": 0,
+  "resolutions": 0,
+  "tortoise_acted": 9,
+  "tortoise_success": 9,
+  "robots": 11,
+  "code": [
+   "b01",
+   "b09",
+   "w06",
+   "g03",
+   "w09",
+   "g01",
+   "b03",
+   "b06",
+   "b07",
+   "b08",
+   "b02",
+   "b10"
+  ],
+  "village_type": "robot",
+  "combos": [
+   "robot_proxy",
+   "robot_proxy",
+   "robot_proxy",
+   "robot_proxy",
+   "prophet_village",
+   "prophet_village",
+   "monopoly",
+   "prophet_village",
+   "double_tax"
+  ],
+  "compendium": [
+   "《机器人代工》[蓝] —— b01《产出归造物者》 × 村民小翠",
+   "《机器人代工》[蓝] —— b01《产出归造物者》 × 村民乌龟",
+   "《机器人代工》[蓝] —— b01《产出归造物者》 × w06《劝农》 × 村民小翠",
+   "《机器人代工》[蓝] —— b01《产出归造物者》 × w06《劝农》 × 村民乌龟",
+   "《先知村》[白] —— 村民小翠",
+   "《先知村》[蓝] —— b01《产出归造物者》 × w06《劝农》 × 村民阿福",
+   "《垄断》[蓝] —— b03《农税》 × w06《劝农》 × 村民石头",
+   "《先知村》[蓝] —— b08《法定布道》 × 村民阿福",
+   "《苛税》[蓝] —— b02《商税》 × b06《富人税》"
+  ]
+ },
+ {
+  "seed": 13,
+  "strategy": "cautious",
+  "seasons": 12,
+  "end_reason": "12 季跑完",
+  "civ": 2,
+  "pop": 6,
+  "treasury": 122.8,
+  "happiness": 6.4,
+  "collapses": 0,
+  "resolutions": 0,
+  "tortoise_acted": 10,
+  "tortoise_success": 10,
+  "robots": 0,
+  "code": [
+   "b02",
+   "b08",
+   "g02",
+   "g03",
+   "b04",
+   "w08",
+   "b07",
+   "b05",
+   "w05",
+   "b09",
+   "b01",
+   "b03"
+  ],
+  "village_type": "ruin",
+  "combos": [
+   "prophet_village"
+  ],
+  "compendium": [
+   "《先知村》[蓝] —— b08《法定布道》 × w08《安息日》"
+  ]
+ },
+ {
+  "seed": 14,
+  "strategy": "cautious",
+  "seasons": 11,
+  "end_reason": "人口 ≤ 1，村子散了",
+  "civ": 3,
+  "pop": 1,
+  "treasury": 85.8,
+  "happiness": 15.1,
+  "collapses": 0,
+  "resolutions": 1,
+  "tortoise_acted": 7,
+  "tortoise_success": 7,
+  "robots": 0,
+  "code": [
+   "b05",
+   "w09",
+   "b03",
+   "g03",
+   "b10",
+   "g01",
+   "b01",
+   "w04",
+   "b07",
+   "b08",
+   "w10"
+  ],
+  "village_type": "ruin",
+  "combos": [
+   "tortoise_foiled"
+  ],
+  "compendium": [
+   "《乌龟碰壁》[金] —— b08《法定布道》 × g01《后法优先》 × w04《禁宣讲》"
+  ]
+ },
+ {
+  "seed": 15,
+  "strategy": "cautious",
+  "seasons": 12,
+  "end_reason": "12 季跑完",
+  "civ": 2,
+  "pop": 10,
+  "treasury": 350.1,
+  "happiness": 24.5,
+  "collapses": 0,
+  "resolutions": 0,
+  "tortoise_acted": 9,
+  "tortoise_success": 9,
+  "robots": 13,
+  "code": [
+   "b06",
+   "b02",
+   "b05",
+   "b10",
+   "g02",
+   "b09",
+   "w04",
+   "g01",
+   "b01",
+   "b04",
+   "b03",
+   "w10"
+  ],
+  "village_type": "robot",
+  "combos": [
+   "double_tax"
+  ],
+  "compendium": [
+   "《苛税》[蓝] —— b02《商税》 × b06《富人税》"
+  ]
+ },
+ {
+  "seed": 16,
+  "strategy": "cautious",
+  "seasons": 9,
+  "end_reason": "人口 ≤ 1，村子散了",
+  "civ": 1,
+  "pop": 1,
+  "treasury": 40.0,
+  "happiness": 17.3,
+  "collapses": 0,
+  "resolutions": 0,
+  "tortoise_acted": 6,
+  "tortoise_success": 6,
+  "robots": 0,
+  "code": [
+   "g02",
+   "b01",
+   "b09",
+   "g01",
+   "b05",
+   "b04",
+   "b03",
+   "b02",
+   "b10"
+  ],
+  "village_type": "ruin",
+  "combos": [],
+  "compendium": []
+ },
+ {
+  "seed": 17,
+  "strategy": "cautious",
+  "seasons": 12,
+  "end_reason": "12 季跑完",
+  "civ": 3,
+  "pop": 11,
+  "treasury": 266.1,
+  "happiness": 80.9,
+  "collapses": 0,
+  "resolutions": 0,
+  "tortoise_acted": 5,
+  "tortoise_success": 2,
+  "robots": 1,
+  "code": [
+   "w10",
+   "g01",
+   "b07",
+   "b05",
+   "b02",
+   "b06",
+   "w06",
+   "b10",
+   "b08",
+   "b03",
+   "b04",
+   "b09"
+  ],
+  "village_type": "prophet",
+  "combos": [
+   "double_tax"
+  ],
+  "compendium": [
+   "《苛税》[蓝] —— b02《商税》 × b06《富人税》"
+  ]
+ },
+ {
+  "seed": 18,
+  "strategy": "cautious",
+  "seasons": 12,
+  "end_reason": "12 季跑完",
+  "civ": 4,
+  "pop": 11,
+  "treasury": 195.4,
+  "happiness": 58.2,
+  "collapses": 0,
+  "resolutions": 0,
+  "tortoise_acted": 7,
+  "tortoise_success": 7,
+  "robots": 0,
+  "code": [
+   "g01",
+   "w05",
+   "b10",
+   "b07",
+   "b09",
+   "b03",
+   "b04",
+   "g02",
+   "b05",
+   "w06",
+   "w09",
+   "b01"
+  ],
+  "village_type": "prophet",
+  "combos": [
+   "prophet_village"
+  ],
+  "compendium": [
+   "《先知村》[白] —— （法典空白）"
+  ]
+ },
+ {
+  "seed": 19,
+  "strategy": "cautious",
+  "seasons": 12,
+  "end_reason": "12 季跑完",
+  "civ": 2,
+  "pop": 7,
+  "treasury": 143.0,
+  "happiness": 10.5,
+  "collapses": 0,
+  "resolutions": 0,
+  "tortoise_acted": 9,
+  "tortoise_success": 9,
+  "robots": 1,
+  "code": [
+   "b02",
+   "b05",
+   "g01",
+   "b03",
+   "b06",
+   "w08",
+   "b08",
+   "w06",
+   "b07",
+   "b04",
+   "b09",
+   "b01"
+  ],
+  "village_type": "ruin",
+  "combos": [
+   "double_tax"
+  ],
+  "compendium": [
+   "《苛税》[蓝] —— b02《商税》 × b06《富人税》"
+  ]
+ }
+]

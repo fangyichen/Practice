@@ -1,0 +1,41 @@
+策略 greedy：20 局
+  平均文明 2.90（无崩塌局 19 局，平均文明 3.00）
+  崩塌总数 1（1 局发生过），化解 1
+  平均幸福 23.7，平均人口 6.0，提前结束 1 局
+  乌龟出手 163 次，找到漏洞 115 次，成功率 71%
+  组合卡种类 6/10：robot_proxy×19，double_tax×9，prophet_village×8，law_abiding_poverty×3，monopoly×2，tortoise_foiled×1
+  村子类型：废村×11，神棍村×4，机器人村×4，商人村×1
+
+策略 cautious：20 局
+  平均文明 3.50（无崩塌局 20 局，平均文明 3.50）
+  崩塌总数 0（0 局发生过），化解 1
+  平均幸福 31.3，平均人口 6.5，提前结束 2 局
+  乌龟出手 160 次，找到漏洞 139 次，成功率 87%
+  组合卡种类 6/10：robot_proxy×19，prophet_village×13，double_tax×11，law_abiding_poverty×4，monopoly×1，tortoise_foiled×1
+  村子类型：废村×9，神棍村×6，机器人村×4，工匠村×1
+
+策略 random：20 局
+  平均文明 3.30（无崩塌局 17 局，平均文明 3.71）
+  崩塌总数 3（3 局发生过），化解 3
+  平均幸福 23.3，平均人口 5.3，提前结束 2 局
+  乌龟出手 136 次，找到漏洞 99 次，成功率 73%
+  组合卡种类 6/10：prophet_village×15，robot_proxy×10，monopoly×8，double_tax×4，law_abiding_poverty×3，tortoise_foiled×3
+  村子类型：废村×13，工匠村×3，机器人村×2，神棍村×2
+
+策略 random（60 局）：60 局
+  平均文明 3.05（无崩塌局 51 局，平均文明 3.35）
+  崩塌总数 11（9 局发生过），化解 6
+  平均幸福 34.2，平均人口 6.7，提前结束 4 局
+  乌龟出手 428 次，找到漏洞 297 次，成功率 69%
+  组合卡种类 8/10：prophet_village×44，robot_proxy×26，double_tax×10，monopoly×10，law_abiding_poverty×9，tortoise_foiled×6，night_well×3，exile_cascade×1
+  村子类型：废村×29，工匠村×14，神棍村×14，机器人村×2，商人村×1
+
+策略 greedy_nogold（诊断）：20 局
+  平均文明 3.70（无崩塌局 18 局，平均文明 3.89）
+  崩塌总数 2（2 局发生过），化解 0
+  平均幸福 31.7，平均人口 6.2，提前结束 0 局
+  乌龟出手 165 次，找到漏洞 126 次，成功率 76%
+  组合卡种类 7/10：robot_proxy×33，prophet_village×12，double_tax×10，law_abiding_poverty×4，monopoly×2，exile_cascade×1，winter_hoard×1
+  村子类型：废村×9，机器人村×6，神棍村×4，商人村×1
+
+三种策略合计 60 局村子类型：废村×33，神棍村×12，机器人村×10，工匠村×4，商人村×1
