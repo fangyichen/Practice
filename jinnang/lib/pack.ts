@@ -10,6 +10,7 @@ import {
   SliceSchema,
   StationSchema,
   TimelineEntrySchema,
+  TracesSchema,
   type EraPack,
 } from "../schemas";
 
@@ -31,6 +32,7 @@ export function loadEraPack(eraId = "sanguo-yanyi", sliceId = "jingzhou-180"): E
     slice: SliceSchema.parse(readJson(join(sdir, "slice.json"))),
     dilemmas: z.array(DilemmaSchema).parse(readJson(join(sdir, "dilemmas.json"))),
     outcomes: z.record(z.string(), OutcomeSchema).parse(readJson(join(sdir, "outcomes.json"))),
+    traces: TracesSchema.parse(readJson(join(dir, "traces.json"))),
   };
 }
 

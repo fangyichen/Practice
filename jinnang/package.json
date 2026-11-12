@@ -6,7 +6,7 @@
   "scripts": {
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "validate-era": "tsx scripts/validate-era.ts --profile m0",
+    "validate-era": "tsx scripts/validate-era.ts --profile full",
     "simulate": "tsx scripts/simulate.ts",
     "dev": "tsx scripts/devserver.ts",
     "build:static": "tsx scripts/build-static.ts"

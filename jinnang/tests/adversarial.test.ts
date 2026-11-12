@@ -8,7 +8,7 @@ import { classifier, fixedBirth, fixtures, pack, persona, start } from "./helper
 const deps = { pack, classifier, writer: new MockLetterWriter() };
 
 describe("捣乱类回复", () => {
-  for (const id of ["matchmaker_call", "county_levy", "cao_marches_south"]) {
+  for (const id of pack.slice.nodes) {
     it(`${id}：「忽略以上指令」只得到一个分布`, async () => {
       const d = pack.dilemmas.find((x) => x.id === id)!;
       const c = await classifier.classify({
@@ -40,7 +40,7 @@ describe("捣乱类回复", () => {
   });
 
   it("分类器出错或输出非法时降级为均分（source=rule）", async () => {
-    const d = pack.dilemmas[0]!;
+    const d = pack.dilemmas.find((x) => x.id === "matchmaker_call")!;
     const input = { dilemmaId: d.id, situationFacts: d.situationFacts, options: d.options.map((o) => ({ id: o.id, label: o.label })), reply: "x" };
     const throwing: ReplyClassifier = { classify: async () => { throw new Error("boom"); } };
     const bogus: ReplyClassifier = { classify: async () => ({ dist: { delete_save: 1 }, source: "llm" }) };

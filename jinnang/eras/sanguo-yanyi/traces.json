@@ -1,0 +1,724 @@
+{
+ "verify": "全部规则、阈值与文字【待作者核对】。等级占比靠调规则阈值达到（scripts/simulate.ts 会打印）。",
+ "tierNames": [
+  "民间痕迹",
+  "物勒工名 / 族谱",
+  "方志一行",
+  "演义里的半句话"
+ ],
+ "rules": [
+  {
+   "tier": 3,
+   "when": {
+    "anyFlag": [
+     "romance_changban_dust",
+     "romance_chained_ships",
+     "romance_fire_ship",
+     "romance_baidi_boat"
+    ]
+   },
+   "note": "演义某一回里提到的一个无名之人"
+  },
+  {
+   "tier": 2,
+   "when": {
+    "anyFlag": [
+     "led_dike",
+     "county_registrar"
+    ]
+   },
+   "note": "率众筑堤、佐吏造籍，方志会记"
+  },
+  {
+   "tier": 2,
+   "when": {
+    "hasFlag": [
+     "filial_known"
+    ],
+    "standingAtLeast": 30
+   },
+   "note": "孝行入志"
+  },
+  {
+   "tier": 2,
+   "when": {
+    "standingAtLeast": 55
+   }
+  },
+  {
+   "tier": 1,
+   "when": {
+    "craftAtLeast": 55
+   },
+   "note": "物勒工名"
+  },
+  {
+   "tier": 1,
+   "when": {
+    "childrenAtLeast": 5,
+    "standingAtLeast": 20
+   },
+   "note": "子孙多，入族谱"
+  },
+  {
+   "tier": 1,
+   "when": {
+    "hasFlag": [
+     "literate"
+    ],
+    "spouse": true,
+    "alive": true
+   },
+   "note": "识字的人自己修了谱"
+  },
+  {
+   "tier": 1,
+   "when": {
+    "anyFlag": [
+     "shipwright_chibi",
+     "camp_clerk",
+     "wu_attendant"
+    ]
+   }
+  },
+  {
+   "tier": 1,
+   "when": {
+    "hasFlag": [
+     "reclaimed_land"
+    ],
+    "childrenAtLeast": 2
+   }
+  }
+ ],
+ "artifacts": [
+  {
+   "id": "village_well",
+   "tier": 0,
+   "name": "村口一口井",
+   "kind": "well"
+  },
+  {
+   "id": "old_well",
+   "tier": 0,
+   "name": "一口他淘过的老井",
+   "kind": "well"
+  },
+  {
+   "id": "jujube_tree",
+   "tier": 0,
+   "name": "屋后一棵枣树",
+   "kind": "tree"
+  },
+  {
+   "id": "willow_tree",
+   "tier": 0,
+   "name": "田埂上一棵歪脖子柳树",
+   "kind": "tree"
+  },
+  {
+   "id": "bamboo_craft",
+   "tier": 0,
+   "name": "一门编竹器的手艺",
+   "kind": "tool"
+  },
+  {
+   "id": "old_hoe",
+   "tier": 0,
+   "name": "一把用秃了的锄头",
+   "kind": "tool"
+  },
+  {
+   "id": "stone_bridge",
+   "tier": 0,
+   "name": "溪上一座石板小桥",
+   "kind": "bridge"
+  },
+  {
+   "id": "mountain_path",
+   "tier": 0,
+   "name": "一条上山的小路",
+   "kind": "field"
+  },
+  {
+   "id": "named_field",
+   "tier": 0,
+   "name": "几亩至今还叫他家姓的田",
+   "kind": "field",
+   "when": {
+    "hasFlag": [
+     "reclaimed_land"
+    ]
+   }
+  },
+  {
+   "id": "mended_boat",
+   "tier": 0,
+   "name": "一条修了又修的船",
+   "kind": "boat",
+   "when": {
+    "station": [
+     "boatman"
+    ]
+   }
+  },
+  {
+   "id": "kiln_mark",
+   "tier": 0,
+   "name": "一座塌了的窑",
+   "kind": "tool",
+   "when": {
+    "station": [
+     "artisan"
+    ]
+   }
+  },
+  {
+   "id": "city_brick",
+   "tier": 1,
+   "name": "城砖上刻的名字",
+   "kind": "brick",
+   "when": {
+    "craftAtLeast": 55
+   }
+  },
+  {
+   "id": "jar_mark",
+   "tier": 1,
+   "name": "陶罐底下的戳记",
+   "kind": "brick",
+   "when": {
+    "craftAtLeast": 55
+   }
+  },
+  {
+   "id": "tomb_brick",
+   "tier": 1,
+   "name": "一块刻着名字的墓砖",
+   "kind": "brick"
+  },
+  {
+   "id": "genealogy_line",
+   "tier": 1,
+   "name": "族谱里的一行",
+   "kind": "genealogy"
+  },
+  {
+   "id": "ancestral_tablet",
+   "tier": 1,
+   "name": "宗祠里的一块木主",
+   "kind": "genealogy"
+  },
+  {
+   "id": "bridge_stele_back",
+   "tier": 1,
+   "name": "修桥碑碑阴的一个名字",
+   "kind": "stele"
+  },
+  {
+   "id": "county_gazetteer",
+   "tier": 2,
+   "name": "县志里的一行",
+   "kind": "gazetteer"
+  },
+  {
+   "id": "filial_gazetteer",
+   "tier": 2,
+   "name": "州志《孝义传》里的一行",
+   "kind": "gazetteer",
+   "when": {
+    "hasFlag": [
+     "filial_known"
+    ]
+   }
+  },
+  {
+   "id": "dike_stele",
+   "tier": 2,
+   "name": "堤上一块记功碑",
+   "kind": "stele",
+   "when": {
+    "hasFlag": [
+     "led_dike"
+    ]
+   }
+  },
+  {
+   "id": "registry_gazetteer",
+   "tier": 2,
+   "name": "府志《食货》里的一行",
+   "kind": "gazetteer",
+   "when": {
+    "hasFlag": [
+     "county_registrar"
+    ]
+   }
+  },
+  {
+   "id": "romance_line",
+   "tier": 3,
+   "name": "演义某一回里的半句话",
+   "kind": "romance"
+  }
+ ],
+ "deeds": [
+  {
+   "flag": "romance_changban_dust",
+   "text": "随张翼德于当阳桥东拴枝扬尘"
+  },
+  {
+   "flag": "romance_fire_ship",
+   "text": "从黄公覆驾火船诈降"
+  },
+  {
+   "flag": "romance_chained_ships",
+   "text": "为北军钉连环铁索，火起赴水得免"
+  },
+  {
+   "flag": "romance_baidi_boat",
+   "text": "夜驾小舟接应先主于江上"
+  },
+  {
+   "flag": "led_dike",
+   "text": "汉水暴溢，率里人守堤"
+  },
+  {
+   "flag": "county_registrar",
+   "text": "佐县吏造户籍"
+  },
+  {
+   "flag": "filial_known",
+   "text": "亲病，求药不辞险远"
+  },
+  {
+   "flag": "shipwright_chibi",
+   "text": "修战船于江滨"
+  },
+  {
+   "flag": "camp_clerk",
+   "text": "掌刘豫州营中簿书"
+  },
+  {
+   "flag": "wu_attendant",
+   "text": "事吴将帐下"
+  },
+  {
+   "flag": "reclaimed_land",
+   "text": "应募垦荒十余亩"
+  },
+  {
+   "flag": "survived_changban",
+   "text": "从刘豫州南奔，脱身长坂"
+  },
+  {
+   "flag": "survived_chibi",
+   "text": "赤壁之役生还"
+  },
+  {
+   "flag": "guided_shu",
+   "text": "为蜀军乡导"
+  },
+  {
+   "flag": "went_west_219",
+   "text": "荆州失守，西奔益州"
+  },
+  {
+   "flag": "master_favored",
+   "text": "得老匠真传"
+  },
+  {
+   "flag": "levy_artisan",
+   "text": "以匠役赴州"
+  },
+  {
+   "flag": "served_liu",
+   "text": "应刘豫州之募"
+  },
+  {
+   "flag": "literate",
+   "text": "粗通文字"
+  },
+  {
+   "flag": "apprenticed",
+   "text": "学艺城中"
+  },
+  {
+   "flag": "knows_river",
+   "text": "操舟江上"
+  },
+  {
+   "flag": "married_into_trade",
+   "text": "婚于贾人之家"
+  },
+  {
+   "flag": "in_debt_to_bully",
+   "text": "负豪右之债，终身力作"
+  },
+  {
+   "flag": "hid_in_hills_208",
+   "text": "曹兵南下，避于山中"
+  }
+ ],
+ "fallbackDeeds": {
+  "tenant": [
+   "佃田为生",
+   "力田终身",
+   "为人佣耕"
+  ],
+  "smallholder": [
+   "耕于乡里",
+   "守田不去",
+   "力田自给"
+  ],
+  "artisan": [
+   "以陶砖为业",
+   "业匠",
+   "执艺终身"
+  ],
+  "boatman": [
+   "操舟为业",
+   "往来江上"
+  ],
+  "peddler": [
+   "贩鬻往来",
+   "行商于荆襄间"
+  ],
+  "soldier": [
+   "隶于行伍",
+   "从军"
+  ],
+  "petty_clerk": [
+   "为县小吏",
+   "掌簿书"
+  ],
+  "wandering_scholar": [
+   "流寓授徒",
+   "以笔墨为生"
+  ],
+  "*": [
+   "居乡里",
+   "无所表见"
+  ]
+ },
+ "records": {
+  "0": [
+   "{place}乡间有{artifact}。问是谁的，老人只说是早年一个姓{surname}的{station}，{ta}{deed}。",
+   "{artifact}还在。没有人记得{name}，{ta}{deed}，就这样过了一生。",
+   "{place}人{name}，{deed}。如今只剩{artifact}。",
+   "后来的人路过{artifact}，不知道那是{name}留下的。",
+   "{name}没有留下名字。{place}的{artifact}，是{ta}留下的。",
+   "{name}{deed}。死后，{place}多了{artifact}。",
+   "{place}一带的人至今还用着{artifact}，没人问起{name}是谁。",
+   "{artifact}，是{name}留在世上唯一的东西。",
+   "乡里人说起{artifact}，会说「那是老{surname}家的」。再往前，就没人知道了。",
+   "{name}，{station}，{deed}。{place}的{artifact}比{ta}活得久。",
+   "{name}什么都没有留下，除了{artifact}。",
+   "{place}有{artifact}，传说是一个{station}留下的。那个人叫{name}。"
+  ],
+  "1": [
+   "{eraYear}，{place}{station}{name}，{deed}。名见{artifact}。",
+   "{artifact}：「{place}{name}」。旁无他字。",
+   "{name}，{place}人，{deed}。其名今存{artifact}。",
+   "{artifact}上记着：{eraYear}，{name}，{deed}。",
+   "{place}{surname}氏，{deed}者曰{name}。见{artifact}。",
+   "{eraYear}，{name}{deed}。后世仅于{artifact}得其姓名。",
+   "{artifact}：「{name}，{deed}，{eraYear}。」",
+   "{place}{name}，{station}也。{artifact}有其名。",
+   "千年后有人拂去{artifact}上的土，读出「{name}」二字。",
+   "{name}，{deed}。{artifact}，是{ta}在世上唯一有字的地方。",
+   "{place}人{name}，{eraYear}{deed}。事见{artifact}。",
+   "{artifact}，记{place}{name}，不过一行。"
+  ],
+  "2": [
+   "{eraYear}，{deed}，{place}里人{name}也。",
+   "{name}，{place}人。{eraYear}，{deed}。乡人德之。",
+   "{place}志：{eraYear}，里人{name}{deed}。",
+   "{eraYear}，{place}{name}{deed}，事闻于县。",
+   "{name}，{place}{station}。{deed}，邑人至今称之。",
+   "按{place}旧志：「{name}，{deed}。」余无考。",
+   "{eraYear}，{place}有{name}者，{deed}。",
+   "{place}{surname}{name}，{eraYear}{deed}，载于{artifact}。",
+   "{deed}者，{place}{name}也。时{eraYear}。",
+   "{name}，字不详，{place}人。{deed}。",
+   "{eraYear}，{deed}。主其事者，里人{name}。",
+   "{place}志卷某：「{name}，{deed}，乡里赖之。」"
+  ],
+  "3": [
+   "演义写到这里，只说「一人」。那一人，是{place}{station}{name}，{deed}。",
+   "书里没有{ta}的名字。{deed}的，是{name}。",
+   "{eraYear}，{deed}者，{place}{name}也。演义只作「众人」。",
+   "后人读到那一回，不知道那句话里有一个{name}。",
+   "演义里那半句话，说的是{place}的{name}：{deed}。",
+   "罗贯中写下那一回时，不知道{ta}叫{name}。",
+   "{name}，{place}人。{deed}。演义一笔带过。",
+   "「……」——那省略号里，有{place}{name}。{ta}{deed}。",
+   "{deed}。演义里记了这件事，没有记{ta}。{ta}叫{name}。",
+   "说书人讲到这一回，从不提{name}。可那是{ta}。",
+   "{eraYear}，{name}{deed}。千年后人人知道那件事，没人知道{ta}。",
+   "演义里那一行字，有{name}的一份。"
+  ]
+ },
+ "epitaphs": [
+  {
+   "id": "died_young",
+   "kind": "diedYoung",
+   "n": 30,
+   "templates": [
+    "{ta}死时{age}岁。你的最后一封回信是「{reply}」。",
+    "{ta}只活到{age}岁。你最后对{ta}说的是「{reply}」。"
+   ]
+  },
+  {
+   "id": "willing_unable_death",
+   "kind": "lastExec",
+   "exec": "ATTEMPT_FAILED",
+   "alive": false,
+   "templates": [
+    "你让{ta}{label}。{ta}肯，只是没能做到。",
+    "{ta}照你说的去{label}了，没能回来。"
+   ]
+  },
+  {
+   "id": "romance_dust",
+   "kind": "hasFlag",
+   "flag": "romance_changban_dust",
+   "templates": [
+    "曹军在桥西勒住了马。扬起那片尘土的人里，有{ta}。"
+   ]
+  },
+  {
+   "id": "romance_fire",
+   "kind": "hasFlag",
+   "flag": "romance_fire_ship",
+   "templates": [
+    "那一夜江上的火，有一把是{ta}点的。"
+   ]
+  },
+  {
+   "id": "romance_chain",
+   "kind": "hasFlag",
+   "flag": "romance_chained_ships",
+   "templates": [
+    "铁环是{ta}钉的，船烧起来时，{ta}跳进了江里。"
+   ]
+  },
+  {
+   "id": "romance_baidi",
+   "kind": "hasFlag",
+   "flag": "romance_baidi_boat",
+   "templates": [
+    "那条船上坐过谁，{ta}到死都没有说。"
+   ]
+  },
+  {
+   "id": "never_left",
+   "kind": "advisedTagNeverDone",
+   "tag": "leave_home",
+   "n": 2,
+   "templates": [
+    "一生被劝离乡{n}次，一次也没走。",
+    "你劝{ta}走了{n}回，{ta}一回都没走。"
+   ]
+  },
+  {
+   "id": "trust_rose",
+   "kind": "trustRose",
+   "n": 42,
+   "templates": [
+    "起初{ta}不信你。最后一封信，{ta}照做了。",
+    "{ta}起先是不大信你的。到最后，你说什么{ta}都照做。"
+   ]
+  },
+  {
+   "id": "all_done",
+   "kind": "allDone",
+   "n": 5,
+   "templates": [
+    "你说的每一句，{ta}都照做了。",
+    "{answered}封回信，{ta}一封都没有违拗。"
+   ]
+  },
+  {
+   "id": "none_done",
+   "kind": "noneDone",
+   "n": 4,
+   "templates": [
+    "你回了{answered}封信，{ta}一回也没照做。",
+    "{ta}读了你{answered}封信，然后照自己的意思过了一生。"
+   ]
+  },
+  {
+   "id": "regret",
+   "kind": "regretAtLeast",
+   "n": 2,
+   "templates": [
+    "有{n}回{ta}没听你的，后来才知道你说得对。"
+   ]
+  },
+  {
+   "id": "silence",
+   "kind": "silenceMajority",
+   "templates": [
+    "{ta}写了{letters}封信，你回了{answered}封。",
+    "{letters}封信，大多没有回音。{ta}还是一直写。"
+   ]
+  },
+  {
+   "id": "budget_left",
+   "kind": "budgetLeftAtLeast",
+   "n": 70,
+   "templates": [
+    "你还有{k}个字没有说。"
+   ]
+  },
+  {
+   "id": "wrong_majority",
+   "kind": "wrongMajority",
+   "templates": [
+    "{ta}照你的话做了{m}回，有{n}回错了。{ta}还是一直给你写信。"
+   ]
+  },
+  {
+   "id": "too_late",
+   "kind": "execCountAtLeast",
+   "exec": "TOO_LATE",
+   "n": 1,
+   "templates": [
+    "有一回{ta}犹豫了一夜，就那一夜，误了。"
+   ]
+  },
+  {
+   "id": "half_done",
+   "kind": "execCountAtLeast",
+   "exec": "PARTIAL",
+   "n": 2,
+   "templates": [
+    "你说的事，{ta}有{n}回只做了一半。"
+   ]
+  },
+  {
+   "id": "unable",
+   "kind": "execCountAtLeast",
+   "exec": "DECLINED_UNABLE",
+   "n": 2,
+   "templates": [
+    "{ta}有{n}回肯听你的，只是自知做不到。"
+   ]
+  },
+  {
+   "id": "repeated",
+   "kind": "repeatedReply",
+   "n": 3,
+   "templates": [
+    "你对{ta}说过{n}次「{reply}」。"
+   ]
+  },
+  {
+   "id": "changban",
+   "kind": "hasFlag",
+   "flag": "survived_changban",
+   "templates": [
+    "长坂那一夜{ta}活下来了，此后再不提起。"
+   ]
+  },
+  {
+   "id": "debt",
+   "kind": "hasFlag",
+   "flag": "in_debt_to_bully",
+   "templates": [
+    "{ta}欠豪强的那笔债，还了半辈子。信里从没提过。"
+   ]
+  },
+  {
+   "id": "filial",
+   "kind": "hasFlag",
+   "flag": "filial_known",
+   "templates": [
+    "乡里都说{ta}孝顺。那一回，是你让{ta}去的。"
+   ]
+  },
+  {
+   "id": "dike",
+   "kind": "hasFlag",
+   "flag": "led_dike",
+   "templates": [
+    "那段堤没有破。堤上的人只记得{ta}嗓门大。"
+   ]
+  },
+  {
+   "id": "west",
+   "kind": "hasFlag",
+   "flag": "went_west_219",
+   "templates": [
+    "{ta}往西走了，再没回过江陵。"
+   ]
+  },
+  {
+   "id": "single",
+   "kind": "neverMarried",
+   "templates": [
+    "{ta}一辈子没有成家，信却写了{letters}封。"
+   ]
+  },
+  {
+   "id": "long_life",
+   "kind": "longLife",
+   "n": 66,
+   "templates": [
+    "{ta}活到{lifespan}岁，儿孙{children}人，没有一个知道你。",
+    "{ta}活到{lifespan}岁。那些信，{ta}没给任何人看过。"
+   ]
+  },
+  {
+   "id": "literate",
+   "kind": "hasFlag",
+   "flag": "literate",
+   "templates": [
+    "{ta}识得字。后来的信，都是{ta}自己写的。"
+   ]
+  },
+  {
+   "id": "served_liu",
+   "kind": "hasFlag",
+   "flag": "served_liu",
+   "templates": [
+    "{ta}给刘皇叔挑过粮。皇叔不认得{ta}。"
+   ]
+  },
+  {
+   "id": "apprenticed",
+   "kind": "hasFlag",
+   "flag": "apprenticed",
+   "templates": [
+    "{ta}学成了一门手艺。做过的东西，有几件比{ta}活得长。"
+   ]
+  },
+  {
+   "id": "chibi_survivor",
+   "kind": "hasFlag",
+   "flag": "survived_chibi",
+   "templates": [
+    "赤壁那一夜的火，{ta}看了一辈子。"
+   ]
+  },
+  {
+   "id": "fallback",
+   "kind": "fallback",
+   "templates": [
+    "{ta}写了{letters}封信给足下。",
+    "{ta}一生给你写了{letters}封信，你回了{answered}封。",
+    "{ta}活了{lifespan}岁，记得你说过的每一个字。"
+   ]
+  }
+ ],
+ "afterlife": {
+  "baseAge": 52,
+  "healthDivisor": 2.5,
+  "physiqueTierBonus": 3,
+  "minAge": 44,
+  "maxAge": 82,
+  "childrenIfSpouse": 2,
+  "wealthPerChild": 25,
+  "maxChildren": 8
+ }
+}

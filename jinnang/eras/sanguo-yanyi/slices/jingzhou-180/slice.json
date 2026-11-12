@@ -4,8 +4,30 @@
   "birthYear": 180,
   "startYear": 196,
   "endYear": 223,
-  "birthLocations": ["xiangyang", "xinye"],
-  "birth": { "mode": "rolled" },
-  "nodes": ["matchmaker_call", "county_levy", "cao_marches_south"],
-  "note": "M0 只有 3 个难题。出生地暂时只开襄阳、新野，保证每条分支都经过 208 年去留；M1 补齐难题后恢复江陵、长沙。"
+  "birthLocations": [
+    "xiangyang",
+    "xinye",
+    "jiangling",
+    "changsha"
+  ],
+  "birth": {
+    "mode": "rolled"
+  },
+  "nodes": [
+    "apprentice_offer",
+    "matchmaker_call",
+    "liu_garrison_201",
+    "lean_year_debt",
+    "county_levy",
+    "old_friend_invite",
+    "cao_marches_south",
+    "south_surrender_208",
+    "chibi_aftermath",
+    "new_master_209",
+    "parent_illness_212",
+    "fan_flood_219",
+    "white_robe_219",
+    "yiling_222"
+  ],
+  "note": "M1：14 个难题（个人 6、演义大事 8）。各条分支一局 9–12 个难题。所有年份、归属与情节【待作者核对】。"
 }

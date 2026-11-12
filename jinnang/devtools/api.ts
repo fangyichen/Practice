@@ -106,7 +106,24 @@ export function createApi({ pack, fixtures, reasonTemplates, birthContent }: Api
           }
         : null,
       log: state.log.map((r) => ({ ...r, reasonText: reasonText(r), outcomeLabel: optionLabel(r.dilemmaId, r.chosen) })),
+      lifeLine: state.ending ? lifeLine(state) : null,
     };
+  }
+
+  /** 一生时间线：他这一年的事，并排标出同年演义里的大事（第 12 节「结局」） */
+  function lifeLine(state: GameState) {
+    const t = state.twin;
+    const from = pack.slice.startYear;
+    const to = Math.min(state.ending!.cause === "death" ? state.ending!.year : pack.slice.endYear, pack.slice.endYear);
+    const rows: { year: number; age: number; mine: string[]; romance: string[] }[] = [];
+    for (let y = from; y <= to; y++) {
+      const mine = state.log
+        .filter((r) => r.year === y)
+        .map((r) => r.facts[0] ?? optionLabel(r.dilemmaId, r.chosen) ?? "");
+      const romance = pack.timeline.filter((e) => e.year === y || (e.yearEnd !== undefined && e.year <= y && y <= e.yearEnd)).map((e) => e.title);
+      if (mine.length || romance.length) rows.push({ year: y, age: y - t.birthYear, mine, romance });
+    }
+    return rows;
   }
 
   async function fillLetter(state: GameState): Promise<GameState> {

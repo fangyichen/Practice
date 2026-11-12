@@ -2,19 +2,15 @@ import { describe, expect, it } from "vitest";
 import { renderReason, resolveTurn, step } from "../engine";
 import { loadContent } from "../lib/pack";
 import type { Classification, Traits } from "../schemas";
-import { fixedBirth, pack, personaFromTraits, play, start } from "./helpers";
+import { fixedBirth, pack, personaFromTraits, play, PERSONA_REPLIES, silentUntil, start } from "./helpers";
 
 const T = (o: Partial<Traits>): Traits => ({ boldness: 50, loyalty: 50, impulsiveness: 50, rootedness: 50, skepticism: 50, sociability: 50, ...o });
 const sure = (id: string): Classification => ({ dist: { [id]: 1 }, source: "fixture" });
 const templates = loadContent<Parameters<typeof renderReason>[2]>("reasons");
 
-/** 两封沉默，走到 208 年去留那一题 */
+/** 一路沉默，走到 208 年去留那一题 */
 function toCao(traits: Traits, base = { physique: 50, wit: 30, looks: 50 }, station = "smallholder") {
-  let s = start(personaFromTraits(traits), "looks", fixedBirth({ baseEndowments: base, station }));
-  s = step(s, { reply: "", classification: null }, pack);
-  s = step(s, { reply: "", classification: null }, pack);
-  expect(s.pendingDilemma?.dilemmaId).toBe("cao_marches_south");
-  return s;
+  return silentUntil(start(personaFromTraits(traits), "looks", fixedBirth({ baseEndowments: base, station })), "cao_marches_south");
 }
 
 describe("8.2 各步", () => {
@@ -60,8 +56,7 @@ describe("8.2 各步", () => {
   });
 
   it("身份不许 → NOT_ALLOWED", () => {
-    let s = start(personaFromTraits(T({ skepticism: 0 })), "wit", fixedBirth({ station: "tenant" }));
-    s = step(s, { reply: "", classification: null }, pack);
+    const s = silentUntil(start(personaFromTraits(T({ skepticism: 0 })), "wit", fixedBirth({ station: "tenant" })), "county_levy");
     const r = step(s, { reply: "雇人替你去", classification: sure("pay_substitute") }, pack).log.at(-1)!;
     expect(r.exec).toBe("NOT_ALLOWED");
     expect(r.chosen).not.toBe("pay_substitute");
@@ -103,7 +98,7 @@ describe("8.2 各步", () => {
     const grid = [T({ skepticism: 0, boldness: 100, rootedness: 0 }), T({ rootedness: 60 }), T({ rootedness: 90, boldness: 20, impulsiveness: 10 }), T({ skepticism: 100 })];
     const bases = [{ physique: 70, wit: 30, looks: 50 }, { physique: 10, wit: 70, looks: 70 }, { physique: 50, wit: 10, looks: 90 }];
     const seenKeys = new Set<string>();
-    for (const t of grid) for (const b of bases) for (const reply of [["去相看", "托人说情", "随皇叔走"], ["", "哈哈哈", "走"]]) {
+    for (const t of grid) for (const b of bases) for (const reply of [PERSONA_REPLIES, { matchmaker_call: "", county_levy: "哈哈哈", cao_marches_south: "走" }]) {
       const s = play(start(personaFromTraits(t), "physique", fixedBirth({ baseEndowments: b })), reply);
       for (const r of s.log) {
         const d = pack.dilemmas.find((x) => x.id === r.dilemmaId)!;

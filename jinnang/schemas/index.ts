@@ -145,11 +145,24 @@ export const TurnRecordSchema = z.object({
 });
 export type TurnRecord = z.infer<typeof TurnRecordSchema>;
 
-/** M0 只记录结局原因与时间；留痕、record、epitaph 属于 M1。 */
+/** 结局（8.4）。卷末仍在世的，lifespan/children 是确定性规则算出的余生概要。 */
 export const EndingSchema = z.object({
   cause: z.enum(["death", "slice_end"]),
   year: z.number().int(),
   age: z.number().int(),
+  /** 留痕等级 0–3 */
+  tier: z.number().int().min(0).max(3),
+  tierName: z.string(),
+  /** 留痕物 id（traces.json 的 artifacts），以及它的名字与画法 */
+  artifact: z.string(),
+  artifactName: z.string(),
+  artifactKind: z.string(),
+  record: z.string(),
+  epitaph: z.string(),
+  epitaphRule: z.string(),
+  deathYear: z.number().int(),
+  lifespan: z.number().int(),
+  children: z.number().int().min(0),
 });
 export type Ending = z.infer<typeof EndingSchema>;
 
@@ -391,6 +404,95 @@ export const StationSchema = z
   .strict();
 export type Station = z.infer<typeof StationSchema>;
 
+// ---- 留痕与结局（traces.json） ----
+
+/** 留痕规则的条件：同一对象里的字段全部满足才算命中 */
+export const TraceCondSchema = z
+  .object({
+    hasFlag: z.array(Id).optional(),
+    anyFlag: z.array(Id).optional(),
+    standingAtLeast: z.number().optional(),
+    craftAtLeast: z.number().optional(),
+    wealthAtLeast: z.number().optional(),
+    childrenAtLeast: z.number().int().optional(),
+    station: z.array(Id).optional(),
+    alive: z.boolean().optional(),
+    spouse: z.boolean().optional(),
+  })
+  .strict();
+export type TraceCond = z.infer<typeof TraceCondSchema>;
+
+export const EPITAPH_KINDS = [
+  "lastExec",
+  "execCountAtLeast",
+  "advisedTagNeverDone",
+  "silenceMajority",
+  "budgetLeftAtLeast",
+  "trustRose",
+  "allDone",
+  "noneDone",
+  "regretAtLeast",
+  "diedYoung",
+  "hasFlag",
+  "wrongMajority",
+  "repeatedReply",
+  "neverMarried",
+  "longLife",
+  "fallback",
+] as const;
+
+export const EpitaphRuleSchema = z
+  .object({
+    id: Id,
+    kind: z.enum(EPITAPH_KINDS),
+    exec: ExecSchema.optional(),
+    tag: z.string().max(32).optional(),
+    flag: Id.optional(),
+    n: z.number().optional(),
+    alive: z.boolean().optional(),
+    templates: z.array(z.string().min(1)).min(1),
+  })
+  .strict();
+export type EpitaphRule = z.infer<typeof EpitaphRuleSchema>;
+
+export const TracesSchema = z
+  .object({
+    tierNames: z.tuple([z.string(), z.string(), z.string(), z.string()]),
+    /** 从高到低逐条判定，第一条命中的给出等级；都不中为 0 */
+    rules: z.array(z.object({ tier: z.number().int().min(1).max(3), when: TraceCondSchema, note: z.string().optional() }).strict()),
+    artifacts: z.array(
+      z
+        .object({
+          id: Id,
+          tier: z.number().int().min(0).max(3),
+          name: z.string(),
+          kind: z.string(),
+          when: TraceCondSchema.optional(),
+        })
+        .strict(),
+    ),
+    /** 事迹：按列表顺序，第一个命中的 flag 给出事迹；都不中按身份取兜底 */
+    deeds: z.array(z.object({ flag: Id, text: z.string() }).strict()),
+    fallbackDeeds: z.record(Id, z.array(z.string()).min(1)),
+    records: z.object({ "0": z.array(z.string()), "1": z.array(z.string()), "2": z.array(z.string()), "3": z.array(z.string()) }).strict(),
+    epitaphs: z.array(EpitaphRuleSchema).min(1),
+    afterlife: z
+      .object({
+        baseAge: z.number().int(),
+        healthDivisor: z.number(),
+        physiqueTierBonus: z.number(),
+        minAge: z.number().int(),
+        maxAge: z.number().int(),
+        childrenIfSpouse: z.number().int(),
+        wealthPerChild: z.number(),
+        maxChildren: z.number().int(),
+      })
+      .strict(),
+    verify: z.string().optional(),
+  })
+  .strict();
+export type Traces = z.infer<typeof TracesSchema>;
+
 export type EraPack = {
   era: Era;
   timeline: TimelineEntry[];
@@ -399,6 +501,7 @@ export type EraPack = {
   slice: Slice;
   dilemmas: Dilemma[];
   outcomes: Record<string, Outcome>;
+  traces: Traces;
 };
 
 // ---------------------------------------------------------------------------

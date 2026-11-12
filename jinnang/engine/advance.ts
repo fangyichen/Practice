@@ -1,8 +1,9 @@
 import type { EngineConfig, EraPack, GameState } from "../schemas";
 import { DEFAULT_CONFIG } from "./config";
 import { craftGrowthPerYear } from "./endowments";
+import { computeEnding } from "./ending";
 import { clamp, clone, round2, seasonIndex } from "./util";
-import { ageOf, conditionHolds, findDilemma, findStation } from "./world";
+import { conditionHolds, findDilemma, findStation } from "./world";
 
 type Season = GameState["season"];
 
@@ -43,7 +44,7 @@ export function advance(state: GameState, pack: EraPack, cfg: EngineConfig = DEF
   if (s.ending || s.pendingDilemma) return s;
 
   if (!s.twin.alive) {
-    s.ending = { cause: "death", year: s.year, age: ageOf(s) };
+    s.ending = computeEnding(s, "death", pack, cfg);
     return s;
   }
 
@@ -62,6 +63,6 @@ export function advance(state: GameState, pack: EraPack, cfg: EngineConfig = DEF
 
   s = passTime(s, pack.slice.endYear, 4, pack, cfg);
   s.nodeIndex = nodes.length;
-  s.ending = { cause: "slice_end", year: s.year, age: ageOf(s) };
+  s.ending = computeEnding(s, "slice_end", pack, cfg);
   return s;
 }

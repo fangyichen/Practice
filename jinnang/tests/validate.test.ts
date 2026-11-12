@@ -3,8 +3,8 @@ import { validateEra } from "../lib/validate";
 import { pack } from "./helpers";
 
 describe("validate-era", () => {
-  it("M0 profile 下纪律检查全部通过", () => {
-    const issues = validateEra(pack, "m0");
+  it("full profile 下纪律检查全部通过（每局 9–12 个难题、前 3 个不致死）", () => {
+    const issues = validateEra(pack, "full");
     const errors = issues.filter((i) => i.level === "error");
     if (issues.length) console.log(issues);
     expect(errors).toEqual([]);
@@ -17,7 +17,7 @@ describe("validate-era", () => {
     d.options[1]!.results.push({ when: { exec: "DONE" }, outcome: "no_such_outcome" });
     const m = bad.dilemmas.find((x) => x.id === "county_levy")!;
     m.options = m.options.filter((o) => o.id === "plead_exemption" || o.id === "pay_substitute");
-    const msgs = validateEra(bad, "m0").filter((i) => i.level === "error").map((i) => i.msg).join("\n");
+    const msgs = validateEra(bad, "full").filter((i) => i.level === "error").map((i) => i.msg).join("\n");
     expect(msgs).toMatch(/缺少 exec=ATTEMPT_FAILED/);
     expect(msgs).toMatch(/no_such_outcome/);
     expect(msgs).toMatch(/没有既无 gate 也无 requires/);

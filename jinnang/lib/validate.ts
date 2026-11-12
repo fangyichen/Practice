@@ -3,8 +3,8 @@
  *
  * profile:
  *   full —— 文档原样：每局 9–12 个难题；前 3 个难题不得致死。
- *   m0   —— M0 放宽：每局恰好经历 3 个难题；保护规则只覆盖前 2 个
- *           （M0 只有 3 个难题，第 3 个就是 208 年去留，文档样例里它本身含致死结果）。
+ *           「每局 9–12 个」只对活到卷末的分支要求下限：中途死亡的分支自然更短（只检查上限）。
+ *   m0   —— M0 的放宽标准，仅作历史记录：每局恰好 3 个难题；保护规则只覆盖前 2 个。
  */
 import { ENDOWMENT_KEYS, type Dilemma, type EngineConfig, type EraPack, type Outcome } from "../schemas";
 import { DEFAULT_CONFIG } from "../engine/config";
@@ -32,11 +32,11 @@ function absCondition(d: Dilemma, s: AbsState): "yes" | "no" | "maybe" {
   return "yes";
 }
 
-function applyAbs(s: AbsState, o: Outcome): AbsState {
+function applyAbs(s: AbsState, o: Outcome, relevant: Set<string>): AbsState {
   const e = o.effects;
   const flags = new Set(s.flags);
-  for (const f of e.addFlags ?? []) flags.add(f);
-  for (const f of e.addFlagsIfTier ?? []) flags.add(f.flag);
+  for (const f of e.addFlags ?? []) if (relevant.has(f)) flags.add(f);
+  for (const f of e.addFlagsIfTier ?? []) if (relevant.has(f.flag)) flags.add(f.flag);
   for (const f of e.removeFlags ?? []) flags.delete(f);
   return {
     loc: e.location ?? s.loc,
@@ -51,15 +51,19 @@ export function enumeratePaths(pack: EraPack, protectFirst: number) {
   const nodes = pack.slice.nodes.map((id) => pack.dilemmas.find((d) => d.id === id)!);
   let min = Infinity;
   let max = -Infinity;
+  let deathMin = Infinity;
   const lethalEarly: string[] = [];
   const seen = new Set<string>();
+  // 只追踪节点条件里用到的 flag，否则状态数会爆炸
+  const relevant = new Set(nodes.flatMap((d) => [...(d.condition.hasFlag ?? []), ...(d.condition.notFlag ?? [])]));
 
   const walk = (i: number, s: AbsState, count: number): void => {
     const key = `${i}|${s.loc}|${s.alive}|${s.spouse}|${s.flags.join(",")}|${count}`;
     if (seen.has(key)) return;
     seen.add(key);
     if (i >= nodes.length || !s.alive) {
-      min = Math.min(min, count);
+      if (s.alive) min = Math.min(min, count);
+      else deathMin = Math.min(deathMin, count);
       max = Math.max(max, count);
       return;
     }
@@ -67,6 +71,7 @@ export function enumeratePaths(pack: EraPack, protectFirst: number) {
     const cond = absCondition(d, s);
     if (cond !== "yes") walk(i + 1, s, count);
     if (cond === "no") return;
+    const tried = new Set<string>();
     for (const opt of d.options) {
       for (const r of opt.results) {
         const o = pack.outcomes[r.outcome];
@@ -74,13 +79,17 @@ export function enumeratePaths(pack: EraPack, protectFirst: number) {
         if (count < protectFirst && o.effects.alive === false) {
           lethalEarly.push(`${d.id}/${opt.id} -> ${r.outcome}（第 ${count + 1} 个难题）`);
         }
-        walk(i + 1, applyAbs(s, o), count + 1);
+        const next = applyAbs(s, o, relevant);
+        const k = `${next.loc}|${next.alive}|${next.spouse}|${next.flags.join(",")}`;
+        if (tried.has(k)) continue;
+        tried.add(k);
+        walk(i + 1, next, count + 1);
       }
     }
   };
 
   for (const loc of pack.slice.birthLocations) walk(0, { loc, alive: true, flags: [], spouse: false }, 0);
-  return { min, max, lethalEarly: [...new Set(lethalEarly)] };
+  return { min, max, deathMin, lethalEarly: [...new Set(lethalEarly)] };
 }
 
 export function validateEra(pack: EraPack, profile: Profile = "full", engineCfg: EngineConfig = DEFAULT_CONFIG): Issue[] {
@@ -181,6 +190,42 @@ export function validateEra(pack: EraPack, profile: Profile = "full", engineCfg:
     if (!usedOutcomes.has(id)) warn(id, "outcome 未被任何规则引用");
     if (o.effects.location && !locIds.has(o.effects.location)) err(id, `location ${o.effects.location} 不存在`);
     if (o.effects.allegiance && !factionIds.has(o.effects.allegiance)) err(id, `allegiance ${o.effects.allegiance} 不存在`);
+  }
+
+  // ---- 留痕与结局（8.4） ----
+  const tr = pack.traces;
+  if (profile === "full") {
+    for (const t of ["0", "1", "2", "3"] as const) {
+      if (tr.records[t].length < 12) err("traces", `T${t} 的记载模板 ${tr.records[t].length} 条，要求至少 12 条`);
+      for (const tpl of tr.records[t]) {
+        if (!/\{(name|surname)\}/.test(tpl)) err("traces", `记载模板没有姓名槽位：${tpl}`);
+        for (const m of tpl.matchAll(/\{(\w+)\}/g)) {
+          if (!["name", "surname", "place", "eraYear", "deed", "artifact", "station", "ta"].includes(m[1]!)) err("traces", `记载模板含未知槽位 {${m[1]}}`);
+        }
+      }
+    }
+    const deedCount = tr.deeds.length + Object.values(tr.fallbackDeeds).flat().length;
+    if (deedCount < 20) err("traces", `事迹词表 ${deedCount} 项，要求至少 20 项`);
+    if (tr.artifacts.length < 20) err("traces", `留痕物 ${tr.artifacts.length} 项，要求至少 20 项`);
+    for (const t of [0, 1, 2, 3]) {
+      if (!tr.artifacts.some((a) => a.tier === t && !a.when)) err("traces", `T${t} 缺少无条件的留痕物（兜底）`);
+    }
+    const rules = tr.epitaphs.filter((e) => e.kind !== "fallback");
+    if (rules.length < 15) err("traces", `墓志规则 ${rules.length} 条，要求至少 15 条`);
+    if (tr.epitaphs.at(-1)?.kind !== "fallback") err("traces", "墓志规则的最后一条必须是 fallback 兜底");
+    for (const e of tr.epitaphs) {
+      if ((e.kind === "hasFlag") !== !!e.flag) err("traces", `墓志规则 ${e.id}：hasFlag 必须且只能配 flag`);
+      if ((e.kind === "lastExec" || e.kind === "execCountAtLeast") && !e.exec) err("traces", `墓志规则 ${e.id} 缺少 exec`);
+      if (e.kind === "advisedTagNeverDone" && !(e.tag && isKnownTag(e.tag, engineCfg))) err("traces", `墓志规则 ${e.id} 的标签未知`);
+    }
+    const flagsProduced = new Set(Object.values(pack.outcomes).flatMap((o) => [...(o.effects.addFlags ?? []), ...(o.effects.addFlagsIfTier ?? []).map((x) => x.flag)]));
+    const flagRefs = [
+      ...tr.rules.flatMap((r) => [...(r.when.hasFlag ?? []), ...(r.when.anyFlag ?? [])]),
+      ...tr.artifacts.flatMap((a) => [...(a.when?.hasFlag ?? []), ...(a.when?.anyFlag ?? [])]),
+      ...tr.deeds.map((d) => d.flag),
+      ...tr.epitaphs.flatMap((e) => (e.flag ? [e.flag] : [])),
+    ];
+    for (const f of new Set(flagRefs)) if (!flagsProduced.has(f)) warn("traces", `flag ${f} 没有任何结果会给出`);
   }
 
   // ---- 分支枚举 ----

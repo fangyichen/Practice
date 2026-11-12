@@ -1,122 +1,1257 @@
 {
   "match_envied": {
-    "effects": { "spouse": true, "wealth": 10, "standing": 5, "addFlags": ["envied_by_local_bully"] },
-    "facts": ["相看那日，县里一位豪强子弟也在座，多看了几眼", "亲事成了，那人却记下了这一家"],
+    "effects": {
+      "spouse": true,
+      "wealth": 10,
+      "standing": 5,
+      "addFlags": [
+        "envied_by_local_bully"
+      ]
+    },
+    "facts": [
+      "相看那日，县里一位豪强子弟也在座，多看了几眼",
+      "亲事成了，那人却记下了这一家"
+    ],
     "verdict": "mixed"
   },
   "wed_into_trade_house": {
-    "effects": { "spouse": true, "wealth": 20, "standing": 5, "addFlags": ["married_into_trade"] },
-    "facts": ["对方一眼相中，亲事很快定下", "那户人家做买卖，往后的生意多了一条路"],
+    "effects": {
+      "spouse": true,
+      "wealth": 20,
+      "standing": 5,
+      "addFlags": [
+        "married_into_trade"
+      ]
+    },
+    "facts": [
+      "对方一眼相中，亲事很快定下",
+      "那户人家做买卖，往后的生意多了一条路"
+    ],
     "verdict": "right"
   },
   "wed_well_off": {
-    "effects": { "spouse": true, "wealth": 15, "standing": 5 },
-    "facts": ["对方相看之后十分满意，亲事很快定下", "陪嫁丰厚，家里宽裕了些"],
+    "effects": {
+      "spouse": true,
+      "wealth": 15,
+      "standing": 5
+    },
+    "facts": [
+      "对方相看之后十分满意，亲事很快定下",
+      "陪嫁丰厚，家里宽裕了些"
+    ],
     "verdict": "right"
   },
   "wed_modest": {
-    "effects": { "spouse": true, "wealth": 5 },
-    "facts": ["对方犹豫了些日子，终究应了", "婚事办得不算体面，倒也安稳"],
+    "effects": {
+      "spouse": true,
+      "wealth": 5
+    },
+    "facts": [
+      "对方犹豫了些日子，终究应了",
+      "婚事办得不算体面，倒也安稳"
+    ],
     "verdict": "right"
   },
   "rebuffed_at_viewing": {
-    "effects": { "standing": -5 },
-    "facts": ["相看之后，对方托媒人回了话，说不合适", "这事在乡里传开，脸上不大好看"],
+    "effects": {
+      "standing": -5
+    },
+    "facts": [
+      "相看之后，对方托媒人回了话，说不合适",
+      "这事在乡里传开，脸上不大好看"
+    ],
     "verdict": "wrong"
   },
   "wed_neighbor": {
-    "effects": { "spouse": true },
-    "facts": ["与同村一户知根底的人家结了亲", "婚事办得简单，两家常来常往"],
+    "effects": {
+      "spouse": true
+    },
+    "facts": [
+      "与同村一户知根底的人家结了亲",
+      "婚事办得简单，两家常来常往"
+    ],
     "verdict": "right"
   },
   "saved_up_craft": {
-    "effects": { "craft": 8, "wealth": 5 },
-    "facts": ["推了这门亲，一心扑在手艺上", "几年下来，活计做得比从前精细"],
+    "effects": {
+      "craft": 8,
+      "wealth": 5
+    },
+    "facts": [
+      "推了这门亲，一心扑在手艺上",
+      "几年下来，活计做得比从前精细"
+    ],
     "verdict": "right"
   },
   "stayed_single": {
-    "effects": { "wealth": 5 },
-    "facts": ["推了这门亲，照旧下地做活", "老人叹了几回气"],
+    "effects": {
+      "wealth": 5
+    },
+    "facts": [
+      "推了这门亲，照旧下地做活",
+      "老人叹了几回气"
+    ],
     "verdict": "none"
   },
   "levied_as_artisan": {
-    "effects": { "craft": 10, "addFlags": ["served_levy", "levy_artisan"] },
-    "facts": ["册上记了会手艺，被派去修城门、烧砖", "活计不轻，倒也学了几手"],
+    "effects": {
+      "craft": 10,
+      "addFlags": [
+        "served_levy",
+        "levy_artisan"
+      ]
+    },
+    "facts": [
+      "册上记了会手艺，被派去修城门、烧砖",
+      "活计不轻，倒也学了几手"
+    ],
     "verdict": "right"
   },
   "drafted_as_soldier": {
-    "effects": { "health": -5, "standing": 3, "addFlags": ["served_levy", "levy_soldier"] },
-    "facts": ["身板结实，被拣去充了州兵，操练了一冬", "开春才放回家"],
+    "effects": {
+      "health": -5,
+      "standing": 3,
+      "addFlags": [
+        "served_levy",
+        "levy_soldier"
+      ]
+    },
+    "facts": [
+      "身板结实，被拣去充了州兵，操练了一冬",
+      "开春才放回家"
+    ],
     "verdict": "mixed"
   },
   "levy_labor_hardship": {
-    "effects": { "health": -10, "physique": -3, "wealth": -5, "addFlags": ["served_levy"] },
-    "facts": ["被派去运粮，往返数百里", "回来时瘦了一圈，家里的地也荒了一季"],
+    "effects": {
+      "health": -10,
+      "physique": -3,
+      "wealth": -5,
+      "addFlags": [
+        "served_levy"
+      ]
+    },
+    "facts": [
+      "被派去运粮，往返数百里",
+      "回来时瘦了一圈，家里的地也荒了一季"
+    ],
     "verdict": "mixed"
   },
   "exempted_cheaply": {
-    "effects": { "wealth": -5 },
-    "facts": ["寻到了门路，几句话、一点薄礼，名字便从册上勾掉了"],
+    "effects": {
+      "wealth": -5
+    },
+    "facts": [
+      "寻到了门路，几句话、一点薄礼，名字便从册上勾掉了"
+    ],
     "verdict": "right"
   },
   "exempted_costly": {
-    "effects": { "wealth": -20 },
-    "facts": ["名字是勾掉了，可前后打点花了不少钱"],
+    "effects": {
+      "wealth": -20
+    },
+    "facts": [
+      "名字是勾掉了，可前后打点花了不少钱"
+    ],
     "verdict": "mixed"
   },
   "struck_the_clerk": {
-    "effects": { "health": -10, "standing": -15, "wealth": -10, "addFlags": ["served_levy", "flogged_for_levy"] },
-    "facts": ["说情不成，一时火起，与书佐争执推搡", "被拿去打了二十板，仍旧应了役"],
+    "effects": {
+      "health": -10,
+      "standing": -15,
+      "wealth": -10,
+      "addFlags": [
+        "served_levy",
+        "flogged_for_levy"
+      ]
+    },
+    "facts": [
+      "说情不成，一时火起，与书佐争执推搡",
+      "被拿去打了二十板，仍旧应了役"
+    ],
     "verdict": "wrong"
   },
   "caught_pleading": {
-    "effects": { "wealth": -10, "standing": -5, "addFlags": ["served_levy"] },
-    "facts": ["托的人收了钱，事却没办成", "照旧应了役，钱也没回来"],
+    "effects": {
+      "wealth": -10,
+      "standing": -5,
+      "addFlags": [
+        "served_levy"
+      ]
+    },
+    "facts": [
+      "托的人收了钱，事却没办成",
+      "照旧应了役，钱也没回来"
+    ],
     "verdict": "wrong"
   },
   "substitute_hired": {
-    "effects": { "wealth": -25 },
-    "facts": ["家里出了一笔钱，雇了邻村一个闲汉代役"],
+    "effects": {
+      "wealth": -25
+    },
+    "facts": [
+      "家里出了一笔钱，雇了邻村一个闲汉代役"
+    ],
     "verdict": "right"
   },
   "reached_jiangxia": {
-    "effects": { "health": -5, "wealth": -20, "location": "jiangxia", "addFlags": ["followed_liu_south"] },
-    "facts": ["一路不敢停，抢在曹军追到之前过了汉津", "随刘皇叔的人马到了江夏"],
+    "effects": {
+      "health": -5,
+      "wealth": -20,
+      "location": "jiangxia",
+      "addFlags": [
+        "followed_liu_south",
+        "at_jiangxia_208"
+      ]
+    },
+    "facts": [
+      "一路不敢停，抢在曹军追到之前过了汉津",
+      "随刘皇叔的人马到了江夏"
+    ],
     "verdict": "right"
   },
   "survived_changban_lost_all": {
-    "effects": { "health": -15, "wealth": -40, "location": "jiangxia", "addFlags": ["survived_changban"] },
-    "facts": ["当阳道上曹军追及，百姓死伤枕藉", "他弃了行李，随残众到了江夏"],
+    "effects": {
+      "health": -15,
+      "wealth": -40,
+      "location": "jiangxia",
+      "addFlags": [
+        "survived_changban",
+        "at_jiangxia_208"
+      ]
+    },
+    "facts": [
+      "当阳道上曹军追及，百姓死伤枕藉",
+      "他弃了行李，随残众到了江夏"
+    ],
     "verdict": "mixed"
   },
   "sent_family_ahead": {
-    "effects": { "wealth": -15, "addFlags": ["family_sent_south"] },
-    "facts": ["他把家里人托给南去的同乡，自己留下守着屋子", "后来听说当阳道上死了许多人，家里人一时没有音信"],
+    "effects": {
+      "wealth": -15,
+      "addFlags": [
+        "family_sent_south"
+      ]
+    },
+    "facts": [
+      "他把家里人托给南去的同乡，自己留下守着屋子",
+      "后来听说当阳道上死了许多人，家里人一时没有音信"
+    ],
     "verdict": "mixed"
   },
   "collapsed_on_road": {
-    "effects": { "alive": false, "addFlags": ["died_on_road_208"] },
-    "facts": ["行至当阳，他力竭倒在道旁"],
+    "effects": {
+      "alive": false,
+      "addFlags": [
+        "died_on_road_208"
+      ]
+    },
+    "facts": [
+      "行至当阳，他力竭倒在道旁"
+    ],
     "verdict": "wrong"
   },
   "conscripted_to_fleet": {
-    "effects": { "health": -5, "location": "jiangling", "allegiance": "cao", "addFlags": ["conscripted_cao_fleet"] },
-    "facts": ["曹军入城，见他身板结实，编进了水军拉纤摇橹", "大军顺江东下，他也在船上"],
+    "effects": {
+      "health": -5,
+      "location": "jiangling",
+      "allegiance": "cao",
+      "addFlags": [
+        "conscripted_cao_fleet"
+      ]
+    },
+    "facts": [
+      "曹军入城，见他身板结实，编进了水军拉纤摇橹",
+      "大军顺江东下，他也在船上"
+    ],
     "verdict": "wrong"
   },
   "stayed_under_cao": {
-    "effects": { "wealth": -5, "addFlags": ["stayed_208"] },
-    "facts": ["他关门闭户，没有走", "曹军入城，出榜安民，日子照旧过"],
+    "effects": {
+      "wealth": -5,
+      "addFlags": [
+        "stayed_208"
+      ]
+    },
+    "facts": [
+      "他关门闭户，没有走",
+      "曹军入城，出榜安民，日子照旧过"
+    ],
     "verdict": "mixed"
   },
   "hid_and_kept_grain": {
-    "effects": { "wealth": -5, "addFlags": ["hid_in_hills_208"] },
-    "facts": ["他事先把粮食埋在后山", "在山里躲了一个多月，回来时粮还在"],
+    "effects": {
+      "wealth": -5,
+      "addFlags": [
+        "hid_in_hills_208"
+      ]
+    },
+    "facts": [
+      "他事先把粮食埋在后山",
+      "在山里躲了一个多月，回来时粮还在"
+    ],
     "verdict": "right"
   },
   "hid_house_looted": {
-    "effects": { "wealth": -30, "health": -5, "addFlags": ["hid_in_hills_208"] },
-    "facts": ["他在山里躲了一个多月", "回来时屋里被翻得精光"],
+    "effects": {
+      "wealth": -30,
+      "health": -5,
+      "addFlags": [
+        "hid_in_hills_208"
+      ]
+    },
+    "facts": [
+      "他在山里躲了一个多月",
+      "回来时屋里被翻得精光"
+    ],
     "verdict": "mixed"
+  },
+  "craft_master_favored": {
+    "effects": {
+      "craft": 15,
+      "standing": 3,
+      "addFlags": [
+        "apprenticed",
+        "master_favored"
+      ]
+    },
+    "facts": [
+      "老匠人见他本是匠户出身，手上有底子，格外上心",
+      "三年下来，师傅把压箱底的几手都教给了他"
+    ],
+    "verdict": "right"
+  },
+  "apprenticed_strong": {
+    "effects": {
+      "craft": 12,
+      "addFlags": [
+        "apprenticed"
+      ]
+    },
+    "facts": [
+      "进城拜了师，力气活抢着干，师傅看在眼里",
+      "三年满师，能独自接些活计了"
+    ],
+    "verdict": "right"
+  },
+  "apprenticed": {
+    "effects": {
+      "craft": 10,
+      "health": -5,
+      "addFlags": [
+        "apprenticed"
+      ]
+    },
+    "facts": [
+      "进城拜了师，头两年净是挑水劈柴",
+      "第三年才摸上家伙，总算学成了一门手艺"
+    ],
+    "verdict": "right"
+  },
+  "learned_letters_well": {
+    "effects": {
+      "wit": 3,
+      "standing": 5,
+      "addFlags": [
+        "literate"
+      ]
+    },
+    "facts": [
+      "跟塾师念了两年书，认得了字，也会算账",
+      "塾师说他是这一茬里最灵的"
+    ],
+    "verdict": "right"
+  },
+  "learned_some_letters": {
+    "effects": {
+      "addFlags": [
+        "knows_numbers"
+      ]
+    },
+    "facts": [
+      "跟塾师念了一阵，字认得不多，账倒会算了",
+      "后来家里缺人，就没再去"
+    ],
+    "verdict": "mixed"
+  },
+  "letters_gave_up": {
+    "effects": {
+      "standing": -3
+    },
+    "facts": [
+      "坐了几个月学堂，字总是记不住",
+      "塾师叹口气，他也就回家了"
+    ],
+    "verdict": "wrong"
+  },
+  "stayed_on_farm": {
+    "effects": {
+      "wealth": 5,
+      "health": 5
+    },
+    "facts": [
+      "留在家里帮衬，田里的活计越来越熟",
+      "家里的光景好了一些"
+    ],
+    "verdict": "right"
+  },
+  "enlisted_drilled": {
+    "effects": {
+      "health": -5,
+      "standing": 5,
+      "allegiance": "liu_bei",
+      "addFlags": [
+        "served_liu"
+      ]
+    },
+    "facts": [
+      "应募做了乡勇，跟着皇叔的兵操练",
+      "他身板好，被编进了前队"
+    ],
+    "verdict": "mixed"
+  },
+  "enlisted_porter": {
+    "effects": {
+      "health": -5,
+      "allegiance": "liu_bei",
+      "addFlags": [
+        "served_liu"
+      ]
+    },
+    "facts": [
+      "应募做了乡勇，管饭是真的",
+      "只是派的多是挑担运粮的活"
+    ],
+    "verdict": "mixed"
+  },
+  "rejected_enlist": {
+    "effects": {
+      "standing": -3
+    },
+    "facts": [
+      "去了村口，军中的人看他一眼，摆摆手",
+      "说身子单薄，挑不动粮，回去种地罢"
+    ],
+    "verdict": "wrong"
+  },
+  "sold_grain_fair": {
+    "effects": {
+      "wealth": 10,
+      "addFlags": [
+        "known_to_quartermaster"
+      ]
+    },
+    "facts": [
+      "他把斗斛看得仔细，军中管粮的反倒高看他一眼",
+      "粮卖了个公道价"
+    ],
+    "verdict": "right"
+  },
+  "sold_grain_cheap": {
+    "effects": {
+      "wealth": 3
+    },
+    "facts": [
+      "余粮卖给了军中，价钱压得低",
+      "好歹换了几吊钱"
+    ],
+    "verdict": "mixed"
+  },
+  "grain_found_fined": {
+    "effects": {
+      "wealth": -10,
+      "standing": -5
+    },
+    "facts": [
+      "他把粮藏在柴堆里，查粮的人来时，他急得先嚷了起来",
+      "粮被搜了出去，还罚了钱"
+    ],
+    "verdict": "wrong"
+  },
+  "grain_kept": {
+    "effects": {
+      "wealth": 5
+    },
+    "facts": [
+      "粮藏在地窖里，没人来翻",
+      "这一年家里的口粮宽裕些"
+    ],
+    "verdict": "right"
+  },
+  "borrowed_read_contract": {
+    "effects": {
+      "wealth": -5
+    },
+    "facts": [
+      "他把契书上的字一个个看过，划掉了一条利上加利",
+      "借来的粮熬过了冬天，第二年就还清了"
+    ],
+    "verdict": "right"
+  },
+  "borrowed_tricked": {
+    "effects": {
+      "wealth": -25,
+      "standing": -5,
+      "addFlags": [
+        "in_debt_to_bully"
+      ]
+    },
+    "facts": [
+      "契书上写的和豪强嘴上说的不一样，他不识字，按了手印",
+      "利滚利，几年都没还清"
+    ],
+    "verdict": "wrong"
+  },
+  "borrowed_heavy": {
+    "effects": {
+      "wealth": -15,
+      "addFlags": [
+        "in_debt_to_bully"
+      ]
+    },
+    "facts": [
+      "借了粮，熬过了冬天",
+      "还债还了好几年"
+    ],
+    "verdict": "mixed"
+  },
+  "dock_work_well": {
+    "effects": {
+      "wealth": 5,
+      "health": -5,
+      "addFlags": [
+        "knows_river"
+      ]
+    },
+    "facts": [
+      "在码头扛了一冬的活，管事见他力气大，常叫他",
+      "跟船上的人混熟了，江上的事知道了不少"
+    ],
+    "verdict": "right"
+  },
+  "dock_work_survived": {
+    "effects": {
+      "health": -10
+    },
+    "facts": [
+      "在码头扛了一冬的活，人瘦脱了形",
+      "好歹家里没断顿"
+    ],
+    "verdict": "mixed"
+  },
+  "dock_work_injured": {
+    "effects": {
+      "health": -20,
+      "physique": -5
+    },
+    "facts": [
+      "扛了不到一个月，一包盐压下来，伤了腰",
+      "活没干成，倒欠了郎中的钱"
+    ],
+    "verdict": "wrong"
+  },
+  "endured_famine": {
+    "effects": {
+      "health": -5
+    },
+    "facts": [
+      "一冬只喝稀粥，他硬是挺了过来",
+      "开春种下去，秋天总算有了收成"
+    ],
+    "verdict": "right"
+  },
+  "famine_weakened": {
+    "effects": {
+      "health": -15,
+      "parentsAlive": -1
+    },
+    "facts": [
+      "一冬只喝稀粥，家里的老人没熬过去",
+      "他自己也病了一场"
+    ],
+    "verdict": "wrong"
+  },
+  "joined_liu_noticed": {
+    "effects": {
+      "location": "xinye",
+      "allegiance": "liu_bei",
+      "standing": 10,
+      "addFlags": [
+        "joined_liu",
+        "served_liu"
+      ]
+    },
+    "facts": [
+      "到了新野，营里一位军官见他相貌端正，留在身边当亲随",
+      "风光是风光，营里也有人背后说闲话"
+    ],
+    "verdict": "mixed"
+  },
+  "joined_liu_clerk": {
+    "effects": {
+      "location": "xinye",
+      "allegiance": "liu_bei",
+      "standing": 8,
+      "addFlags": [
+        "joined_liu",
+        "served_liu",
+        "camp_clerk"
+      ]
+    },
+    "facts": [
+      "到了新野，玩伴见他识字，荐他在营里记账",
+      "听说卧龙先生真的出山了，营里人人振奋"
+    ],
+    "verdict": "right"
+  },
+  "joined_liu_laborer": {
+    "effects": {
+      "location": "xinye",
+      "allegiance": "liu_bei",
+      "addFlags": [
+        "joined_liu",
+        "served_liu"
+      ]
+    },
+    "facts": [
+      "到了新野，在营里做些杂役",
+      "日子清苦，好歹有口饭吃"
+    ],
+    "verdict": "mixed"
+  },
+  "turned_away_at_camp": {
+    "effects": {
+      "wealth": -5,
+      "standing": -3
+    },
+    "facts": [
+      "走了几天到新野，营门口的军校看他一眼，没让进",
+      "玩伴也没见着，只好原路回去"
+    ],
+    "verdict": "wrong"
+  },
+  "kept_in_touch": {
+    "effects": {
+      "addFlags": [
+        "friend_in_liu_camp"
+      ]
+    },
+    "facts": [
+      "没有去，托玩伴常捎消息回来",
+      "营里的事，乡里数他知道得最早"
+    ],
+    "verdict": "none"
+  },
+  "declined_friend": {
+    "effects": {
+      "wealth": 3
+    },
+    "facts": [
+      "回信谢绝了，照旧过日子",
+      "那年的庄稼长得不错"
+    ],
+    "verdict": "none"
+  },
+  "dust_behind_zhangfei": {
+    "effects": {
+      "health": -10,
+      "wealth": -30,
+      "standing": 10,
+      "location": "jiangxia",
+      "addFlags": [
+        "survived_changban",
+        "at_jiangxia_208",
+        "romance_changban_dust"
+      ]
+    },
+    "facts": [
+      "当阳桥东，张三爷叫二十来个骑卒砍下树枝拴在马尾上来回跑，扬起漫天尘土",
+      "他就是其中一个；曹军疑有伏兵，不敢过桥"
+    ],
+    "verdict": "right"
+  },
+  "checkpoint_noticed": {
+    "effects": {
+      "location": "jiangxia",
+      "allegiance": "liu_qi",
+      "addFlags": [
+        "at_jiangxia_208",
+        "kept_by_officer"
+      ]
+    },
+    "facts": [
+      "守关的军校看他面善，放他过了关",
+      "到了江夏，那军校却把他留在营里使唤，家里人另寻了住处"
+    ],
+    "verdict": "mixed"
+  },
+  "reached_jiangxia_south": {
+    "effects": {
+      "location": "jiangxia",
+      "wealth": -15,
+      "addFlags": [
+        "at_jiangxia_208"
+      ]
+    },
+    "facts": [
+      "一路上被盘问了三回，总算到了江夏",
+      "带的盘缠花去了大半"
+    ],
+    "verdict": "right"
+  },
+  "held_at_checkpoint": {
+    "effects": {
+      "wealth": -20,
+      "health": -5
+    },
+    "facts": [
+      "守关的说他形迹可疑，扣了三天，搜走了盘缠",
+      "只好折回家去"
+    ],
+    "verdict": "wrong"
+  },
+  "registered_under_cao": {
+    "effects": {
+      "wealth": -5,
+      "allegiance": "cao"
+    },
+    "facts": [
+      "他把家里的粮数报得清清楚楚，曹军的书吏没为难他",
+      "交了一份，留下了口粮"
+    ],
+    "verdict": "right"
+  },
+  "grain_requisitioned": {
+    "effects": {
+      "wealth": -20,
+      "allegiance": "cao"
+    },
+    "facts": [
+      "开门献了粮，曹军照单全收",
+      "又说他报少了，多拿了一份"
+    ],
+    "verdict": "mixed"
+  },
+  "hid_in_village": {
+    "effects": {
+      "wealth": -10
+    },
+    "facts": [
+      "躲到乡下亲戚家住了一季",
+      "回来时屋里少了些东西，人都平安"
+    ],
+    "verdict": "right"
+  },
+  "chained_ships_survivor": {
+    "effects": {
+      "health": -15,
+      "standing": 5,
+      "addFlags": [
+        "romance_chained_ships",
+        "survived_chibi"
+      ]
+    },
+    "facts": [
+      "曹营把大船用铁环连成一片，说是如履平地；钉铁环的匠人里就有他",
+      "火起那夜，他跳进江里，抱着一块船板漂回了北岸"
+    ],
+    "verdict": "mixed"
+  },
+  "fire_ship_oarsman": {
+    "effects": {
+      "health": -10,
+      "standing": 15,
+      "addFlags": [
+        "romance_fire_ship",
+        "survived_chibi"
+      ]
+    },
+    "facts": [
+      "黄公覆诈降那夜，二十只火船里有一只是他摇过去的",
+      "船头点着了，他跳上后面的小船，回来时眉毛都烧没了"
+    ],
+    "verdict": "right"
+  },
+  "built_ships_paid": {
+    "effects": {
+      "craft": 5,
+      "wealth": 10,
+      "addFlags": [
+        "shipwright_chibi"
+      ]
+    },
+    "facts": [
+      "他手艺好，被拨去修船，工钱照发",
+      "大战那夜他在岸上，远远看着江面烧红了"
+    ],
+    "verdict": "right"
+  },
+  "river_levy_survived": {
+    "effects": {
+      "health": -10,
+      "wealth": 5
+    },
+    "facts": [
+      "在江边搬了一冬的木料",
+      "大战之后营里乱了，他趁乱回了家"
+    ],
+    "verdict": "mixed"
+  },
+  "river_levy_sick": {
+    "effects": {
+      "health": -25
+    },
+    "facts": [
+      "在江边做工，染上了营里的病",
+      "被抬回家时，人只剩一口气，后来慢慢缓过来了"
+    ],
+    "verdict": "wrong"
+  },
+  "died_of_fever_levy": {
+    "effects": {
+      "alive": false,
+      "addFlags": [
+        "died_chibi_fever"
+      ]
+    },
+    "facts": [
+      "去江边的路上就发起了热",
+      "没能回来"
+    ],
+    "verdict": "wrong"
+  },
+  "plague_died_home": {
+    "effects": {
+      "alive": false,
+      "addFlags": [
+        "died_plague_208"
+      ]
+    },
+    "facts": [
+      "关了门也没躲过，疫病还是进了家",
+      "他身子本就弱，没熬过那个冬天"
+    ],
+    "verdict": "wrong"
+  },
+  "plague_survived_weak": {
+    "effects": {
+      "health": -20
+    },
+    "facts": [
+      "关了门，疫病还是进了家",
+      "他病了一个多月，捡回一条命"
+    ],
+    "verdict": "mixed"
+  },
+  "avoided_plague": {
+    "effects": {
+      "health": -3
+    },
+    "facts": [
+      "关起门过了一冬，村里死了不少人",
+      "他家一个都没病"
+    ],
+    "verdict": "right"
+  },
+  "fled_plague_with_grain": {
+    "effects": {
+      "wealth": -5
+    },
+    "facts": [
+      "他算准了路，带着粮进山，住在一个废弃的炭窑里",
+      "开春回来，村里少了一半人"
+    ],
+    "verdict": "right"
+  },
+  "fled_plague_poor": {
+    "effects": {
+      "wealth": -15,
+      "health": -5
+    },
+    "facts": [
+      "进了山，粮带得不够，挖野菜过了一冬",
+      "人是保住了"
+    ],
+    "verdict": "mixed"
+  },
+  "hired_as_registrar": {
+    "effects": {
+      "standing": 15,
+      "wealth": 5,
+      "addFlags": [
+        "county_registrar"
+      ]
+    },
+    "facts": [
+      "造册的书吏见他识字，留他帮着登记",
+      "一乡的丁口田亩，都经过他的手"
+    ],
+    "verdict": "right"
+  },
+  "registered_given_land": {
+    "effects": {
+      "wealth": 10
+    },
+    "facts": [
+      "照实报了丁口，分到了几亩田",
+      "役也派得公道"
+    ],
+    "verdict": "right"
+  },
+  "hid_heads_clean": {
+    "effects": {
+      "wealth": 10
+    },
+    "facts": [
+      "少报了两口，册上看不出破绽",
+      "这几年的役轻了不少"
+    ],
+    "verdict": "right"
+  },
+  "hid_heads_bribed": {
+    "effects": {
+      "wealth": -5
+    },
+    "facts": [
+      "少报了两口，里正心知肚明，收了他半匹布",
+      "役是轻了，钱也没省下"
+    ],
+    "verdict": "mixed"
+  },
+  "hid_heads_caught": {
+    "effects": {
+      "wealth": -15,
+      "standing": -10,
+      "addFlags": [
+        "punished_registry"
+      ]
+    },
+    "facts": [
+      "查户的书吏一问，他前言不搭后语",
+      "罚了钱，还在里中被点了名"
+    ],
+    "verdict": "wrong"
+  },
+  "reclaimed_land": {
+    "effects": {
+      "wealth": 15,
+      "addFlags": [
+        "reclaimed_land"
+      ]
+    },
+    "facts": [
+      "应募去开荒，一冬开出十几亩生地",
+      "地契上写了他的名字"
+    ],
+    "verdict": "right"
+  },
+  "reclaim_hard": {
+    "effects": {
+      "health": -10,
+      "wealth": 5
+    },
+    "facts": [
+      "开荒的活太重，他开出的地不多",
+      "累垮了一回"
+    ],
+    "verdict": "mixed"
+  },
+  "doctor_saved_elder": {
+    "effects": {
+      "wealth": -20,
+      "standing": 5,
+      "addFlags": [
+        "filial_known"
+      ]
+    },
+    "facts": [
+      "他转了三道弯，托到了名医的门下",
+      "老人的病竟真治好了，乡里都说他孝顺"
+    ],
+    "verdict": "right"
+  },
+  "doctor_costly": {
+    "effects": {
+      "wealth": -30
+    },
+    "facts": [
+      "托人请来了名医，诊金花去了大半家当",
+      "老人多活了一年"
+    ],
+    "verdict": "mixed"
+  },
+  "fake_doctor_cheated": {
+    "effects": {
+      "wealth": -25,
+      "parentsAlive": -1
+    },
+    "facts": [
+      "引荐的人收了钱，领来的却是个游方郎中",
+      "药不对症，老人没过完冬天"
+    ],
+    "verdict": "wrong"
+  },
+  "herb_found": {
+    "effects": {
+      "health": -5,
+      "standing": 10,
+      "addFlags": [
+        "filial_known"
+      ]
+    },
+    "facts": [
+      "他攀上悬崖，采回了那味草药",
+      "老人的病缓了过来，这事在乡里传了很久"
+    ],
+    "verdict": "right"
+  },
+  "fell_from_cliff": {
+    "effects": {
+      "alive": false,
+      "addFlags": [
+        "died_cliff"
+      ]
+    },
+    "facts": [
+      "他攀到半崖，手上没了力气",
+      "人们在崖下找到他时，手里还攥着一把草"
+    ],
+    "verdict": "wrong"
+  },
+  "herb_found_late": {
+    "effects": {
+      "health": -10,
+      "parentsAlive": -1
+    },
+    "facts": [
+      "他在山里找了三天才采到药",
+      "回到家，老人已经走了"
+    ],
+    "verdict": "mixed"
+  },
+  "mourned_elder": {
+    "effects": {
+      "parentsAlive": -1
+    },
+    "facts": [
+      "他守在床前，喂药擦身，一夜没合眼",
+      "老人走得安详"
+    ],
+    "verdict": "none"
+  },
+  "led_dike_crew": {
+    "effects": {
+      "health": -10,
+      "standing": 15,
+      "addFlags": [
+        "led_dike"
+      ]
+    },
+    "facts": [
+      "堤上缺人指挥，他力气大、嗓门大，一段堤的人都听他的",
+      "那段堤没破，下游一个村子保住了"
+    ],
+    "verdict": "right"
+  },
+  "dike_held_exhausted": {
+    "effects": {
+      "health": -15
+    },
+    "facts": [
+      "在堤上守了七天七夜",
+      "水退了，他病倒了"
+    ],
+    "verdict": "mixed"
+  },
+  "swept_away": {
+    "effects": {
+      "alive": false,
+      "addFlags": [
+        "drowned_219"
+      ]
+    },
+    "facts": [
+      "堤上一段塌了，他没站稳",
+      "水退后，再没找到他"
+    ],
+    "verdict": "wrong"
+  },
+  "moved_to_high_ground": {
+    "effects": {
+      "wealth": -10
+    },
+    "facts": [
+      "趁水还没来，带着家人搬到了岗上",
+      "眼看着城北一片汪洋，七军都泡在水里"
+    ],
+    "verdict": "right"
+  },
+  "flood_survived_roof": {
+    "effects": {
+      "wealth": -20
+    },
+    "facts": [
+      "水来时他把家人一个个托上了屋顶",
+      "屋子泡塌了半边，人都在"
+    ],
+    "verdict": "mixed"
+  },
+  "flood_house_lost": {
+    "effects": {
+      "wealth": -30,
+      "health": -10
+    },
+    "facts": [
+      "水半夜漫进屋里，什么都没抢出来",
+      "一家人在树上蹲了两天"
+    ],
+    "verdict": "wrong"
+  },
+  "slipped_west_trusted": {
+    "effects": {
+      "allegiance": "liu_bei",
+      "wealth": -15,
+      "addFlags": [
+        "went_west_219"
+      ]
+    },
+    "facts": [
+      "关卡上的人看他老实可靠，没多盘问",
+      "一路往西，到了皇叔的地界"
+    ],
+    "verdict": "right"
+  },
+  "went_west_poor": {
+    "effects": {
+      "allegiance": "liu_bei",
+      "wealth": -30,
+      "health": -10,
+      "addFlags": [
+        "went_west_219"
+      ]
+    },
+    "facts": [
+      "一路被盘剥，到了西边已经身无分文",
+      "后来听说关将军走了麦城"
+    ],
+    "verdict": "mixed"
+  },
+  "caught_fleeing_219": {
+    "effects": {
+      "alive": false,
+      "addFlags": [
+        "died_fleeing_219"
+      ]
+    },
+    "facts": [
+      "在江边被吴军的巡哨截住",
+      "说他是关将军的细作，没容分辩"
+    ],
+    "verdict": "wrong"
+  },
+  "wu_recruited_noticed": {
+    "effects": {
+      "allegiance": "sun",
+      "standing": 5,
+      "addFlags": [
+        "wu_attendant"
+      ]
+    },
+    "facts": [
+      "吴军的一位校尉看他仪表不俗，拉他在帐下做事",
+      "差事体面，只是旧日的街坊从此不大理他"
+    ],
+    "verdict": "mixed"
+  },
+  "settled_under_wu": {
+    "effects": {
+      "allegiance": "sun"
+    },
+    "facts": [
+      "归附了吴军，领了抚恤的米",
+      "日子照旧过"
+    ],
+    "verdict": "right"
+  },
+  "watched_quietly": {
+    "effects": {
+      "wealth": -3
+    },
+    "facts": [
+      "关起门来，十几天没出去",
+      "外面换了旗号，日子还是那样"
+    ],
+    "verdict": "none"
+  },
+  "hauled_grain_back": {
+    "effects": {
+      "wealth": 5,
+      "health": -5
+    },
+    "facts": [
+      "跟着民夫队往夷陵运粮",
+      "火烧连营那夜他在后营，第二天一早就被放回了家"
+    ],
+    "verdict": "mixed"
+  },
+  "levy_hauling_hard": {
+    "effects": {
+      "health": -15
+    },
+    "facts": [
+      "跟着民夫队往夷陵运粮，路上累倒了好几回",
+      "回来时瘦得认不出"
+    ],
+    "verdict": "wrong"
+  },
+  "rowed_baidi_night": {
+    "effects": {
+      "standing": 10,
+      "addFlags": [
+        "romance_baidi_boat",
+        "guided_shu"
+      ]
+    },
+    "facts": [
+      "火烧连营那夜，先主败走，江上有只小船接应过一程",
+      "摇船的就是他；这事他到老都没对人说"
+    ],
+    "verdict": "right"
+  },
+  "guided_shu_escaped": {
+    "effects": {
+      "allegiance": "liu_bei",
+      "addFlags": [
+        "guided_shu"
+      ]
+    },
+    "facts": [
+      "他给蜀军带了几回路，领了赏",
+      "连营起火前，他已经回了家"
+    ],
+    "verdict": "mixed"
+  },
+  "caught_in_fire_camps": {
+    "effects": {
+      "alive": false,
+      "addFlags": [
+        "died_yiling"
+      ]
+    },
+    "facts": [
+      "他留在蜀营里带路",
+      "陆逊火烧连营那夜，他没能出来"
+    ],
+    "verdict": "wrong"
+  },
+  "stayed_out_yiling": {
+    "effects": {
+      "wealth": -5
+    },
+    "facts": [
+      "他托病没去，两边都没沾",
+      "听说夷陵烧了七百里"
+    ],
+    "verdict": "none"
   }
 }

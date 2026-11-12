@@ -13,6 +13,7 @@ import {
   SliceSchema,
   StationSchema,
   TimelineEntrySchema,
+  TracesSchema,
   type EraPack,
 } from "../schemas";
 import { createApi, type BirthContent } from "./api";
@@ -23,6 +24,7 @@ import locations from "../eras/sanguo-yanyi/locations.json";
 import stations from "../eras/sanguo-yanyi/stations.json";
 import slice from "../eras/sanguo-yanyi/slices/jingzhou-180/slice.json";
 import dilemmas from "../eras/sanguo-yanyi/slices/jingzhou-180/dilemmas.json";
+import traces from "../eras/sanguo-yanyi/traces.json";
 import outcomes from "../eras/sanguo-yanyi/slices/jingzhou-180/outcomes.json";
 import fixtures from "../fixtures/replies.json";
 import reasons from "../content/reasons.json";
@@ -36,6 +38,7 @@ const pack: EraPack = {
   slice: SliceSchema.parse(slice),
   dilemmas: z.array(DilemmaSchema).parse(dilemmas),
   outcomes: z.record(z.string(), OutcomeSchema).parse(outcomes),
+  traces: TracesSchema.parse(traces),
 };
 
 const api = createApi({

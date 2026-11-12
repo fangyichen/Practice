@@ -1,9 +1,134 @@
 [
   {
+    "id": "apprentice_offer",
+    "year": 197,
+    "season": 1,
+    "condition": {
+      "alive": true
+    },
+    "timed": false,
+    "urgency": 5,
+    "situationFacts": [
+      "天子移驾许都的消息传到了荆州",
+      "城里一位老匠人要收个徒弟，管饭不给工钱，一学三年",
+      "乡里的塾师说，肯来识字算账的，束脩可以先欠着"
+    ],
+    "options": [
+      {
+        "id": "learn_craft",
+        "label": "进城拜老匠人为师",
+        "tags": [
+          "leave_home"
+        ],
+        "results": [
+          {
+            "when": {
+              "exec": "DONE",
+              "station": [
+                "artisan"
+              ]
+            },
+            "outcome": "craft_master_favored"
+          },
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "physique": 3
+              }
+            },
+            "outcome": "apprenticed_strong"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "apprenticed"
+          }
+        ]
+      },
+      {
+        "id": "learn_letters",
+        "label": "跟塾师识字算账",
+        "tags": [
+          "disappoint_family"
+        ],
+        "gate": {
+          "stat": "wit",
+          "minTier": 2
+        },
+        "results": [
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "wit": 3
+              }
+            },
+            "outcome": "learned_letters_well"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "learned_some_letters"
+          },
+          {
+            "when": {
+              "exec": "ATTEMPT_FAILED"
+            },
+            "outcome": "letters_gave_up"
+          }
+        ]
+      },
+      {
+        "id": "stay_farm",
+        "label": "留在家里帮衬",
+        "tags": [
+          "settle_down"
+        ],
+        "results": [
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "stayed_on_farm"
+          }
+        ]
+      }
+    ],
+    "default": "by_traits",
+    "selfKnownLimits": [
+      "wit"
+    ],
+    "fallbackLetter": "足下见字。听说天子到了许都，城里人都在议论，我们乡下照旧种地。城里有位老匠人要收徒弟，管饭不给钱，一学就是三年。乡里的塾师也说，肯来识字的，束脩可以先欠着，只是我脑子不算灵光，怕学不进去。爹说家里正缺人手。我该去哪一头？",
+    "personaQuestion": {
+      "prompt": "换了是你，十六岁时会去学点什么吗？",
+      "choices": [
+        {
+          "text": "学门手艺，饿不死",
+          "delta": {
+            "rootedness": -3,
+            "boldness": 2
+          }
+        },
+        {
+          "text": "守着家里，踏实",
+          "delta": {
+            "rootedness": 5
+          }
+        }
+      ]
+    }
+  },
+  {
     "id": "matchmaker_call",
     "year": 199,
     "season": 2,
-    "condition": { "alive": true, "spouse": false },
+    "condition": {
+      "alive": true,
+      "spouse": false
+    },
     "timed": false,
     "urgency": 10,
     "situationFacts": [
@@ -12,36 +137,377 @@
       "家里老人盼着早些成家"
     ],
     "options": [
-      { "id": "seek_match", "label": "应下这门亲，进城相看",
-        "tags": ["trust_stranger"],
-        "gate": { "stat": "looks", "minTier": 2 },
+      {
+        "id": "seek_match",
+        "label": "应下这门亲，进城相看",
+        "tags": [
+          "trust_stranger"
+        ],
+        "gate": {
+          "stat": "looks",
+          "minTier": 2
+        },
         "results": [
-          { "when": { "exec": "DONE", "tierAtLeast": { "looks": 4 } }, "outcome": "match_envied" },
-          { "when": { "exec": "DONE", "station": ["peddler"], "tierAtLeast": { "looks": 3 } }, "outcome": "wed_into_trade_house" },
-          { "when": { "exec": "DONE", "tierAtLeast": { "looks": 3 } }, "outcome": "wed_well_off" },
-          { "when": { "exec": "DONE" }, "outcome": "wed_modest" },
-          { "when": { "exec": "ATTEMPT_FAILED" }, "outcome": "rebuffed_at_viewing" }
-        ] },
-      { "id": "local_match", "label": "就近与同村知根底的人家结亲",
-        "tags": ["settle_down"],
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "looks": 4
+              }
+            },
+            "outcome": "match_envied"
+          },
+          {
+            "when": {
+              "exec": "DONE",
+              "station": [
+                "peddler"
+              ],
+              "tierAtLeast": {
+                "looks": 3
+              }
+            },
+            "outcome": "wed_into_trade_house"
+          },
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "looks": 3
+              }
+            },
+            "outcome": "wed_well_off"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "wed_modest"
+          },
+          {
+            "when": {
+              "exec": "ATTEMPT_FAILED"
+            },
+            "outcome": "rebuffed_at_viewing"
+          }
+        ]
+      },
+      {
+        "id": "local_match",
+        "label": "就近与同村知根底的人家结亲",
+        "tags": [
+          "settle_down"
+        ],
         "results": [
-          { "when": { "exec": "DONE" }, "outcome": "wed_neighbor" }
-        ] },
-      { "id": "wait_marry", "label": "先不成家，攒几年家业再说",
-        "tags": ["disappoint_family"],
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "wed_neighbor"
+          }
+        ]
+      },
+      {
+        "id": "wait_marry",
+        "label": "先不成家，攒几年家业再说",
+        "tags": [
+          "disappoint_family"
+        ],
         "results": [
-          { "when": { "exec": "DONE", "craftAtLeast": 20 }, "outcome": "saved_up_craft" },
-          { "when": { "exec": "DONE" }, "outcome": "stayed_single" }
-        ] }
+          {
+            "when": {
+              "exec": "DONE",
+              "craftAtLeast": 20
+            },
+            "outcome": "saved_up_craft"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "stayed_single"
+          }
+        ]
+      }
     ],
     "default": "by_traits",
-    "selfKnownLimits": ["looks"],
+    "selfKnownLimits": [
+      "looks"
+    ],
     "fallbackLetter": "足下见字。前日乡里的媒人上门，说城里有一户殷实人家想结亲，只是要先相看，看中了才肯下聘。家里老人听了，夜里都睡不着，盼我早些成家。我照过井水，自家这副模样，进了城不知人家看不看得上。同村也有知根知底的人家，或者索性再等几年，攒些家业。足下以为如何？",
     "personaQuestion": {
       "prompt": "换了是你，先成家还是先立业？",
       "choices": [
-        { "text": "先成家，心里才踏实", "delta": { "rootedness": 5, "sociability": 2 } },
-        { "text": "先立业，有了底子再说", "delta": { "rootedness": -4, "boldness": 3 } }
+        {
+          "text": "先成家，心里才踏实",
+          "delta": {
+            "rootedness": 5,
+            "sociability": 2
+          }
+        },
+        {
+          "text": "先立业，有了底子再说",
+          "delta": {
+            "rootedness": -4,
+            "boldness": 3
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "liu_garrison_201",
+    "year": 201,
+    "season": 2,
+    "anchor": "liu_bei_xinye_201",
+    "condition": {
+      "alive": true,
+      "where": [
+        "xiangyang",
+        "xinye"
+      ]
+    },
+    "timed": false,
+    "urgency": 10,
+    "situationFacts": [
+      "刘皇叔投了刘荆州，屯兵新野",
+      "军中派人下乡征粮，也在招募乡勇",
+      "都说皇叔待百姓宽厚，可兵粮总要有人出"
+    ],
+    "options": [
+      {
+        "id": "enlist",
+        "label": "去应募当乡勇",
+        "tags": [
+          "leave_home",
+          "risk_life"
+        ],
+        "gate": {
+          "stat": "physique",
+          "minTier": 2
+        },
+        "results": [
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "physique": 3
+              }
+            },
+            "outcome": "enlisted_drilled"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "enlisted_porter"
+          },
+          {
+            "when": {
+              "exec": "ATTEMPT_FAILED"
+            },
+            "outcome": "rejected_enlist"
+          }
+        ]
+      },
+      {
+        "id": "sell_grain",
+        "label": "把余粮卖给军中",
+        "tags": [],
+        "results": [
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "wit": 3
+              }
+            },
+            "outcome": "sold_grain_fair"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "sold_grain_cheap"
+          }
+        ]
+      },
+      {
+        "id": "hide_grain",
+        "label": "把粮藏起来，能少交就少交",
+        "tags": [
+          "defy_authority"
+        ],
+        "results": [
+          {
+            "when": {
+              "exec": "DONE",
+              "rash": true
+            },
+            "outcome": "grain_found_fined"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "grain_kept"
+          }
+        ]
+      }
+    ],
+    "default": "by_traits",
+    "selfKnownLimits": [
+      "physique"
+    ],
+    "fallbackLetter": "足下见字。新野来了一支兵马，说是刘皇叔的，投了刘荆州，就在新野屯下了。这几天军中有人下乡征粮，又在村口招乡勇，说是管饭。街坊都说皇叔是好人，可粮总得有人出。我是去应募，还是把家里那点余粮卖给他们，还是先藏起来？",
+    "personaQuestion": {
+      "prompt": "换了是你，好人来借粮，你给吗？",
+      "choices": [
+        {
+          "text": "给，好人难得",
+          "delta": {
+            "loyalty": 4,
+            "skepticism": -3
+          }
+        },
+        {
+          "text": "先藏着，谁知道以后",
+          "delta": {
+            "skepticism": 5
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "lean_year_debt",
+    "year": 202,
+    "season": 3,
+    "condition": {
+      "alive": true
+    },
+    "timed": false,
+    "urgency": 15,
+    "situationFacts": [
+      "这一年荆州大旱，秋粮只收了三成",
+      "城里的豪强放粮，借一斗还三斗，要按手印",
+      "江边码头缺扛活的人，管两顿饭"
+    ],
+    "options": [
+      {
+        "id": "borrow",
+        "label": "向豪强借粮",
+        "tags": [
+          "trust_stranger"
+        ],
+        "results": [
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "wit": 3
+              }
+            },
+            "outcome": "borrowed_read_contract"
+          },
+          {
+            "when": {
+              "exec": "DONE",
+              "tierBelow": {
+                "wit": 2
+              }
+            },
+            "outcome": "borrowed_tricked"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "borrowed_heavy"
+          }
+        ]
+      },
+      {
+        "id": "dock_work",
+        "label": "去江边码头扛活",
+        "tags": [
+          "leave_home"
+        ],
+        "gate": {
+          "stat": "physique",
+          "minTier": 2
+        },
+        "results": [
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "physique": 3
+              }
+            },
+            "outcome": "dock_work_well"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "dock_work_survived"
+          },
+          {
+            "when": {
+              "exec": "ATTEMPT_FAILED"
+            },
+            "outcome": "dock_work_injured"
+          }
+        ]
+      },
+      {
+        "id": "tighten",
+        "label": "勒紧裤带硬熬过去",
+        "tags": [
+          "settle_down"
+        ],
+        "results": [
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "physique": 3
+              }
+            },
+            "outcome": "endured_famine"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "famine_weakened"
+          }
+        ]
+      }
+    ],
+    "default": "by_traits",
+    "selfKnownLimits": [
+      "physique"
+    ],
+    "fallbackLetter": "足下见字。今年旱得厉害，秋粮只收了三成，家里的缸见了底。城里的豪强在放粮，借一斗要还三斗，还要按手印，那契书上的字我认不全。江边码头倒是缺扛活的，管两顿饭，只是那活计累死过人。要不就勒紧裤带熬过这个冬天。足下看哪条路好走些？",
+    "personaQuestion": {
+      "prompt": "换了是你，宁可欠债也不挨饿吗？",
+      "choices": [
+        {
+          "text": "先活下去再说",
+          "delta": {
+            "boldness": 3,
+            "rootedness": -2
+          }
+        },
+        {
+          "text": "欠债比挨饿可怕",
+          "delta": {
+            "skepticism": 4,
+            "boldness": -2
+          }
+        }
       ]
     }
   },
@@ -49,7 +515,9 @@
     "id": "county_levy",
     "year": 204,
     "season": 1,
-    "condition": { "alive": true },
+    "condition": {
+      "alive": true
+    },
     "timed": false,
     "urgency": 15,
     "situationFacts": [
@@ -58,37 +526,232 @@
       "听说托县里的书佐说句话，就能把名字从册上勾掉"
     ],
     "options": [
-      { "id": "answer_levy", "label": "照册应役",
-        "tags": ["submit_authority"],
+      {
+        "id": "answer_levy",
+        "label": "照册应役",
+        "tags": [
+          "submit_authority"
+        ],
         "results": [
-          { "when": { "exec": "DONE", "craftAtLeast": 30 }, "outcome": "levied_as_artisan" },
-          { "when": { "exec": "DONE", "tierAtLeast": { "physique": 3 } }, "outcome": "drafted_as_soldier" },
-          { "when": { "exec": "DONE" }, "outcome": "levy_labor_hardship" }
-        ] },
-      { "id": "plead_exemption", "label": "托人说情，把名字勾掉",
-        "tags": ["defy_authority", "trust_stranger"],
-        "gate": { "stat": "wit", "minTier": 2 },
+          {
+            "when": {
+              "exec": "DONE",
+              "craftAtLeast": 30
+            },
+            "outcome": "levied_as_artisan"
+          },
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "physique": 3
+              }
+            },
+            "outcome": "drafted_as_soldier"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "levy_labor_hardship"
+          }
+        ]
+      },
+      {
+        "id": "plead_exemption",
+        "label": "托人说情，把名字勾掉",
+        "tags": [
+          "defy_authority",
+          "trust_stranger"
+        ],
+        "gate": {
+          "stat": "wit",
+          "minTier": 2
+        },
         "results": [
-          { "when": { "exec": "DONE", "tierAtLeast": { "wit": 3 } }, "outcome": "exempted_cheaply" },
-          { "when": { "exec": "DONE" }, "outcome": "exempted_costly" },
-          { "when": { "exec": "ATTEMPT_FAILED", "rash": true }, "outcome": "struck_the_clerk" },
-          { "when": { "exec": "ATTEMPT_FAILED" }, "outcome": "caught_pleading" }
-        ] },
-      { "id": "pay_substitute", "label": "出钱雇人代役",
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "wit": 3
+              }
+            },
+            "outcome": "exempted_cheaply"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "exempted_costly"
+          },
+          {
+            "when": {
+              "exec": "ATTEMPT_FAILED",
+              "rash": true
+            },
+            "outcome": "struck_the_clerk"
+          },
+          {
+            "when": {
+              "exec": "ATTEMPT_FAILED"
+            },
+            "outcome": "caught_pleading"
+          }
+        ]
+      },
+      {
+        "id": "pay_substitute",
+        "label": "出钱雇人代役",
         "tags": [],
-        "requires": { "station": ["peddler", "petty_clerk", "wandering_scholar"] },
+        "requires": {
+          "station": [
+            "peddler",
+            "petty_clerk",
+            "wandering_scholar"
+          ]
+        },
         "results": [
-          { "when": { "exec": "DONE" }, "outcome": "substitute_hired" }
-        ] }
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "substitute_hired"
+          }
+        ]
+      }
     ],
     "default": "by_traits",
-    "selfKnownLimits": ["wit"],
+    "selfKnownLimits": [
+      "wit"
+    ],
     "fallbackLetter": "足下见字。州府下了令，各县点丁，修城运粮，里正已经挨户点过名了。有人私下说，托县里的书佐说句话，名字就能从册上勾掉。只是我嘴笨，见了官面上的人话都说不利索，怕托不成反倒惹事。照册去应役，家里的地又要荒一季。这事该怎么办？",
     "personaQuestion": {
       "prompt": "换了是你，官府点到头上，会去托人吗？",
       "choices": [
-        { "text": "规矩就是规矩，该去就去", "delta": { "boldness": -3, "loyalty": 3 } },
-        { "text": "能想办法就想办法", "delta": { "boldness": 4, "skepticism": 2 } }
+        {
+          "text": "规矩就是规矩，该去就去",
+          "delta": {
+            "boldness": -3,
+            "loyalty": 3
+          }
+        },
+        {
+          "text": "能想办法就想办法",
+          "delta": {
+            "boldness": 4,
+            "skepticism": 2
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "old_friend_invite",
+    "year": 207,
+    "season": 1,
+    "anchor": "three_visits_207",
+    "condition": {
+      "alive": true
+    },
+    "timed": false,
+    "urgency": 10,
+    "situationFacts": [
+      "一个小时候的玩伴捎信来，说他在新野刘皇叔营里做事",
+      "皇叔三番两次去隆中请一位卧龙先生，乡里传得神乎其神",
+      "玩伴说营里缺人手，若肯去，他替你在上头说话"
+    ],
+    "options": [
+      {
+        "id": "join_liu",
+        "label": "去新野投刘皇叔",
+        "tags": [
+          "leave_home"
+        ],
+        "gate": {
+          "stat": "looks",
+          "minTier": 2
+        },
+        "results": [
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "looks": 3
+              }
+            },
+            "outcome": "joined_liu_noticed"
+          },
+          {
+            "when": {
+              "exec": "DONE",
+              "hasFlag": "literate"
+            },
+            "outcome": "joined_liu_clerk"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "joined_liu_laborer"
+          },
+          {
+            "when": {
+              "exec": "ATTEMPT_FAILED"
+            },
+            "outcome": "turned_away_at_camp"
+          }
+        ]
+      },
+      {
+        "id": "keep_touch",
+        "label": "不去，托他常捎消息",
+        "tags": [],
+        "results": [
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "kept_in_touch"
+          }
+        ]
+      },
+      {
+        "id": "decline",
+        "label": "婉言谢绝，安心过日子",
+        "tags": [
+          "settle_down"
+        ],
+        "results": [
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "declined_friend"
+          }
+        ]
+      }
+    ],
+    "default": "by_traits",
+    "selfKnownLimits": [
+      "looks"
+    ],
+    "fallbackLetter": "足下见字。小时候一起摸鱼的二狗子捎信来，说他如今在新野刘皇叔营里做事。又说皇叔三番五次去隆中请一位卧龙先生，乡里都传神了。他说营里缺人，我要肯去，他在上头替我说话。只是我这副模样，见了官长不知人家看不看得上。去不去？",
+    "personaQuestion": {
+      "prompt": "换了是你，老朋友拉你入伙，去吗？",
+      "choices": [
+        {
+          "text": "去，朋友靠得住",
+          "delta": {
+            "sociability": 4,
+            "loyalty": 2
+          }
+        },
+        {
+          "text": "不去，各过各的",
+          "delta": {
+            "sociability": -4
+          }
+        }
       ]
     }
   },
@@ -97,7 +760,13 @@
     "year": 208,
     "season": 3,
     "anchor": "cao_south_208",
-    "condition": { "alive": true, "where": ["xiangyang", "xinye"] },
+    "condition": {
+      "alive": true,
+      "where": [
+        "xiangyang",
+        "xinye"
+      ]
+    },
     "timed": true,
     "urgency": 20,
     "situationFacts": [
@@ -106,38 +775,1024 @@
       "曹军铁骑日夜兼行"
     ],
     "options": [
-      { "id": "follow_liu", "label": "随刘皇叔南走",
-        "tags": ["leave_home", "risk_life"],
-        "gate": { "stat": "physique", "minTier": 2 },
+      {
+        "id": "follow_liu",
+        "label": "随刘皇叔南走",
+        "tags": [
+          "leave_home",
+          "risk_life"
+        ],
+        "gate": {
+          "stat": "physique",
+          "minTier": 2
+        },
         "partial": true,
         "urgent": true,
         "results": [
-          { "when": { "exec": "DONE", "tierAtLeast": { "physique": 3 } }, "outcome": "reached_jiangxia" },
-          { "when": { "exec": "DONE" }, "outcome": "survived_changban_lost_all" },
-          { "when": { "exec": "PARTIAL" }, "outcome": "sent_family_ahead" },
-          { "when": { "exec": "ATTEMPT_FAILED" }, "outcome": "collapsed_on_road" }
-        ] },
-      { "id": "stay", "label": "留在乡里",
-        "tags": ["submit_authority"],
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "physique": 4
+              },
+              "hasFlag": "served_liu"
+            },
+            "outcome": "dust_behind_zhangfei"
+          },
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "physique": 3
+              }
+            },
+            "outcome": "reached_jiangxia"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "survived_changban_lost_all"
+          },
+          {
+            "when": {
+              "exec": "PARTIAL"
+            },
+            "outcome": "sent_family_ahead"
+          },
+          {
+            "when": {
+              "exec": "ATTEMPT_FAILED"
+            },
+            "outcome": "collapsed_on_road"
+          }
+        ]
+      },
+      {
+        "id": "stay",
+        "label": "留在乡里",
+        "tags": [
+          "submit_authority"
+        ],
         "results": [
-          { "when": { "exec": "DONE", "tierAtLeast": { "physique": 3 } }, "outcome": "conscripted_to_fleet" },
-          { "when": { "exec": "DONE" }, "outcome": "stayed_under_cao" }
-        ] },
-      { "id": "hide_hills", "label": "入山暂避",
-        "tags": ["abandon_property"],
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "physique": 3
+              }
+            },
+            "outcome": "conscripted_to_fleet"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "stayed_under_cao"
+          }
+        ]
+      },
+      {
+        "id": "hide_hills",
+        "label": "入山暂避",
+        "tags": [
+          "abandon_property"
+        ],
         "results": [
-          { "when": { "exec": "DONE", "tierAtLeast": { "wit": 3 } }, "outcome": "hid_and_kept_grain" },
-          { "when": { "exec": "DONE" }, "outcome": "hid_house_looted" }
-        ] }
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "wit": 3
+              }
+            },
+            "outcome": "hid_and_kept_grain"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "hid_house_looted"
+          }
+        ]
+      }
     ],
     "default": "by_traits",
-    "selfKnownLimits": ["physique"],
+    "selfKnownLimits": [
+      "physique"
+    ],
     "fallbackLetter": "足下见字。城里乱了。都说刘荆州没了，他儿子把一州都献给了曹丞相。刘皇叔弃了新野往南走，街坊扶老携幼跟着去了一大半，路上哭声不断。又听说曹军的马队日夜不停，就快到了。我这几亩地、这间屋，是爹娘留下的。走，还是不走？要走就得是今夜。",
     "personaQuestion": {
       "prompt": "换了是你，舍得下这几亩地吗？",
       "choices": [
-        { "text": "舍不得，地在人在", "delta": { "rootedness": 6 } },
-        { "text": "人活着，地可以再置", "delta": { "rootedness": -6, "boldness": 3 } }
+        {
+          "text": "舍不得，地在人在",
+          "delta": {
+            "rootedness": 6
+          }
+        },
+        {
+          "text": "人活着，地可以再置",
+          "delta": {
+            "rootedness": -6,
+            "boldness": 3
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "south_surrender_208",
+    "year": 208,
+    "season": 3,
+    "anchor": "cao_south_208",
+    "condition": {
+      "alive": true,
+      "where": [
+        "jiangling",
+        "changsha"
+      ],
+      "notFlag": [
+        "conscripted_cao_fleet"
+      ]
+    },
+    "timed": true,
+    "urgency": 20,
+    "situationFacts": [
+      "刘琮献了荆州，曹丞相的大军已到襄阳",
+      "刘皇叔带着十几万百姓往江陵来，曹军轻骑一日一夜追三百里",
+      "江夏的刘琦公子还在，往东去的路上设了关卡"
+    ],
+    "options": [
+      {
+        "id": "flee_east",
+        "label": "往江夏投刘琦公子",
+        "tags": [
+          "leave_home",
+          "trust_stranger"
+        ],
+        "gate": {
+          "stat": "looks",
+          "minTier": 2
+        },
+        "urgent": true,
+        "results": [
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "looks": 3
+              }
+            },
+            "outcome": "checkpoint_noticed"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "reached_jiangxia_south"
+          },
+          {
+            "when": {
+              "exec": "ATTEMPT_FAILED"
+            },
+            "outcome": "held_at_checkpoint"
+          }
+        ]
+      },
+      {
+        "id": "welcome_cao",
+        "label": "开门献粮，迎曹丞相",
+        "tags": [
+          "submit_authority"
+        ],
+        "results": [
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "wit": 3
+              }
+            },
+            "outcome": "registered_under_cao"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "grain_requisitioned"
+          }
+        ]
+      },
+      {
+        "id": "hide_village",
+        "label": "躲进乡下，等风头过去",
+        "tags": [
+          "abandon_property"
+        ],
+        "results": [
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "hid_in_village"
+          }
+        ]
+      }
+    ],
+    "default": "by_traits",
+    "selfKnownLimits": [
+      "looks"
+    ],
+    "fallbackLetter": "足下见字。都说刘荆州的儿子把一州都献给了曹丞相，曹军已经到了襄阳。刘皇叔带着十几万百姓往我们这边来，后头曹军的马队一日一夜追三百里。往东去江夏，刘琦公子还在，可路上有关卡，守关的看人下菜碟。也有人说开门献粮就没事。要走就得赶紧。",
+    "personaQuestion": {
+      "prompt": "换了是你，兵来了，是跑还是降？",
+      "choices": [
+        {
+          "text": "跑，命要紧",
+          "delta": {
+            "boldness": 3,
+            "rootedness": -4
+          }
+        },
+        {
+          "text": "降，日子总要过",
+          "delta": {
+            "boldness": -3,
+            "rootedness": 4
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "chibi_aftermath",
+    "year": 208,
+    "season": 4,
+    "anchor": "chibi",
+    "condition": {
+      "alive": true
+    },
+    "timed": false,
+    "urgency": 15,
+    "situationFacts": [
+      "曹丞相八十三万人马屯在江上，沿江各处都在征发船夫工匠",
+      "冬月里一场东南风，江上烧了一夜，北军死伤无数",
+      "败兵过处，疫病跟着蔓延开来"
+    ],
+    "options": [
+      {
+        "id": "river_levy",
+        "label": "应征去江上做工",
+        "tags": [
+          "risk_life",
+          "submit_authority"
+        ],
+        "gate": {
+          "stat": "physique",
+          "minTier": 2
+        },
+        "results": [
+          {
+            "when": {
+              "exec": "DONE",
+              "hasFlag": "conscripted_cao_fleet",
+              "tierAtLeast": {
+                "physique": 4
+              }
+            },
+            "outcome": "chained_ships_survivor"
+          },
+          {
+            "when": {
+              "exec": "DONE",
+              "station": [
+                "boatman"
+              ],
+              "hasFlag": "at_jiangxia_208"
+            },
+            "outcome": "fire_ship_oarsman"
+          },
+          {
+            "when": {
+              "exec": "DONE",
+              "craftAtLeast": 35
+            },
+            "outcome": "built_ships_paid"
+          },
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "physique": 3
+              }
+            },
+            "outcome": "river_levy_survived"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "river_levy_sick"
+          },
+          {
+            "when": {
+              "exec": "ATTEMPT_FAILED"
+            },
+            "outcome": "died_of_fever_levy"
+          }
+        ]
+      },
+      {
+        "id": "shut_door",
+        "label": "闭门不出，躲过疫病",
+        "tags": [],
+        "results": [
+          {
+            "when": {
+              "exec": "DONE",
+              "tierBelow": {
+                "physique": 1
+              }
+            },
+            "outcome": "plague_died_home"
+          },
+          {
+            "when": {
+              "exec": "DONE",
+              "tierBelow": {
+                "physique": 2
+              }
+            },
+            "outcome": "plague_survived_weak"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "avoided_plague"
+          }
+        ]
+      },
+      {
+        "id": "flee_plague",
+        "label": "带家人往山里避疫",
+        "tags": [
+          "leave_home",
+          "abandon_property"
+        ],
+        "results": [
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "wit": 3
+              }
+            },
+            "outcome": "fled_plague_with_grain"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "fled_plague_poor"
+          }
+        ]
+      }
+    ],
+    "default": "by_traits",
+    "selfKnownLimits": [
+      "physique"
+    ],
+    "fallbackLetter": "足下见字。江上全是船，听说曹丞相有八十三万人马，沿江到处在抓船夫工匠。冬月里刮了一场东南风，江上烧了一整夜，天都是红的。如今败兵往回走，走到哪病到哪，村东头已经抬出去三个了。官府还在催人去江边做工。我是去，是躲在家里，还是往山里走？",
+    "personaQuestion": {
+      "prompt": "换了是你，瘟疫来了，躲在家还是往外走？",
+      "choices": [
+        {
+          "text": "关上门，哪也不去",
+          "delta": {
+            "rootedness": 4,
+            "boldness": -2
+          }
+        },
+        {
+          "text": "走，离人越远越好",
+          "delta": {
+            "rootedness": -4,
+            "boldness": 2
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "new_master_209",
+    "year": 209,
+    "season": 2,
+    "anchor": "nanjun_209",
+    "condition": {
+      "alive": true,
+      "where": [
+        "jiangling",
+        "changsha",
+        "jiangxia"
+      ]
+    },
+    "timed": false,
+    "urgency": 10,
+    "situationFacts": [
+      "赤壁之后，刘皇叔取了荆南四郡，周都督与曹仁在江陵相持",
+      "新来的官府重造户籍，按丁口分田，也按丁口派役",
+      "流民四散，有人把家里的丁口少报几个"
+    ],
+    "options": [
+      {
+        "id": "register_true",
+        "label": "如实登记户口",
+        "tags": [
+          "submit_authority"
+        ],
+        "results": [
+          {
+            "when": {
+              "exec": "DONE",
+              "hasFlag": "literate"
+            },
+            "outcome": "hired_as_registrar"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "registered_given_land"
+          }
+        ]
+      },
+      {
+        "id": "hide_heads",
+        "label": "少报丁口，躲些役",
+        "tags": [
+          "defy_authority"
+        ],
+        "gate": {
+          "stat": "wit",
+          "minTier": 2
+        },
+        "results": [
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "wit": 3
+              }
+            },
+            "outcome": "hid_heads_clean"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "hid_heads_bribed"
+          },
+          {
+            "when": {
+              "exec": "ATTEMPT_FAILED"
+            },
+            "outcome": "hid_heads_caught"
+          }
+        ]
+      },
+      {
+        "id": "open_wasteland",
+        "label": "应募去开垦荒地",
+        "tags": [
+          "leave_home"
+        ],
+        "results": [
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "physique": 3
+              }
+            },
+            "outcome": "reclaimed_land"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "reclaim_hard"
+          }
+        ]
+      }
+    ],
+    "default": "by_traits",
+    "selfKnownLimits": [
+      "wit"
+    ],
+    "fallbackLetter": "足下见字。打完那一仗，这一带换了主家，听说是刘皇叔的人。新来的官府要重造户籍，按丁口分田，也按丁口派役。邻家把两个儿子少报了，说里正收了他一只鸡。官府也在招人去开荒，开出来的地归自己。我是老老实实报，还是也少报几口？",
+    "personaQuestion": {
+      "prompt": "换了是你，官府查户口，会少报吗？",
+      "choices": [
+        {
+          "text": "照实报，省得麻烦",
+          "delta": {
+            "boldness": -3,
+            "loyalty": 3
+          }
+        },
+        {
+          "text": "能少报就少报",
+          "delta": {
+            "boldness": 3,
+            "skepticism": 3
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "parent_illness_212",
+    "year": 212,
+    "season": 1,
+    "condition": {
+      "alive": true
+    },
+    "timed": false,
+    "urgency": 15,
+    "situationFacts": [
+      "家里的老人入冬后一病不起，郎中开的药不见效",
+      "听说城里有位从北边来的名医，诊金极贵，要有人引荐",
+      "山里有一味草药，乡人说能吊命，只是长在悬崖上"
+    ],
+    "options": [
+      {
+        "id": "seek_doctor",
+        "label": "托人引荐，请城里的名医",
+        "tags": [
+          "trust_stranger",
+          "abandon_property"
+        ],
+        "gate": {
+          "stat": "wit",
+          "minTier": 2
+        },
+        "results": [
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "wit": 3
+              }
+            },
+            "outcome": "doctor_saved_elder"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "doctor_costly"
+          },
+          {
+            "when": {
+              "exec": "ATTEMPT_FAILED"
+            },
+            "outcome": "fake_doctor_cheated"
+          }
+        ]
+      },
+      {
+        "id": "climb_for_herb",
+        "label": "自己进山采药",
+        "tags": [
+          "risk_life"
+        ],
+        "results": [
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "physique": 3
+              }
+            },
+            "outcome": "herb_found"
+          },
+          {
+            "when": {
+              "exec": "DONE",
+              "tierBelow": {
+                "physique": 2
+              }
+            },
+            "outcome": "fell_from_cliff"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "herb_found_late"
+          }
+        ]
+      },
+      {
+        "id": "bedside",
+        "label": "守在床前，尽人事听天命",
+        "tags": [],
+        "results": [
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "mourned_elder"
+          }
+        ]
+      }
+    ],
+    "default": "by_traits",
+    "selfKnownLimits": [
+      "wit"
+    ],
+    "fallbackLetter": "足下见字。家里老人入冬就病倒了，郎中的药吃了半个月，一点不见好。听说城里来了位北边的名医，诊金贵得吓人，还得有人引荐，我一个乡下人，不知道门在哪。乡人说山里悬崖上有一味草药能吊命。也有人劝我守在床前，尽人事听天命。足下，我该怎么办？",
+    "personaQuestion": {
+      "prompt": "换了是你，会为家人冒险吗？",
+      "choices": [
+        {
+          "text": "会，什么都肯",
+          "delta": {
+            "loyalty": 5,
+            "boldness": 2
+          }
+        },
+        {
+          "text": "量力而行",
+          "delta": {
+            "loyalty": -2,
+            "skepticism": 2
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "fan_flood_219",
+    "year": 219,
+    "season": 3,
+    "anchor": "flood_seven_armies",
+    "condition": {
+      "alive": true,
+      "where": [
+        "xiangyang",
+        "xinye"
+      ]
+    },
+    "timed": true,
+    "urgency": 20,
+    "situationFacts": [
+      "关将军围了樊城，于禁的七军屯在城北低处",
+      "秋雨连下十几日，汉水暴涨",
+      "官府催逼百姓上堤，也有人说该趁早往高处搬"
+    ],
+    "options": [
+      {
+        "id": "man_dike",
+        "label": "上堤抢险",
+        "tags": [
+          "risk_life",
+          "submit_authority"
+        ],
+        "gate": {
+          "stat": "physique",
+          "minTier": 2
+        },
+        "results": [
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "physique": 3
+              }
+            },
+            "outcome": "led_dike_crew"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "dike_held_exhausted"
+          },
+          {
+            "when": {
+              "exec": "ATTEMPT_FAILED"
+            },
+            "outcome": "swept_away"
+          }
+        ]
+      },
+      {
+        "id": "move_high",
+        "label": "带家人往高处搬",
+        "tags": [
+          "leave_home",
+          "abandon_property"
+        ],
+        "urgent": true,
+        "results": [
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "moved_to_high_ground"
+          }
+        ]
+      },
+      {
+        "id": "wait_out",
+        "label": "守着屋子，看看再说",
+        "tags": [
+          "settle_down"
+        ],
+        "results": [
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "physique": 3
+              }
+            },
+            "outcome": "flood_survived_roof"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "flood_house_lost"
+          }
+        ]
+      }
+    ],
+    "default": "by_traits",
+    "selfKnownLimits": [
+      "physique"
+    ],
+    "fallbackLetter": "足下见字。关将军把樊城围了，北边来的七路兵马扎在城北的低处。雨已经下了十几天，汉水涨得吓人，夜里能听见水声。官府挨家催人上堤，说堤破了谁都活不成。也有老人说该趁早往高处搬。家里的东西搬不完。我是上堤，还是搬？",
+    "personaQuestion": {
+      "prompt": "换了是你，官府催你去抢险，你去吗？",
+      "choices": [
+        {
+          "text": "去，堤在家在",
+          "delta": {
+            "loyalty": 3,
+            "boldness": 3
+          }
+        },
+        {
+          "text": "先顾自家",
+          "delta": {
+            "loyalty": -3,
+            "rootedness": 3
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "white_robe_219",
+    "year": 219,
+    "season": 4,
+    "anchor": "white_robe_219",
+    "condition": {
+      "alive": true,
+      "where": [
+        "jiangling"
+      ]
+    },
+    "timed": true,
+    "urgency": 20,
+    "situationFacts": [
+      "吕蒙的兵扮作白衣商人，一夜之间过了烽火台",
+      "江陵守将献了城，吴军入城秋毫无犯，还抚恤关将军营中军士的家小",
+      "城里人心惶惶，有人跟着旧部往西走"
+    ],
+    "options": [
+      {
+        "id": "go_west",
+        "label": "跟着旧部往西投刘皇叔",
+        "tags": [
+          "leave_home",
+          "risk_life"
+        ],
+        "gate": {
+          "stat": "looks",
+          "minTier": 2
+        },
+        "urgent": true,
+        "results": [
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "looks": 3
+              }
+            },
+            "outcome": "slipped_west_trusted"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "went_west_poor"
+          },
+          {
+            "when": {
+              "exec": "ATTEMPT_FAILED"
+            },
+            "outcome": "caught_fleeing_219"
+          }
+        ]
+      },
+      {
+        "id": "submit_wu",
+        "label": "归附吴军，安顿家小",
+        "tags": [
+          "submit_authority"
+        ],
+        "results": [
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "looks": 3
+              }
+            },
+            "outcome": "wu_recruited_noticed"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "settled_under_wu"
+          }
+        ]
+      },
+      {
+        "id": "watch",
+        "label": "闭门观望",
+        "tags": [],
+        "results": [
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "watched_quietly"
+          }
+        ]
+      }
+    ],
+    "default": "by_traits",
+    "selfKnownLimits": [
+      "looks"
+    ],
+    "fallbackLetter": "足下见字。出大事了。前几天江上来了几条商船，船上的人都穿白衣，谁知是吴国的兵，一夜之间就过了烽火台。城里的将军开门献了城。吴兵进城倒没抢东西，还给关将军营里的家小送米。可人心都慌了，有人跟着旧部往西边逃。西边的路上有关卡，要会说话、看着可靠才过得去。走不走？",
+    "personaQuestion": {
+      "prompt": "换了是你，旧主败了，新主待你不薄，你跟谁？",
+      "choices": [
+        {
+          "text": "跟旧主，做人要念旧",
+          "delta": {
+            "loyalty": 6
+          }
+        },
+        {
+          "text": "跟新主，日子要紧",
+          "delta": {
+            "loyalty": -5,
+            "rootedness": 2
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "yiling_222",
+    "year": 222,
+    "season": 2,
+    "anchor": "yiling_222",
+    "condition": {
+      "alive": true,
+      "where": [
+        "jiangling",
+        "changsha",
+        "jiangxia"
+      ],
+      "notFlag": [
+        "went_west_219"
+      ]
+    },
+    "timed": false,
+    "urgency": 15,
+    "situationFacts": [
+      "刘皇叔为关将军报仇，亲率大军顺江东下",
+      "吴军在各郡征发民夫，运粮造营",
+      "夷陵一带连营七百里，有人说吴军按兵不动，必有后招"
+    ],
+    "options": [
+      {
+        "id": "haul_grain",
+        "label": "应吴军征发去运粮",
+        "tags": [
+          "submit_authority",
+          "risk_life"
+        ],
+        "results": [
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "physique": 3
+              }
+            },
+            "outcome": "hauled_grain_back"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "levy_hauling_hard"
+          }
+        ]
+      },
+      {
+        "id": "guide_shu",
+        "label": "暗中给蜀军引路",
+        "tags": [
+          "defy_authority",
+          "risk_life"
+        ],
+        "results": [
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "wit": 4
+              },
+              "hasFlag": "knows_river"
+            },
+            "outcome": "rowed_baidi_night"
+          },
+          {
+            "when": {
+              "exec": "DONE",
+              "tierAtLeast": {
+                "wit": 3
+              }
+            },
+            "outcome": "guided_shu_escaped"
+          },
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "caught_in_fire_camps"
+          }
+        ]
+      },
+      {
+        "id": "stay_out",
+        "label": "躲在家里，两边都不沾",
+        "tags": [],
+        "results": [
+          {
+            "when": {
+              "exec": "DONE"
+            },
+            "outcome": "stayed_out_yiling"
+          }
+        ]
+      }
+    ],
+    "default": "by_traits",
+    "selfKnownLimits": [
+      "wit"
+    ],
+    "fallbackLetter": "足下见字。刘皇叔亲自带兵顺江下来了，说是给关将军报仇，船队望不到头。吴军在各郡征民夫运粮，里正已经点到我家。也有人偷偷给蜀军带路，说事成了有赏，可被吴军拿住就是死罪。那边连营七百里，吴军却一直不动，老人说这里头有后招。我该怎么办？",
+    "personaQuestion": {
+      "prompt": "换了是你，夹在两边中间，会选一边吗？",
+      "choices": [
+        {
+          "text": "选一边，总得有个靠",
+          "delta": {
+            "loyalty": 3,
+            "boldness": 3
+          }
+        },
+        {
+          "text": "谁也不靠",
+          "delta": {
+            "loyalty": -3,
+            "skepticism": 4
+          }
+        }
       ]
     }
   }
