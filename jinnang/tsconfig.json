@@ -13,5 +13,5 @@
     "noEmit": true,
     "types": ["node"]
   },
-  "include": ["engine", "classifier", "letters", "lib", "schemas", "scripts", "tests"]
+  "include": ["engine", "classifier", "letters", "lib", "schemas", "scripts", "tests", "devtools"]
 }

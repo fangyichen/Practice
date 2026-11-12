@@ -12,9 +12,11 @@
   --serif: "Songti SC", "Noto Serif SC", "Source Han Serif SC", STSong, serif;
 }
 @media (prefers-color-scheme: dark) {
-  :root { --paper: #1d1a15; --card: #26221c; --ink: #ece4d4; --muted: #a59a88; --line: #3d372e;
+  :root:not([data-theme="light"]) { color-scheme: dark; --paper: #1d1a15; --card: #26221c; --ink: #ece4d4; --muted: #a59a88; --line: #3d372e;
     --red: #e0725f; --red-soft: #3d2420; --ok: #8fc287; --ok-soft: #233320; --warn: #e2b46a; --warn-soft: #3a2f1c; }
 }
+:root[data-theme="dark"] { color-scheme: dark; --paper: #1d1a15; --card: #26221c; --ink: #ece4d4; --muted: #a59a88; --line: #3d372e;
+  --red: #e0725f; --red-soft: #3d2420; --ok: #8fc287; --ok-soft: #233320; --warn: #e2b46a; --warn-soft: #3a2f1c; }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.7 var(--serif); }
 header { padding: 12px 16px; border-bottom: 1px solid var(--line); display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; }
@@ -212,6 +214,8 @@ let stack = [];        // 撤回用
 let lastSetup = null;
 
 async function api(path, body) {
+  // 打包版（npm run build:static）里引擎就在页面中，不经过服务器
+  if (window.JINNANG_LOCAL) return window.JINNANG_LOCAL(path, body);
   const r = await fetch(path, body === undefined ? {} : { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
   const j = await r.json();
   if (!r.ok) throw new Error(j.error || r.statusText);
@@ -454,13 +458,30 @@ $("btnUndo").onclick = () => { if (stack.length) show(stack.pop()); };
 window.replay = () => lastSetup && start(lastSetup);
 
 // ---------- 导出 / 导入 ----------
-$("btnExport").onclick = () => {
+$("btnExport").onclick = async () => {
+  const text = JSON.stringify(game.state, null, 2);
+  if (window.JINNANG_LOCAL) {
+    // 打包版运行在不允许下载的环境里：复制到剪贴板，失败则显示出来让人手动复制
+    try { await navigator.clipboard.writeText(text); $("turnErr").textContent = "存档已复制到剪贴板。"; return; }
+    catch { showExportBox(text); return; }
+  }
   const blob = new Blob([JSON.stringify(game.state, null, 2)], { type: "application/json" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
   a.download = `jinnang-${game.state.twin.name}-${game.state.year}.json`;
   a.click();
 };
+function showExportBox(text) {
+  let box = $("exportBox");
+  if (!box) {
+    box = document.createElement("textarea");
+    box.id = "exportBox"; box.readOnly = true; box.rows = 8;
+    box.style.cssText = "width:100%;font:12px var(--mono);margin-top:8px";
+    $("turnErr").after(box);
+  }
+  box.value = text; box.focus(); box.select();
+  $("turnErr").textContent = "无法自动复制，请手动复制下面的存档：";
+}
 $("btnImport").onclick = () => $("importFile").click();
 $("importFile").onchange = async (e) => {
   const f = e.target.files[0]; if (!f) return;
@@ -468,11 +489,11 @@ $("importFile").onchange = async (e) => {
     const res = await api("/api/view", JSON.parse(await f.text()));
     stack = []; show(res);
     $("setup").classList.add("hidden"); $("game").classList.remove("hidden"); $("btnRestart").classList.remove("hidden");
-  } catch (err) { alert("导入失败：" + err.message); }
+  } catch (err) { $("turnErr").textContent = "导入失败：" + err.message; }
   e.target.value = "";
 };
 
-init().catch((e) => { document.body.insertAdjacentHTML("afterbegin", `<div class="error" style="padding:16px">加载失败：${esc(e.message)}（服务器在跑吗？）</div>`); });
+init().catch((e) => { document.body.insertAdjacentHTML("afterbegin", `<div class="error" style="padding:16px">加载失败：${esc(e.message)}${window.JINNANG_LOCAL ? "" : "（服务器在跑吗？）"}</div>`); });
 </script>
 </body>
 </html>
