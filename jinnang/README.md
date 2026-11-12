@@ -9,7 +9,17 @@ npm run typecheck
 npm run validate-era     # 纪律检查，M0 profile
 npx tsx scripts/validate-era.ts --profile full   # 按文档完整标准检查（M0 内容必然不通过：难题数不够）
 npm run simulate -- --n 3000
+npm run dev              # 人工测试页 http://localhost:4321
 ```
+
+## 人工测试页
+
+`npm run dev` 后打开 http://localhost:4321（`PORT=xxxx` 可换端口）。这是调试工具，不是正式界面，会显示全部数值：
+
+- 设定人格（MBTI 起点 + 六项滑杆）、带一样过去、性别；投生可按种子随机，也可手动指定出生地、身份、三项禀赋。
+- 每封信：可点 fixture 样本回复，也可自由输入；「分类方式」可以直接指定他把这句话读成哪个选项（因为自由输入多半不在 fixture 里，会被均分）。
+- 每轮显示原因说明、exec、分数拆解（信任 − 冲突 + 紧迫）、信任变化和原始原因码。
+- 撤回一封、同一投生再活一次、导出/导入存档 JSON。
 
 ## 调参
 
@@ -37,7 +47,8 @@ s = step(s, input, pack, { config: cfg });
 | `lib/` | 数据包加载、纪律检查、一局的编排（引擎 + 分类 + 写信） |
 | `content/` | 建档题库（9 道）、原因说明模板、投生加成句模板 |
 | `fixtures/replies.json` | 手工标注的回复分布（每题 16–17 条，四类） |
-| `scripts/` | `validate-era.ts`、`simulate.ts` |
+| `scripts/` | `validate-era.ts`、`simulate.ts`、`devserver.ts`（人工测试页的服务器） |
+| `devtools/` | 人工测试页（单个 HTML，无需构建） |
 | `tests/` | M0 验收测试 |
 
 ## M0 的实现取舍（需要作者过目）

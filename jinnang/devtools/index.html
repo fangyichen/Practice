@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>锦囊 · 人工测试</title>
+<style>
+:root {
+  --paper: #f5efe2; --card: #fbf7ee; --ink: #2a241c; --muted: #7a6e5d; --line: #ddd2bd;
+  --red: #b0342a; --red-soft: #f3dcd6; --ok: #3d6b3a; --ok-soft: #dfe9d9; --warn: #8a5a12; --warn-soft: #f2e4c8;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --serif: "Songti SC", "Noto Serif SC", "Source Han Serif SC", STSong, serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --paper: #1d1a15; --card: #26221c; --ink: #ece4d4; --muted: #a59a88; --line: #3d372e;
+    --red: #e0725f; --red-soft: #3d2420; --ok: #8fc287; --ok-soft: #233320; --warn: #e2b46a; --warn-soft: #3a2f1c; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 15px/1.7 var(--serif); }
+header { padding: 12px 16px; border-bottom: 1px solid var(--line); display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; }
+header h1 { margin: 0; font-size: 18px; } header .tag { color: var(--red); font-size: 13px; }
+header .spacer { flex: 1; }
+main { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 16px; padding: 16px; max-width: 1280px; margin: 0 auto; }
+@media (max-width: 900px) { main { grid-template-columns: 1fr; } }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; margin-bottom: 16px; }
+.card h2 { margin: 0 0 10px; font-size: 15px; color: var(--red); letter-spacing: .05em; }
+.card h3 { margin: 12px 0 6px; font-size: 14px; }
+.muted { color: var(--muted); font-size: 13px; }
+label { display: block; margin: 6px 0; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.row > * { margin: 0; }
+input[type=text], input[type=number], select, textarea {
+  font: inherit; color: inherit; background: var(--paper); border: 1px solid var(--line); border-radius: 6px; padding: 6px 8px;
+}
+input[type=number] { width: 72px; }
+input[type=range] { width: 140px; accent-color: var(--red); }
+button { font: inherit; border: 1px solid var(--line); background: var(--paper); color: var(--ink); border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+button:hover { border-color: var(--red); }
+button.primary { background: var(--red); color: #fff; border-color: var(--red); }
+button:disabled { opacity: .5; cursor: default; }
+.slider { display: grid; grid-template-columns: 110px 1fr 36px; gap: 8px; align-items: center; }
+.letter { background: var(--paper); border: 1px solid var(--line); border-left: 3px solid var(--red); padding: 14px 18px; white-space: pre-wrap; font-size: 16px; line-height: 2; }
+.reply { width: 100%; font-size: 18px; padding: 8px 10px; }
+.counter { font-family: var(--mono); font-size: 13px; }
+.counter.bad { color: var(--red); font-weight: bold; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-size: 13px; padding: 2px 8px; border-radius: 12px; }
+.chip.clear { border-color: var(--ok); } .chip.ambiguous { border-color: var(--warn); }
+.chip.prophecy { border-color: #6b5ca5; } .chip.noise { border-color: var(--muted); color: var(--muted); }
+.reason { font-size: 17px; padding: 10px 14px; background: var(--red-soft); border-radius: 6px; margin: 8px 0; }
+.badge { display: inline-block; font-family: var(--mono); font-size: 12px; padding: 1px 6px; border-radius: 4px; background: var(--warn-soft); color: var(--warn); }
+.badge.DONE, .badge.PARTIAL { background: var(--ok-soft); color: var(--ok); }
+.badge.ATTEMPT_FAILED, .badge.UNWILLING, .badge.NOT_ALLOWED, .badge.TOO_LATE, .badge.DECLINED_UNABLE { background: var(--red-soft); color: var(--red); }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+td, th { border-bottom: 1px solid var(--line); padding: 3px 4px; text-align: left; vertical-align: top; }
+th { color: var(--muted); font-weight: normal; }
+.kv td:first-child { color: var(--muted); width: 42%; }
+pre { font-family: var(--mono); font-size: 12px; white-space: pre-wrap; word-break: break-all; background: var(--paper); border: 1px solid var(--line); border-radius: 6px; padding: 8px; max-height: 320px; overflow: auto; margin: 6px 0; }
+details summary { cursor: pointer; color: var(--muted); font-size: 13px; }
+.error { color: var(--red); font-weight: bold; min-height: 1.4em; }
+.facts { margin: 4px 0; padding-left: 20px; } .facts li { margin: 2px 0; }
+.opt { padding: 6px 8px; border: 1px dashed var(--line); border-radius: 6px; margin: 4px 0; font-size: 13px; }
+.hidden { display: none !important; }
+.ending { text-align: center; font-size: 18px; padding: 20px; }
+.history .turn { border-top: 1px solid var(--line); padding: 8px 0; }
+</style>
+</head>
+<body>
+<header>
+  <h1>锦囊 · 人工测试</h1>
+  <span class="tag">调试工具：显示全部数值，正式界面不会这样</span>
+  <span class="spacer"></span>
+  <button id="btnUndo" disabled title="退回到上一封信之前">撤回一封</button>
+  <button id="btnRestart" class="hidden">重新开始</button>
+  <button id="btnExport" disabled>导出存档</button>
+  <label class="row" style="margin:0"><input type="file" id="importFile" accept=".json" class="hidden"><button id="btnImport">导入存档</button></label>
+</header>
+
+<main>
+  <section>
+    <!-- 建档与投生 -->
+    <div class="card" id="setup">
+      <h2>一、人格</h2>
+      <div class="row">
+        <label>MBTI
+          <select id="mbti"><option value="">（跳过）</option></select>
+        </label>
+        <span class="muted">选了会把下面六项重置为 MBTI 起点，之后可以手动拖动。</span>
+      </div>
+      <div id="sliders"></div>
+
+      <h2 style="margin-top:16px">二、带一样过去</h2>
+      <div class="row" id="carry">
+        <label><input type="radio" name="carry" value="physique" checked> 体魄</label>
+        <label><input type="radio" name="carry" value="wit"> 机敏</label>
+        <label><input type="radio" name="carry" value="looks"> 相貌</label>
+        <span class="spacer"></span>
+        <label><input type="radio" name="gender" value="m" checked> 男</label>
+        <label><input type="radio" name="gender" value="f"> 女</label>
+      </div>
+
+      <h2 style="margin-top:16px">三、投生</h2>
+      <div class="row">
+        <label><input type="radio" name="birthMode" value="rolled" checked> 随机（按种子）</label>
+        <label><input type="radio" name="birthMode" value="fixed"> 手动指定</label>
+      </div>
+      <div id="rolledBox" class="row">
+        <label>种子 <input type="text" id="seed" value="manual-1" size="16"></label>
+        <button id="btnDice" title="换一个随机种子">换种子</button>
+        <span class="muted">同一种子 + 同一「带一样过去」= 同一次投生</span>
+      </div>
+      <div id="fixedBox" class="hidden">
+        <div class="row">
+          <label>出生地 <select id="fxLoc"></select></label>
+          <label>身份 <select id="fxStation"></select></label>
+          <label>姓名 <input type="text" id="fxName" value="王顺" size="6"></label>
+        </div>
+        <div class="row">
+          <label>体魄 <input type="number" id="fxPhy" value="50" min="10" max="90"></label>
+          <label>机敏 <input type="number" id="fxWit" value="50" min="10" max="90"></label>
+          <label>相貌 <input type="number" id="fxLooks" value="50" min="10" max="90"></label>
+          <span class="muted" id="fxSum"></span>
+        </div>
+        <div class="muted">加成前的数值：三项和须为 150，每项 10–90，被带过去的那项 ≤79。</div>
+      </div>
+      <div class="row" style="margin-top:12px">
+        <button class="primary" id="btnStart">投生</button>
+        <span class="error" id="setupErr"></span>
+      </div>
+    </div>
+
+    <!-- 对局 -->
+    <div id="game" class="hidden">
+      <div class="card" id="birthCard"></div>
+
+      <div class="card hidden" id="lastTurn"></div>
+
+      <div class="card" id="letterCard">
+        <h2 id="letterTitle">来信</h2>
+        <div class="letter" id="letter"></div>
+        <details style="margin-top:8px"><summary>这一题的数据（选项、门槛、标签）</summary><div id="dilemmaInfo"></div></details>
+
+        <h3>回信</h3>
+        <input type="text" class="reply" id="reply" maxlength="120" placeholder="至多十个字，空着就是沉默" autocomplete="off">
+        <div class="row" style="margin-top:4px">
+          <span class="counter" id="cntLetter"></span>
+          <span class="counter" id="cntLife"></span>
+        </div>
+        <div style="margin-top:8px">
+          <div class="muted">fixture 里的样本回复（点一下填入；绿=明确、黄=歧义、紫=预言、灰=捣乱）</div>
+          <div class="chips" id="quick"></div>
+        </div>
+
+        <div id="pqBox" style="margin-top:10px"></div>
+
+        <h3>分类方式</h3>
+        <div class="row" id="classMode">
+          <label><input type="radio" name="cls" value="" checked> 查 fixture（未命中则均分）</label>
+        </div>
+        <div class="muted">实际上线会由分类模型判断；这里你可以直接指定「他把这句话读成哪个选项」，用来测结算逻辑。</div>
+
+        <div class="row" style="margin-top:12px">
+          <button class="primary" id="btnSend">寄出</button>
+          <button id="btnSilent">沉默</button>
+          <span class="error" id="turnErr"></span>
+        </div>
+      </div>
+
+      <div class="card hidden" id="endingCard"></div>
+
+      <div class="card history">
+        <h2>一生回顾</h2>
+        <div id="history" class="muted">还没有回过信。</div>
+      </div>
+    </div>
+  </section>
+
+  <aside>
+    <div class="card">
+      <h2>替身状态</h2>
+      <div id="status" class="muted">尚未投生。</div>
+    </div>
+    <div class="card">
+      <h2>人格</h2>
+      <div id="traitsBox" class="muted">—</div>
+    </div>
+    <div class="card">
+      <h2>原始数据</h2>
+      <details><summary>当前 GameState（JSON）</summary><pre id="rawState">—</pre></details>
+      <details><summary>引擎配置 config/engine.json</summary><pre id="rawConfig">—</pre></details>
+    </div>
+  </aside>
+</main>
+
+<script>
+const TRAITS = [
+  ["boldness", "胆（冒险↔谨慎）"], ["loyalty", "重义守诺"], ["impulsiveness", "冲动↔迟缓"],
+  ["rootedness", "恋土顾家"], ["skepticism", "多疑"], ["sociability", "爱结交人"],
+];
+const STAT = { physique: "体魄", wit: "机敏", looks: "相貌" };
+const EXEC_ZH = {
+  DONE: "照做", PARTIAL: "折中", ATTEMPT_FAILED: "肯做但没做成", DECLINED_UNABLE: "肯做但自知做不到",
+  UNWILLING: "不肯", NOT_ALLOWED: "身份不许", TOO_LATE: "误了时机", NO_GUIDANCE: "无人指点",
+};
+const SEASON = ["", "春", "夏", "秋", "冬"];
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+let META = null;
+let game = null;       // { state, view }
+let stack = [];        // 撤回用
+let lastSetup = null;
+
+async function api(path, body) {
+  const r = await fetch(path, body === undefined ? {} : { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(body) });
+  const j = await r.json();
+  if (!r.ok) throw new Error(j.error || r.statusText);
+  return j;
+}
+
+// ---------- 字数（与引擎同规则：按字素，空白标点不计） ----------
+const seg = new Intl.Segmenter("zh", { granularity: "grapheme" });
+const IGN = /^[\p{P}\p{Z}\s\p{Cc}\p{Cf}]+$/u;
+const countChars = (s) => { let n = 0; for (const { segment } of seg.segment(s)) if (!IGN.test(segment)) n++; return n; };
+
+// ---------- 建档 ----------
+function buildSliders(traits) {
+  $("sliders").innerHTML = TRAITS.map(([k, zh]) => `
+    <div class="slider"><span>${zh}</span>
+      <input type="range" min="0" max="100" step="1" id="t_${k}" value="${traits[k]}">
+      <span class="counter" id="v_${k}">${traits[k]}</span></div>`).join("");
+  for (const [k] of TRAITS) $("t_" + k).oninput = (e) => ($("v_" + k).textContent = e.target.value);
+}
+const readTraits = () => Object.fromEntries(TRAITS.map(([k]) => [k, Number($("t_" + k).value)]));
+const radio = (name) => document.querySelector(`input[name=${name}]:checked`).value;
+
+function updateFxSum() {
+  const s = ["fxPhy", "fxWit", "fxLooks"].map((id) => Number($(id).value)).reduce((a, b) => a + b, 0);
+  $("fxSum").textContent = `合计 ${s}` + (s === 150 ? " ✓" : "（应为 150）");
+  $("fxSum").style.color = s === 150 ? "" : "var(--red)";
+}
+
+async function init() {
+  META = await api("/api/meta");
+  const mbtis = [];
+  for (const a of "EI") for (const b of "NS") for (const c of "TF") for (const d of "JP") mbtis.push(a + b + c + d);
+  $("mbti").innerHTML += mbtis.map((m) => `<option>${m}</option>`).join("");
+  buildSliders((await api("/api/mbti?m=")).traits);
+  $("mbti").onchange = async () => buildSliders((await api("/api/mbti?m=" + $("mbti").value)).traits);
+  $("fxLoc").innerHTML = META.locations.map((l) => `<option value="${l.id}">${esc(l.name)}</option>`).join("");
+  $("fxStation").innerHTML = META.stations.map((s) => `<option value="${s.id}">${esc(s.name)}（权重 ${s.weight}）</option>`).join("");
+  for (const id of ["fxPhy", "fxWit", "fxLooks"]) $(id).oninput = updateFxSum;
+  updateFxSum();
+  document.querySelectorAll("input[name=birthMode]").forEach((el) => el.onchange = () => {
+    const fixed = radio("birthMode") === "fixed";
+    $("fixedBox").classList.toggle("hidden", !fixed);
+    $("rolledBox").classList.toggle("hidden", fixed);
+  });
+  $("btnDice").onclick = () => ($("seed").value = "s-" + Math.random().toString(36).slice(2, 8));
+  $("rawConfig").textContent = JSON.stringify(META.config, null, 2);
+}
+
+async function start(setup) {
+  $("setupErr").textContent = "";
+  try {
+    const res = await api("/api/new", setup);
+    lastSetup = setup;
+    stack = [];
+    show(res);
+    $("setup").classList.add("hidden");
+    $("game").classList.remove("hidden");
+    $("btnRestart").classList.remove("hidden");
+  } catch (e) { $("setupErr").textContent = e.message; }
+}
+
+$("btnStart").onclick = () => {
+  const setup = { traits: readTraits(), carry: radio("carry"), gender: radio("gender"), seed: $("seed").value || "manual" };
+  if ($("mbti").value) setup.mbti = $("mbti").value;
+  if (radio("birthMode") === "fixed") {
+    setup.fixed = {
+      location: $("fxLoc").value, station: $("fxStation").value, name: $("fxName").value || "无名",
+      baseEndowments: { physique: Number($("fxPhy").value), wit: Number($("fxWit").value), looks: Number($("fxLooks").value) },
+    };
+  }
+  start(setup);
+};
+
+$("btnRestart").onclick = () => {
+  game = null; stack = [];
+  $("game").classList.add("hidden");
+  $("setup").classList.remove("hidden");
+  $("btnRestart").classList.add("hidden");
+  $("btnUndo").disabled = true; $("btnExport").disabled = true;
+  $("status").textContent = "尚未投生。"; $("traitsBox").textContent = "—"; $("rawState").textContent = "—";
+};
+
+// ---------- 渲染 ----------
+function show(res) {
+  game = res;
+  const { state, view } = res;
+  const t = state.twin;
+  $("btnUndo").disabled = stack.length === 0;
+  $("btnExport").disabled = false;
+
+  // 投生卡
+  const base = t.endowments[t.boosted] - META.config.endowments.carryBonus;
+  $("birthCard").innerHTML = `
+    <h2>投生</h2>
+    <div class="muted">${esc(view.canonNotice)}</div>
+    <p style="font-size:17px;margin:8px 0">${esc(t.name)}，${t.gender === "m" ? "男" : "女"}，生于 ${t.birthYear} 年，${esc(view.stationName)}人家。</p>
+    <p style="margin:4px 0">体魄${esc(view.endowmentLabels.physique)}，机敏${esc(view.endowmentLabels.wit)}，相貌${esc(view.endowmentLabels.looks)}。</p>
+    <p style="margin:4px 0;color:var(--red)">${esc(view.carryLine)}</p>
+    <div class="muted">（调试：带的是${STAT[t.boosted]}，加成前 ${base} → ${t.endowments[t.boosted]}；种子 ${esc(state.seed)}）</div>`;
+
+  // 上一轮结果
+  const last = view.log[view.log.length - 1];
+  $("lastTurn").classList.toggle("hidden", !last);
+  if (last) $("lastTurn").innerHTML = `<h2>上一封的结果</h2>${turnHtml(last, true)}`;
+
+  // 信 / 结局
+  const d = view.dilemma;
+  $("letterCard").classList.toggle("hidden", !d);
+  $("endingCard").classList.toggle("hidden", !state.ending);
+  if (d) renderLetter(state, view, d);
+  if (state.ending) {
+    const e = state.ending;
+    $("endingCard").innerHTML = `<h2>结局</h2><div class="ending">
+      ${e.cause === "death" ? `${esc(t.name)}卒于 ${e.year} 年，年 ${e.age}。` : `本卷终于 ${e.year} 年，${esc(t.name)}尚在人世，年 ${e.age}。`}
+      <div class="muted" style="margin-top:8px">留痕、记载与墓志铭属于 M1，尚未实现。</div>
+      <div class="row" style="justify-content:center;margin-top:12px">
+        <button class="primary" onclick="replay()">同一投生，再活一次</button>
+        <button onclick="document.getElementById('btnRestart').click()">换个人</button>
+      </div></div>`;
+  }
+
+  // 回顾
+  $("history").innerHTML = view.log.length
+    ? view.log.map((r) => `<div class="turn"><b>${r.year} 年${SEASON[r.season]} · ${r.age} 岁 · ${esc(r.dilemmaId)}</b>${turnHtml(r, false)}</div>`).join("")
+    : "还没有回过信。";
+
+  renderStatus(state, view);
+  $("rawState").textContent = JSON.stringify(state, null, 2);
+}
+
+function renderLetter(state, view, d) {
+  $("letterTitle").textContent = `来信 · ${d.year} 年${SEASON[d.season]} · ${view.age} 岁 · 第 ${state.turn + 1} 封`;
+  $("letter").textContent = state.pendingDilemma.letter || "（无信）";
+  $("dilemmaInfo").innerHTML = `
+    <div class="muted">id ${esc(d.id)}；${d.timed ? "限时" : "不限时"}；紧迫度 ${d.urgency}；他自知的短处：${d.selfKnownLimits.map((k) => STAT[k]).join("、") || "无"}</div>
+    <ul class="facts">${d.situationFacts.map((f) => `<li>${esc(f)}</li>`).join("")}</ul>
+    ${d.options.map((o) => {
+      const can = o.gate ? (view.tiers[o.gate.stat] >= o.gate.minTier ? "✓" : "✗") : "";
+      return `<div class="opt"><b>${esc(o.label)}</b> <span class="muted">${esc(o.id)}</span><br>
+        标签：${o.tags.join("、") || "无"}${o.partial ? "；可折中" : ""}${o.urgent ? "；需赶时间" : ""}
+        ${o.gate ? `<br>门槛：${STAT[o.gate.stat]} ≥ ${o.gate.minTier} 档（他现在 ${view.tiers[o.gate.stat]} 档 ${can}）` : ""}
+        ${o.requires ? `<br>身份限制：${esc(JSON.stringify(o.requires))}` : ""}</div>`;
+    }).join("")}`;
+  $("quick").innerHTML = d.quickReplies.map((q) => `<button class="chip ${q.category}" data-r="${esc(q.reply)}">${esc(q.reply)}</button>`).join("");
+  $("quick").querySelectorAll("button").forEach((b) => b.onclick = () => { $("reply").value = b.dataset.r; updateCounter(); $("reply").focus(); });
+  $("classMode").innerHTML = `<label><input type="radio" name="cls" value="" checked> 查 fixture（未命中则均分）</label>` +
+    d.options.map((o) => `<label><input type="radio" name="cls" value="${o.id}"> 读成「${esc(o.label)}」</label>`).join("") +
+    `<label><input type="radio" name="cls" value="other"> 读不懂</label>`;
+  const q = d.personaQuestion;
+  $("pqBox").innerHTML = q ? `<h3>换了是你</h3><div>${esc(q.prompt)}</div><div class="row">
+      <label><input type="radio" name="pq" value="" checked> 不答</label>
+      ${q.choices.map((c, i) => `<label><input type="radio" name="pq" value="${i}"> ${esc(c.text)} <span class="muted">${esc(JSON.stringify(c.delta))}</span></label>`).join("")}
+    </div>` : "";
+  $("reply").value = "";
+  $("turnErr").textContent = "";
+  updateCounter();
+}
+
+function turnHtml(r, big) {
+  const weigh = r.reasons.find((x) => x.code === "WEIGH");
+  const cls = r.classification;
+  const dist = cls ? Object.entries(cls.dist).sort((a, b) => b[1] - a[1]).map(([k, v]) => `${k} ${(v * 100).toFixed(0)}%`).join("，") : "";
+  return `
+    <div class="${big ? "reason" : ""}" style="${big ? "" : "margin:4px 0"}">${esc(r.reasonText)}</div>
+    <div>你回：<b>${r.reply.trim() ? "“" + esc(r.reply) + "”" : "（沉默）"}</b>
+      <span class="badge ${r.exec}">${r.exec} ${EXEC_ZH[r.exec]}</span>
+      他做了：<b>${esc(r.outcomeLabel)}</b> → <span class="muted">${esc(r.outcome)}</span></div>
+    <ul class="facts">${r.facts.map((f) => `<li>${esc(f)}</li>`).join("")}</ul>
+    <details ${big ? "open" : ""}><summary>结算细节</summary><table class="kv">
+      <tr><td>分类</td><td>${cls ? `${esc(cls.source)}：${esc(dist)}` : "沉默，未分类"}</td></tr>
+      <tr><td>读成</td><td>${esc(r.read ?? "（无）")}</td></tr>
+      ${weigh ? `<tr><td>肯不肯</td><td>信任 ${weigh.trust} − 冲突 ${weigh.conflict} + 紧迫 ${weigh.urgency} = <b>${weigh.score}</b>
+        <span class="muted">（≥${META.config.willingness.willing} 肯；${META.config.willingness.floor}–${META.config.willingness.willing} 折中/≥${META.config.willingness.middleYes} 肯；&lt;${META.config.willingness.floor} 不肯）</span>
+        ${weigh.topTag ? `<br>最大顾虑：${esc(weigh.topTag)}（${esc(weigh.topTrait)}）` : ""}</td></tr>` : ""}
+      <tr><td>信任</td><td>${r.trustBefore} → ${r.trustAfter}</td></tr>
+      <tr><td>原因码</td><td>${r.reasons.map((x) => esc(x.code)).join(" · ")}</td></tr>
+    </table><pre>${esc(JSON.stringify(r.reasons, null, 1))}</pre></details>`;
+}
+
+function renderStatus(state, view) {
+  const t = state.twin;
+  const L = META.endowmentLabels;
+  const row = (k, v) => `<tr><td>${k}</td><td>${v}</td></tr>`;
+  $("status").innerHTML = `<table class="kv">
+    ${row("年份", `${state.year} 年${SEASON[state.season]}，${view.age} 岁`)}
+    ${row("所在", `${esc(view.locationName)}（此时归 ${esc(view.controller)}）`)}
+    ${row("身份", esc(view.stationName))}
+    ${row("存亡", t.alive ? "在世" : "已故")}
+    ${["physique", "wit", "looks"].map((k) => row(STAT[k] + (k === t.boosted ? " ★" : ""), `${esc(view.endowmentLabels[k])} <span class="muted">${t.endowments[k]}（${view.tiers[k]} 档）</span>`)).join("")}
+    ${row("技艺", t.craft)}
+    ${row("健康 / 家资 / 名声", `${t.health} / ${t.wealth} / ${t.standing}`)}
+    ${row("对你的信任", `<b>${t.trust}</b>`)}
+    ${row("家口", `${t.household.spouse ? "已成家" : "未成家"}，子女 ${t.household.children}，父母在 ${t.household.parentsAlive}`)}
+    ${row("归属", esc(view.allegianceName ?? "无"))}
+    ${row("余生字数", `${state.charBudgetLeft} / ${META.budget.lifetime}`)}
+    ${row("flags", t.flags.length ? t.flags.map(esc).join("<br>") : "无")}
+  </table>`;
+  const p = state.persona;
+  $("traitsBox").innerHTML = `<table class="kv">${p.mbti ? row("MBTI", p.mbti) : ""}
+    ${TRAITS.map(([k, zh]) => row(zh, p.traits[k])).join("")}
+    ${row("历次调整", p.history.length ? p.history.map((h) => `${esc(h.source)} ${esc(JSON.stringify(h.delta))}`).join("<br>") : "无")}
+  </table>`;
+}
+
+function updateCounter() {
+  if (!game) return;
+  const n = countChars($("reply").value);
+  const left = game.state.charBudgetLeft;
+  const per = META.budget.perLetter;
+  $("cntLetter").textContent = `本封 ${n}/${per}`;
+  $("cntLetter").classList.toggle("bad", n > per);
+  $("cntLife").textContent = `余生 ${left - n}/${META.budget.lifetime}`;
+  $("cntLife").classList.toggle("bad", n > left);
+}
+$("reply").oninput = updateCounter;
+
+// ---------- 回信 ----------
+async function send(reply) {
+  $("turnErr").textContent = "";
+  const pq = document.querySelector("input[name=pq]:checked");
+  const body = {
+    state: game.state, reply,
+    personaAnswer: pq && pq.value !== "" ? Number(pq.value) : null,
+    override: reply.trim() ? (radio("cls") || null) : null,
+  };
+  $("btnSend").disabled = $("btnSilent").disabled = true;
+  try {
+    const res = await api("/api/turn", body);
+    stack.push(game);
+    show(res);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } catch (e) { $("turnErr").textContent = e.message; }
+  finally { $("btnSend").disabled = $("btnSilent").disabled = false; }
+}
+$("btnSend").onclick = () => send($("reply").value);
+$("btnSilent").onclick = () => send("");
+$("reply").onkeydown = (e) => { if (e.key === "Enter") send($("reply").value); };
+
+$("btnUndo").onclick = () => { if (stack.length) show(stack.pop()); };
+window.replay = () => lastSetup && start(lastSetup);
+
+// ---------- 导出 / 导入 ----------
+$("btnExport").onclick = () => {
+  const blob = new Blob([JSON.stringify(game.state, null, 2)], { type: "application/json" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = `jinnang-${game.state.twin.name}-${game.state.year}.json`;
+  a.click();
+};
+$("btnImport").onclick = () => $("importFile").click();
+$("importFile").onchange = async (e) => {
+  const f = e.target.files[0]; if (!f) return;
+  try {
+    const res = await api("/api/view", JSON.parse(await f.text()));
+    stack = []; show(res);
+    $("setup").classList.add("hidden"); $("game").classList.remove("hidden"); $("btnRestart").classList.remove("hidden");
+  } catch (err) { alert("导入失败：" + err.message); }
+  e.target.value = "";
+};
+
+init().catch((e) => { document.body.insertAdjacentHTML("afterbegin", `<div class="error" style="padding:16px">加载失败：${esc(e.message)}（服务器在跑吗？）</div>`); });
+</script>
+</body>
+</html>
