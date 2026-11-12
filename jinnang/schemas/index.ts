@@ -400,3 +400,84 @@ export type EraPack = {
   dilemmas: Dilemma[];
   outcomes: Record<string, Outcome>;
 };
+
+// ---------------------------------------------------------------------------
+// 引擎配置（config/engine.json）
+// ---------------------------------------------------------------------------
+
+/** 递归去掉以 _ 开头的说明键，其余键严格校验（拼错的键会报错）。 */
+export function stripDocKeys(v: unknown): unknown {
+  if (Array.isArray(v)) return v.map(stripDocKeys);
+  if (v && typeof v === "object") {
+    return Object.fromEntries(
+      Object.entries(v as Record<string, unknown>)
+        .filter(([k]) => !k.startsWith("_"))
+        .map(([k, x]) => [k, stripDocKeys(x)]),
+    );
+  }
+  return v;
+}
+
+const ConflictPartSchema = z
+  .object({ trait: TraitKeySchema, dir: z.union([z.literal(1), z.literal(-1)]), w: z.number().min(0) })
+  .strict();
+
+export const EngineConfigSchema = z
+  .object({
+    randomness: z.enum(["birth_only", "full"]),
+    trust: z
+      .object({
+        initialBase: Score,
+        skepticismWeight: z.number().min(0),
+        verdict: z.object({ right: z.number(), wrong: z.number(), mixed: z.number(), none: z.number() }).strict(),
+        replyBonus: z.number(),
+        regretFactor: z.number().min(0).max(1),
+        witMultiplier: z.object({ base: z.number().min(0), perPoint: z.number().min(0) }).strict(),
+      })
+      .strict(),
+    willingness: z.object({ willing: Score, middleYes: Score, floor: Score }).strict(),
+    reading: z.object({ candidateMinProb: z.number().min(0).max(1), witTierReadsWell: Tier }).strict(),
+    temperament: z.object({ boldEnough: Score, rashImpulsiveness: Score, slowImpulsiveness: Score }).strict(),
+    tagConflict: z.record(z.string(), z.array(ConflictPartSchema)),
+    endowments: z
+      .object({
+        sum: z.number().int(),
+        min: z.number().int().min(0),
+        max: z.number().int().max(100),
+        carryBonus: z.literal(20),
+        carryPreMax: z.number().int(),
+        physiqueDeclineAge: z.number().int(),
+        physiqueDeclinePerYear: z.number().min(0),
+        witGrowthPerDilemma: z.number().min(0),
+        witGrowthCap: z.number().int().min(0),
+        looksFadeAge: z.number().int(),
+        looksFadeStep: z.number().int().positive(),
+        craftGrowth: z.object({ base: z.number(), witDivisor: z.number().positive() }).strict(),
+      })
+      .strict(),
+    budget: z
+      .object({ perLetter: z.number().int().positive(), lifetime: z.number().int().positive(), maxRawLength: z.number().int().positive() })
+      .strict(),
+    persona: z
+      .object({
+        questionCap: z.number().positive(),
+        onboardingCap: z.number().positive(),
+        mbtiAdjust: z.record(z.enum(["E", "I", "N", "S", "T", "F", "J", "P"]), TraitDeltaMapSchema),
+      })
+      .strict(),
+  })
+  .strict()
+  .superRefine((c, ctx) => {
+    const issue = (message: string) => ctx.addIssue({ code: z.ZodIssueCode.custom, message });
+    if (!(c.willingness.floor <= c.willingness.middleYes && c.willingness.middleYes <= c.willingness.willing)) {
+      issue("willingness 需满足 floor ≤ middleYes ≤ willing");
+    }
+    const e = c.endowments;
+    if (e.carryPreMax + e.carryBonus > 100) issue("carryPreMax + carryBonus 不得超过 100");
+    if (e.carryPreMax % 20 !== 19) issue("carryPreMax 应落在某档的上沿（…19、39、59、79），否则加成可能跨两档");
+    if (e.min * 3 > e.sum || e.max * 3 < e.sum) issue("endowments.sum 与 [min, max] 不相容");
+    for (const [tag, parts] of Object.entries(c.tagConflict)) {
+      if (parts.reduce((s, p) => s + p.w, 0) * 100 > 40 + 1e-9) issue(`标签 ${tag} 的冲突上限超过 40`);
+    }
+  });
+export type EngineConfig = z.infer<typeof EngineConfigSchema>;

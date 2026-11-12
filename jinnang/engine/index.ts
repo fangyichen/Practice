@@ -7,3 +7,5 @@ export { createPersona, traitsFromMbti, pickOnboardingQuestions } from "./traits
 export { birthOnly, getRandomness, type Randomness } from "./randomness";
 export { renderReason, type ReasonTemplates } from "./reasons";
 export { ageOf, controllerOf, knownEvents } from "./world";
+export { DEFAULT_CONFIG, parseEngineConfig, withConfig } from "./config";
+export type { ResolveOptions } from "./resolve";

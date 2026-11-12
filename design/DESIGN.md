@@ -450,7 +450,7 @@ score < 30        → 不肯（UNWILLING，改走人格默认）
 
 **第七步：信任更新**
 
-按 `outcome.verdict`：`right` +15，`wrong` -12，`mixed` +3，`none` 0；回了信另 +2。全部乘以 `0.6 + wit * 0.008`（机敏的人验证得更快，涨跌更剧烈）。只有当替身确实照做了（`DONE` / `PARTIAL` / `ATTEMPT_FAILED`）才按 `verdict` 结算；没照做时，若事后证明玩家说得对，按 `right` 的一半计（他会后悔）。初始信任 = `40 - (skepticism - 50) * 0.4`。
+按 `outcome.verdict`：`right` +15，`wrong` -12，`mixed` +3，`none` 0；回了信另 +2。全部乘以 `0.6 + wit * 0.008`（机敏的人验证得更快，涨跌更剧烈）。只有当替身确实照做了（`DONE` / `PARTIAL` / `ATTEMPT_FAILED`）才按 `verdict` 结算；没照做时，若事后证明玩家说得对，按 `right` 的一半计（他会后悔）。初始信任 = `50 - (skepticism - 50) * 0.4`（v0.3 原为 40；M0 实测开局几乎无人照做，改为 50）。本节及 7.2、8.3 里的阈值与系数都放在 `config/engine.json`，以文件为准。
 
 **原因说明**：前端把原因码渲染成一句人话，用模板拼，**不调模型**。例如：
 

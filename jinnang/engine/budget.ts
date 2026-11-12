@@ -1,15 +1,12 @@
 /**
- * 字数预算（8.3）。按字素计，空白与标点不计。
+ * 字数预算（8.3）。按字素计，空白与标点不计。上限在 config.budget。
  */
+import type { EngineConfig } from "../schemas";
+import { DEFAULT_CONFIG } from "./config";
 
-export type BudgetConfig = {
-  perLetter: number;
-  lifetime: number;
-  /** 原始字符串长度上限（含标点），防止塞超长内容 */
-  maxRawLength: number;
-};
+export type BudgetConfig = EngineConfig["budget"];
 
-export const DEFAULT_BUDGET: BudgetConfig = { perLetter: 10, lifetime: 100, maxRawLength: 120 };
+export const DEFAULT_BUDGET: BudgetConfig = DEFAULT_CONFIG.budget;
 
 const segmenter = new Intl.Segmenter("zh", { granularity: "grapheme" });
 const IGNORED = /^[\p{P}\p{Z}\s\p{Cc}\p{Cf}]+$/u;

@@ -1,4 +1,5 @@
-import type { EraPack, GameState, Location, NodeCondition, TimelineEntry } from "../schemas";
+import type { EngineConfig, EraPack, GameState, Location, NodeCondition, TimelineEntry } from "../schemas";
+import { DEFAULT_CONFIG } from "./config";
 import { tiers } from "./endowments";
 import { seasonIndex } from "./util";
 
@@ -36,7 +37,7 @@ export function knownEvents(timeline: TimelineEntry[], year: number, season: num
   return timeline.filter((e) => seasonIndex(e.year, e.season ?? 1) + (e.publicKnowledgeDelay ?? 0) <= now);
 }
 
-export function conditionHolds(cond: NodeCondition, state: GameState): boolean {
+export function conditionHolds(cond: NodeCondition, state: GameState, cfg: EngineConfig = DEFAULT_CONFIG): boolean {
   const t = state.twin;
   const age = ageOf(state);
   if (cond.alive !== undefined && cond.alive !== t.alive) return false;
@@ -47,7 +48,7 @@ export function conditionHolds(cond: NodeCondition, state: GameState): boolean {
   if (cond.maxAge !== undefined && age > cond.maxAge) return false;
   if (cond.hasFlag && !cond.hasFlag.every((f) => t.flags.includes(f))) return false;
   if (cond.notFlag && cond.notFlag.some((f) => t.flags.includes(f))) return false;
-  const tr = tiers(t.endowments, age);
+  const tr = tiers(t.endowments, age, cfg);
   for (const [k, v] of Object.entries(cond.tierAtLeast ?? {})) {
     if (tr[k as keyof typeof tr] < (v as number)) return false;
   }

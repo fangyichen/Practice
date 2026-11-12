@@ -8,6 +8,7 @@ import type {
   Classification,
   Dilemma,
   DilemmaOption,
+  EngineConfig,
   EraPack,
   Exec,
   GameState,
@@ -17,17 +18,11 @@ import type {
   TurnRecord,
 } from "../schemas";
 import { advance } from "./advance";
-import { checkReply, DEFAULT_BUDGET } from "./budget";
-import { effectiveTier, tiers, WIT_GROWTH_CAP } from "./endowments";
-import { birthOnly, type Randomness } from "./randomness";
-import {
-  applyDelta,
-  BOLD_ENOUGH,
-  optionConflict,
-  PERSONA_QUESTION_CAP,
-  RASH_IMPULSIVENESS,
-  SLOW_IMPULSIVENESS,
-} from "./traits";
+import { checkReply } from "./budget";
+import { DEFAULT_CONFIG } from "./config";
+import { effectiveTier, tiers } from "./endowments";
+import { getRandomness, type Randomness } from "./randomness";
+import { applyDelta, optionConflict } from "./traits";
 import { clamp, clone, round2 } from "./util";
 import { ageOf, findDilemma } from "./world";
 
@@ -38,16 +33,15 @@ export type TurnInput = {
   personaAnswer?: number | null;
 };
 
-export const SCORE_WILLING = 60;
-export const SCORE_MIDDLE_YES = 45;
-export const SCORE_FLOOR = 30;
-export const CANDIDATE_MIN_PROB = 0.2;
-export const WIT_TIER_READS_WELL = 2;
+export type ResolveOptions = {
+  /** 默认 config/engine.json */
+  config?: EngineConfig;
+  /** 默认按 config.randomness 取 */
+  randomness?: Randomness;
+};
 
-export const VERDICT_TRUST = { right: 15, wrong: -12, mixed: 3, none: 0 } as const;
-export const REPLY_TRUST_BONUS = 2;
-export function trustMultiplier(wit: number): number {
-  return 0.6 + wit * 0.008;
+export function trustMultiplier(wit: number, cfg: EngineConfig = DEFAULT_CONFIG): number {
+  return cfg.trust.witMultiplier.base + wit * cfg.trust.witMultiplier.perPoint;
 }
 
 const EXECUTING: readonly Exec[] = ["DONE", "PARTIAL", "ATTEMPT_FAILED"];
@@ -56,6 +50,7 @@ type Ctx = {
   state: GameState;
   dilemma: Dilemma;
   age: number;
+  cfg: EngineConfig;
 };
 
 function allowed(opt: DilemmaOption, ctx: Ctx): boolean {
@@ -70,11 +65,11 @@ function allowed(opt: DilemmaOption, ctx: Ctx): boolean {
 
 function able(opt: DilemmaOption, ctx: Ctx): boolean {
   if (!opt.gate) return true;
-  return effectiveTier(ctx.state.twin.endowments, opt.gate.stat, ctx.age) >= opt.gate.minTier;
+  return effectiveTier(ctx.state.twin.endowments, opt.gate.stat, ctx.age, ctx.cfg) >= opt.gate.minTier;
 }
 
 function conflictOf(opt: DilemmaOption, ctx: Ctx) {
-  return optionConflict(opt.tags, ctx.state.persona.traits);
+  return optionConflict(opt.tags, ctx.state.persona.traits, ctx.cfg);
 }
 
 /** 冲突最小者；平手取选项顺序靠前的。 */
@@ -111,13 +106,15 @@ function personaDefault(ctx: Ctx, opts: { exclude?: string; noUrgent?: boolean }
 function whenMatches(w: ResultWhen, exec: Exec, ctx: Ctx): boolean {
   if (w.exec !== exec) return false;
   const t = ctx.state.twin;
-  const tr = tiers(t.endowments, ctx.age);
+  const tr = tiers(t.endowments, ctx.age, ctx.cfg);
   for (const [k, v] of Object.entries(w.tierAtLeast ?? {})) if (tr[k as keyof typeof tr] < (v as number)) return false;
   for (const [k, v] of Object.entries(w.tierBelow ?? {})) if (tr[k as keyof typeof tr] >= (v as number)) return false;
   if (w.station && !w.station.includes(t.station)) return false;
   if (w.hasFlag && !t.flags.includes(w.hasFlag)) return false;
   if (w.craftAtLeast !== undefined && t.craft < w.craftAtLeast) return false;
-  if (w.rash !== undefined && (ctx.state.persona.traits.impulsiveness >= RASH_IMPULSIVENESS) !== w.rash) return false;
+  if (w.rash !== undefined && (ctx.state.persona.traits.impulsiveness >= ctx.cfg.temperament.rashImpulsiveness) !== w.rash) {
+    return false;
+  }
   return true;
 }
 
@@ -129,7 +126,7 @@ export function lookupOutcome(opt: DilemmaOption, exec: Exec, ctx: Ctx, pack: Er
   return { id: rule.outcome, outcome };
 }
 
-function applyEffects(state: GameState, outcome: Outcome, age: number): void {
+function applyEffects(state: GameState, outcome: Outcome, age: number, cfg: EngineConfig): void {
   const t = state.twin;
   const e = outcome.effects;
   if (e.health !== undefined) t.health = clamp(t.health + e.health);
@@ -146,7 +143,7 @@ function applyEffects(state: GameState, outcome: Outcome, age: number): void {
   if (e.allegiance !== undefined) t.allegiance = e.allegiance;
   const add = [...(e.addFlags ?? [])];
   for (const c of e.addFlagsIfTier ?? []) {
-    if (effectiveTier(t.endowments, c.stat, age) >= c.minTier) add.push(c.flag);
+    if (effectiveTier(t.endowments, c.stat, age, cfg) >= c.minTier) add.push(c.flag);
   }
   for (const f of add) if (!t.flags.includes(f)) t.flags.push(f);
   if (e.removeFlags) t.flags = t.flags.filter((f) => !e.removeFlags?.includes(f));
@@ -165,12 +162,14 @@ export function resolveTurn(
   state: GameState,
   input: TurnInput,
   pack: EraPack,
-  randomness: Randomness = birthOnly,
+  opts: ResolveOptions = {},
 ): GameState {
+  const cfg = opts.config ?? DEFAULT_CONFIG;
+  const randomness = opts.randomness ?? getRandomness(cfg.randomness);
   if (state.ending) throw new Error("game already ended");
   if (!state.pendingDilemma) throw new Error("no pending dilemma");
 
-  const budget = checkReply(input.reply, state.charBudgetLeft, DEFAULT_BUDGET);
+  const budget = checkReply(input.reply, state.charBudgetLeft, cfg.budget);
   if (!budget.ok) throw new Error(`reply rejected: ${budget.code}`);
   const silent = budget.chars === 0;
   if (!silent && !input.classification) throw new Error("non-empty reply requires a classification");
@@ -178,7 +177,7 @@ export function resolveTurn(
 
   const s = clone(state);
   const dilemma = findDilemma(pack, s.pendingDilemma!.dilemmaId);
-  const ctx: Ctx = { state: s, dilemma, age: ageOf(s) };
+  const ctx: Ctx = { state: s, dilemma, age: ageOf(s), cfg };
   const traits = s.persona.traits;
   const reasons: Reason[] = [];
 
@@ -200,14 +199,14 @@ export function resolveTurn(
     if (other > 0 && other >= (dist[top.id] ?? 0)) {
       reasons.push({ code: "NO_READING" });
     } else {
-      let candidates = dilemma.options.filter((o) => (dist[o.id] ?? 0) >= CANDIDATE_MIN_PROB);
+      let candidates = dilemma.options.filter((o) => (dist[o.id] ?? 0) >= cfg.reading.candidateMinProb);
       if (candidates.length === 0) candidates = [top];
       if (candidates.length === 1) {
         read = candidates[0] as DilemmaOption;
       } else {
         reasons.push({ code: "AMBIGUOUS", candidates: candidates.map((c) => c.id).join(",") });
-        const witTier = effectiveTier(s.twin.endowments, "wit", ctx.age);
-        const preferred = witTier >= WIT_TIER_READS_WELL ? top : leastConflict(candidates, ctx);
+        const witTier = effectiveTier(s.twin.endowments, "wit", ctx.age, cfg);
+        const preferred = witTier >= cfg.reading.witTierReadsWell ? top : leastConflict(candidates, ctx);
         read = randomness.ambiguityPick(candidates, preferred);
         if (read.id !== top.id) reasons.push({ code: "MISREAD_BY_TRAITS", wrote: top.id, read: read.id });
         else reasons.push({ code: "READ_BY_WIT" });
@@ -242,8 +241,9 @@ export function resolveTurn(
       topTrait: c.top?.trait ?? null,
     });
     let willing: "yes" | "partial" | "no";
-    if (score >= SCORE_WILLING) willing = "yes";
-    else if (score >= SCORE_FLOOR) willing = read.partial ? "partial" : score >= SCORE_MIDDLE_YES ? "yes" : "no";
+    const wl = cfg.willingness;
+    if (score >= wl.willing) willing = "yes";
+    else if (score >= wl.floor) willing = read.partial ? "partial" : score >= wl.middleYes ? "yes" : "no";
     else willing = "no";
 
     // ---- 第四步：能不能 ----
@@ -261,7 +261,7 @@ export function resolveTurn(
       exec = "DONE";
       chosen = read;
       reasons.push({ code: "DONE" });
-    } else if (traits.boldness >= BOLD_ENOUGH || traits.impulsiveness >= RASH_IMPULSIVENESS) {
+    } else if (traits.boldness >= cfg.temperament.boldEnough || traits.impulsiveness >= cfg.temperament.rashImpulsiveness) {
       exec = "ATTEMPT_FAILED";
       chosen = read;
       reasons.push({ code: "ATTEMPT_FAILED", stat: read.gate!.stat });
@@ -276,7 +276,7 @@ export function resolveTurn(
       EXECUTING.includes(exec) &&
       dilemma.timed &&
       read.urgent &&
-      traits.impulsiveness + randomness.timingSlack() < SLOW_IMPULSIVENESS
+      traits.impulsiveness + randomness.timingSlack() < cfg.temperament.slowImpulsiveness
     ) {
       exec = "TOO_LATE";
       chosen = personaDefault(ctx, { exclude: read.id, noUrgent: true });
@@ -294,25 +294,28 @@ export function resolveTurn(
   const trustBefore = s.twin.trust;
   let delta = 0;
   if (followedAdvice) {
-    delta += VERDICT_TRUST[result.outcome.verdict];
+    delta += cfg.trust.verdict[result.outcome.verdict];
   } else if (read && exec !== "NO_GUIDANCE") {
     // 他没照做：若事后证明你说得对，他会后悔，按 right 的一半计
     const cfExec: Exec = able(read, ctx) ? "DONE" : "ATTEMPT_FAILED";
     const cf = allowed(read, ctx) ? lookupOutcome(read, cfExec, ctx, pack) : null;
     if (cf && cf.outcome.verdict === "right") {
-      delta += VERDICT_TRUST.right / 2;
+      delta += cfg.trust.verdict.right * cfg.trust.regretFactor;
       reasons.push({ code: "REGRET", counterfactual: cf.id });
     }
   }
-  if (!silent) delta += REPLY_TRUST_BONUS;
-  delta *= trustMultiplier(s.twin.endowments.wit);
+  if (!silent) delta += cfg.trust.replyBonus;
+  delta *= trustMultiplier(s.twin.endowments.wit, cfg);
 
-  applyEffects(s, result.outcome, ctx.age);
+  applyEffects(s, result.outcome, ctx.age, cfg);
   s.twin.trust = round2(clamp(trustBefore + delta));
   reasons.push({ code: "TRUST", before: round2(trustBefore), after: s.twin.trust });
 
-  // 机敏：每经历一个难题 +1，累计上限 +15
-  if (s.log.length < WIT_GROWTH_CAP) s.twin.endowments.wit = clamp(s.twin.endowments.wit + 1);
+  // 机敏：每经历一个难题 +witGrowthPerDilemma，累计不超过 witGrowthCap
+  const { witGrowthPerDilemma: step1, witGrowthCap } = cfg.endowments;
+  if (s.log.length * step1 < witGrowthCap) {
+    s.twin.endowments.wit = clamp(s.twin.endowments.wit + Math.min(step1, witGrowthCap - s.log.length * step1));
+  }
 
   // 「换了是你」
   let personaAnswer: number | null = null;
@@ -320,7 +323,7 @@ export function resolveTurn(
     const q = dilemma.personaQuestion;
     const choice = q?.choices[input.personaAnswer];
     if (!choice) throw new Error(`bad personaAnswer ${input.personaAnswer}`);
-    s.persona.traits = applyDelta(s.persona.traits, choice.delta, PERSONA_QUESTION_CAP);
+    s.persona.traits = applyDelta(s.persona.traits, choice.delta, cfg.persona.questionCap);
     s.persona.history.push({ source: `letter:${dilemma.id}`, delta: choice.delta });
     personaAnswer = input.personaAnswer;
   }
@@ -354,6 +357,6 @@ export function resolveTurn(
 }
 
 /** 引擎主入口：结算 + 推进到下一个难题（或结局）。 */
-export function step(state: GameState, input: TurnInput, pack: EraPack, randomness: Randomness = birthOnly): GameState {
-  return advance(resolveTurn(state, input, pack, randomness), pack);
+export function step(state: GameState, input: TurnInput, pack: EraPack, opts: ResolveOptions = {}): GameState {
+  return advance(resolveTurn(state, input, pack, opts), pack, opts.config ?? DEFAULT_CONFIG);
 }

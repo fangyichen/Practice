@@ -1,6 +1,6 @@
-import type { EndowmentKey, Endowments, EraPack, GameState, Persona } from "../schemas";
+import type { EndowmentKey, Endowments, EngineConfig, EraPack, GameState, Persona } from "../schemas";
 import { advance } from "./advance";
-import { DEFAULT_BUDGET } from "./budget";
+import { DEFAULT_CONFIG } from "./config";
 import { applyCarry, drawEndowments } from "./endowments";
 import { createRng } from "./rng";
 import { initialTrust } from "./traits";
@@ -23,21 +23,26 @@ export type BirthResult = {
   name: string;
 };
 
-export function rollBirth(params: BirthParams, pack: EraPack): BirthResult {
+export function rollBirth(params: BirthParams, pack: EraPack, cfg: EngineConfig = DEFAULT_CONFIG): BirthResult {
   if (pack.slice.birth.mode !== "rolled") {
     throw new Error(`birth mode "${pack.slice.birth.mode}" is not supported`);
   }
   const rng = createRng(`birth:${params.seed}`);
   const location = rng.pick(pack.slice.birthLocations);
   const station = rng.weighted(pack.stations, (s) => s.weight);
-  const baseEndowments = drawEndowments(rng, params.carry, station.endowmentWeights);
+  const baseEndowments = drawEndowments(rng, params.carry, station.endowmentWeights, cfg);
   const surname = rng.pick(pack.era.names.surnames);
   const given = rng.pick(pack.era.names.given[params.gender]);
   return { location, station: station.id, baseEndowments, name: surname + given };
 }
 
 /** 由投生结果建立初始状态，并推进到第一个难题。不使用 RNG。 */
-export function startLife(params: BirthParams, birth: BirthResult, pack: EraPack): GameState {
+export function startLife(
+  params: BirthParams,
+  birth: BirthResult,
+  pack: EraPack,
+  cfg: EngineConfig = DEFAULT_CONFIG,
+): GameState {
   const station = findStation(pack, birth.station);
   const persona = clone(params.persona);
   persona.carryChoices = [...persona.carryChoices, params.carry];
@@ -53,7 +58,7 @@ export function startLife(params: BirthParams, birth: BirthResult, pack: EraPack
       birthYear: pack.slice.birthYear,
       location: birth.location,
       station: station.id,
-      endowments: applyCarry(birth.baseEndowments, params.carry),
+      endowments: applyCarry(birth.baseEndowments, params.carry, cfg),
       boosted: params.carry,
       craft: station.initial.craft,
       health: station.initial.health,
@@ -61,22 +66,22 @@ export function startLife(params: BirthParams, birth: BirthResult, pack: EraPack
       standing: station.initial.standing,
       household: { spouse: false, children: 0, parentsAlive: station.household.parentsAlive },
       allegiance: null,
-      trust: initialTrust(persona.traits),
+      trust: initialTrust(persona.traits, cfg),
       flags: [],
       alive: true,
     },
     year: pack.slice.startYear,
     season: 1,
-    charBudgetLeft: DEFAULT_BUDGET.lifetime,
+    charBudgetLeft: cfg.budget.lifetime,
     turn: 0,
     nodeIndex: 0,
     pendingDilemma: null,
     log: [],
     ending: null,
   };
-  return advance(state, pack);
+  return advance(state, pack, cfg);
 }
 
-export function birth(params: BirthParams, pack: EraPack): GameState {
-  return startLife(params, rollBirth(params, pack), pack);
+export function birth(params: BirthParams, pack: EraPack, cfg: EngineConfig = DEFAULT_CONFIG): GameState {
+  return startLife(params, rollBirth(params, pack, cfg), pack, cfg);
 }

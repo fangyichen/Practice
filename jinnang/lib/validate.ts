@@ -6,8 +6,9 @@
  *   m0   —— M0 放宽：每局恰好经历 3 个难题；保护规则只覆盖前 2 个
  *           （M0 只有 3 个难题，第 3 个就是 208 年去留，文档样例里它本身含致死结果）。
  */
-import { ENDOWMENT_KEYS, type Dilemma, type EraPack, type Outcome } from "../schemas";
-import { isKnownTag, PERSONA_QUESTION_CAP } from "../engine/traits";
+import { ENDOWMENT_KEYS, type Dilemma, type EngineConfig, type EraPack, type Outcome } from "../schemas";
+import { DEFAULT_CONFIG } from "../engine/config";
+import { isKnownTag } from "../engine/traits";
 
 export type Profile = "m0" | "full";
 export type Issue = { level: "error" | "warn"; where: string; msg: string };
@@ -82,7 +83,7 @@ export function enumeratePaths(pack: EraPack, protectFirst: number) {
   return { min, max, lethalEarly: [...new Set(lethalEarly)] };
 }
 
-export function validateEra(pack: EraPack, profile: Profile = "full"): Issue[] {
+export function validateEra(pack: EraPack, profile: Profile = "full", engineCfg: EngineConfig = DEFAULT_CONFIG): Issue[] {
   const cfg = PROFILES[profile];
   const issues: Issue[] = [];
   const err = (where: string, msg: string) => issues.push({ level: "error", where, msg });
@@ -128,7 +129,8 @@ export function validateEra(pack: EraPack, profile: Profile = "full"): Issue[] {
     if (d.timed && !d.options.some((o) => !o.urgent && !o.gate && !o.requires)) err(w, "timed 难题没有可供误时后退守的选项");
     for (const q of d.personaQuestion?.choices ?? []) {
       for (const [k, v] of Object.entries(q.delta)) {
-        if (Math.abs(v as number) > PERSONA_QUESTION_CAP) err(w, `「换了是你」${k} 调整 ${v} 超过 ±${PERSONA_QUESTION_CAP}`);
+        const cap = engineCfg.persona.questionCap;
+        if (Math.abs(v as number) > cap) err(w, `「换了是你」${k} 调整 ${v} 超过 ±${cap}`);
       }
     }
     for (const l of d.condition.where ?? []) if (!locIds.has(l)) err(w, `condition.where ${l} 不存在`);
@@ -137,7 +139,7 @@ export function validateEra(pack: EraPack, profile: Profile = "full"): Issue[] {
     for (const opt of d.options) {
       const ow = `${w}/${opt.id}`;
       if (opt.gate) gateCount[opt.gate.stat] = (gateCount[opt.gate.stat] ?? 0) + 1;
-      for (const tag of opt.tags) if (!isKnownTag(tag)) warn(ow, `标签 ${tag} 不在引擎冲突表中，冲突恒为 0`);
+      for (const tag of opt.tags) if (!isKnownTag(tag, engineCfg)) warn(ow, `标签 ${tag} 不在引擎冲突表中，冲突恒为 0`);
       for (const s of opt.requires?.station ?? []) if (!stationIds.has(s)) err(ow, `requires.station ${s} 不存在`);
 
       const needed = new Set<string>(["DONE"]);

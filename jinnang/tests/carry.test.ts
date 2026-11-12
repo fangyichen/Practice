@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { rollBirth, tier } from "../engine";
-import { CARRY_BONUS } from "../engine/endowments";
+import { DEFAULT_CONFIG } from "../engine/config";
 import { carryRevealLine } from "../lib/render";
 import { loadContent } from "../lib/pack";
 import { ENDOWMENT_KEYS } from "../schemas";
@@ -22,7 +22,7 @@ describe("带一样过去（盲选加成）", () => {
         }
         const s = start(params.persona, carry, b);
         const e = s.twin.endowments;
-        expect(e[carry]).toBe(base[carry] + CARRY_BONUS);
+        expect(e[carry]).toBe(base[carry] + DEFAULT_CONFIG.endowments.carryBonus);
         expect(tier(e[carry])).toBe(tier(base[carry]) + 1);
         for (const k of ENDOWMENT_KEYS) if (k !== carry) expect(e[k]).toBe(base[k]);
         expect(s.twin.boosted).toBe(carry);

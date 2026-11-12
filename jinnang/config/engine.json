@@ -1,0 +1,94 @@
+{
+  "_doc": "引擎可调参数。以 _ 开头的键是说明，加载时忽略。改完运行 npm test 与 npm run simulate 看效果。难题自身的数值（如 urgency）、身份权重等内容数据不在这里，在 eras/ 下。",
+
+  "randomness": "birth_only",
+
+  "trust": {
+    "_doc": "信任（设计文档 8.2 第三步、第七步）。初始信任 = initialBase - (skepticism - 50) × skepticismWeight",
+    "initialBase": 50,
+    "skepticismWeight": 0.4,
+    "verdict": { "right": 15, "wrong": -12, "mixed": 3, "none": 0 },
+    "_replyBonus": "回了信（非沉默）另加",
+    "replyBonus": 2,
+    "_regretFactor": "没照做而事后证明你说得对时，按 right × regretFactor 计",
+    "regretFactor": 0.5,
+    "_witMultiplier": "全部变化乘以 base + wit × perPoint（机敏的人验证得更快）",
+    "witMultiplier": { "base": 0.6, "perPoint": 0.008 }
+  },
+
+  "willingness": {
+    "_doc": "score = trust - conflict + urgency。score ≥ willing 肯；floor ≤ score < willing 时可折中则 PARTIAL，否则 ≥ middleYes 算肯；< floor 不肯",
+    "willing": 60,
+    "middleYes": 45,
+    "floor": 30
+  },
+
+  "reading": {
+    "_doc": "第一步：分类分布里概率 ≥ candidateMinProb 的选项是候选读法；有歧义时机敏档位 ≥ witTierReadsWell 才取概率最高者",
+    "candidateMinProb": 0.2,
+    "witTierReadsWell": 2
+  },
+
+  "temperament": {
+    "_doc": "肯而不能时 boldness ≥ boldEnough 或 impulsiveness ≥ rashImpulsiveness 会硬上；timed 难题里 impulsiveness < slowImpulsiveness 会误了时机。rashImpulsiveness 也是结果规则里 rash 条件的阈值",
+    "boldEnough": 60,
+    "rashImpulsiveness": 70,
+    "slowImpulsiveness": 25
+  },
+
+  "tagConflict": {
+    "_doc": "每个标签的冲突 = Σ (dir=1 ? 特质 : 100-特质) × w，每个标签上限 40",
+    "leave_home": [{ "trait": "rootedness", "dir": 1, "w": 0.4 }],
+    "abandon_property": [{ "trait": "rootedness", "dir": 1, "w": 0.25 }, { "trait": "boldness", "dir": -1, "w": 0.15 }],
+    "risk_life": [{ "trait": "boldness", "dir": -1, "w": 0.4 }],
+    "betray_lord": [{ "trait": "loyalty", "dir": 1, "w": 0.4 }],
+    "break_promise": [{ "trait": "loyalty", "dir": 1, "w": 0.4 }],
+    "defy_authority": [{ "trait": "boldness", "dir": -1, "w": 0.4 }],
+    "submit_authority": [{ "trait": "boldness", "dir": 1, "w": 0.4 }],
+    "trust_stranger": [{ "trait": "skepticism", "dir": 1, "w": 0.25 }, { "trait": "sociability", "dir": -1, "w": 0.15 }],
+    "settle_down": [{ "trait": "rootedness", "dir": -1, "w": 0.4 }],
+    "disappoint_family": [{ "trait": "rootedness", "dir": 1, "w": 0.25 }, { "trait": "loyalty", "dir": 1, "w": 0.15 }]
+  },
+
+  "endowments": {
+    "_doc": "档位固定为每 20 一档（0–19 … 80–100），所以 carryBonus 必须是 20。三项总和 sum，每项 [min, max]，被带过去的那项加成前 ≤ carryPreMax",
+    "sum": 150,
+    "min": 10,
+    "max": 90,
+    "carryBonus": 20,
+    "carryPreMax": 79,
+    "physiqueDeclineAge": 35,
+    "physiqueDeclinePerYear": 2,
+    "_witGrowth": "机敏每经历一个难题 +witGrowthPerDilemma，累计上限 witGrowthCap",
+    "witGrowthPerDilemma": 1,
+    "witGrowthCap": 15,
+    "_looksFade": "相貌在 fadeAge 岁后每满 fadeStep 年视为降一档",
+    "looksFadeAge": 35,
+    "looksFadeStep": 5,
+    "_craftGrowth": "每年技艺增长 = 身份成长率 × (base + wit / witDivisor)",
+    "craftGrowth": { "base": 0.6, "witDivisor": 125 }
+  },
+
+  "budget": {
+    "_doc": "按字素计，空白与标点不计。maxRawLength 是含标点的原始长度上限",
+    "perLetter": 10,
+    "lifetime": 100,
+    "maxRawLength": 120
+  },
+
+  "persona": {
+    "_doc": "「换了是你」单次每项调整上限 questionCap；建档情境题单项上限 onboardingCap；MBTI 起点从 50 按字母加减",
+    "questionCap": 6,
+    "onboardingCap": 10,
+    "mbtiAdjust": {
+      "E": { "sociability": 15, "boldness": 5 },
+      "I": { "sociability": -15 },
+      "N": { "boldness": 12, "rootedness": -8 },
+      "S": { "rootedness": 12 },
+      "T": { "skepticism": 15 },
+      "F": { "loyalty": 12, "skepticism": -5 },
+      "J": { "impulsiveness": -15 },
+      "P": { "impulsiveness": 15 }
+    }
+  }
+}
