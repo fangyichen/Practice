@@ -1,0 +1,144 @@
+[
+  {
+    "id": "matchmaker_call",
+    "year": 199,
+    "season": 2,
+    "condition": { "alive": true, "spouse": false },
+    "timed": false,
+    "urgency": 10,
+    "situationFacts": [
+      "乡里的媒人登门，说县城里一户殷实人家想结亲",
+      "那户人家要先相看，看中了才肯下聘",
+      "家里老人盼着早些成家"
+    ],
+    "options": [
+      { "id": "seek_match", "label": "应下这门亲，进城相看",
+        "tags": ["trust_stranger"],
+        "gate": { "stat": "looks", "minTier": 2 },
+        "results": [
+          { "when": { "exec": "DONE", "tierAtLeast": { "looks": 4 } }, "outcome": "match_envied" },
+          { "when": { "exec": "DONE", "station": ["peddler"], "tierAtLeast": { "looks": 3 } }, "outcome": "wed_into_trade_house" },
+          { "when": { "exec": "DONE", "tierAtLeast": { "looks": 3 } }, "outcome": "wed_well_off" },
+          { "when": { "exec": "DONE" }, "outcome": "wed_modest" },
+          { "when": { "exec": "ATTEMPT_FAILED" }, "outcome": "rebuffed_at_viewing" }
+        ] },
+      { "id": "local_match", "label": "就近与同村知根底的人家结亲",
+        "tags": ["settle_down"],
+        "results": [
+          { "when": { "exec": "DONE" }, "outcome": "wed_neighbor" }
+        ] },
+      { "id": "wait_marry", "label": "先不成家，攒几年家业再说",
+        "tags": ["disappoint_family"],
+        "results": [
+          { "when": { "exec": "DONE", "craftAtLeast": 20 }, "outcome": "saved_up_craft" },
+          { "when": { "exec": "DONE" }, "outcome": "stayed_single" }
+        ] }
+    ],
+    "default": "by_traits",
+    "selfKnownLimits": ["looks"],
+    "fallbackLetter": "足下见字。前日乡里的媒人上门，说城里有一户殷实人家想结亲，只是要先相看，看中了才肯下聘。家里老人听了，夜里都睡不着，盼我早些成家。我照过井水，自家这副模样，进了城不知人家看不看得上。同村也有知根知底的人家，或者索性再等几年，攒些家业。足下以为如何？",
+    "personaQuestion": {
+      "prompt": "换了是你，先成家还是先立业？",
+      "choices": [
+        { "text": "先成家，心里才踏实", "delta": { "rootedness": 5, "sociability": 2 } },
+        { "text": "先立业，有了底子再说", "delta": { "rootedness": -4, "boldness": 3 } }
+      ]
+    }
+  },
+  {
+    "id": "county_levy",
+    "year": 204,
+    "season": 1,
+    "condition": { "alive": true },
+    "timed": false,
+    "urgency": 15,
+    "situationFacts": [
+      "州府下令各县点丁，修城运粮",
+      "里正挨户点名，家家都要出丁",
+      "听说托县里的书佐说句话，就能把名字从册上勾掉"
+    ],
+    "options": [
+      { "id": "answer_levy", "label": "照册应役",
+        "tags": ["submit_authority"],
+        "results": [
+          { "when": { "exec": "DONE", "craftAtLeast": 30 }, "outcome": "levied_as_artisan" },
+          { "when": { "exec": "DONE", "tierAtLeast": { "physique": 3 } }, "outcome": "drafted_as_soldier" },
+          { "when": { "exec": "DONE" }, "outcome": "levy_labor_hardship" }
+        ] },
+      { "id": "plead_exemption", "label": "托人说情，把名字勾掉",
+        "tags": ["defy_authority", "trust_stranger"],
+        "gate": { "stat": "wit", "minTier": 2 },
+        "results": [
+          { "when": { "exec": "DONE", "tierAtLeast": { "wit": 3 } }, "outcome": "exempted_cheaply" },
+          { "when": { "exec": "DONE" }, "outcome": "exempted_costly" },
+          { "when": { "exec": "ATTEMPT_FAILED", "rash": true }, "outcome": "struck_the_clerk" },
+          { "when": { "exec": "ATTEMPT_FAILED" }, "outcome": "caught_pleading" }
+        ] },
+      { "id": "pay_substitute", "label": "出钱雇人代役",
+        "tags": [],
+        "requires": { "station": ["peddler", "petty_clerk", "wandering_scholar"] },
+        "results": [
+          { "when": { "exec": "DONE" }, "outcome": "substitute_hired" }
+        ] }
+    ],
+    "default": "by_traits",
+    "selfKnownLimits": ["wit"],
+    "fallbackLetter": "足下见字。州府下了令，各县点丁，修城运粮，里正已经挨户点过名了。有人私下说，托县里的书佐说句话，名字就能从册上勾掉。只是我嘴笨，见了官面上的人话都说不利索，怕托不成反倒惹事。照册去应役，家里的地又要荒一季。这事该怎么办？",
+    "personaQuestion": {
+      "prompt": "换了是你，官府点到头上，会去托人吗？",
+      "choices": [
+        { "text": "规矩就是规矩，该去就去", "delta": { "boldness": -3, "loyalty": 3 } },
+        { "text": "能想办法就想办法", "delta": { "boldness": 4, "skepticism": 2 } }
+      ]
+    }
+  },
+  {
+    "id": "cao_marches_south",
+    "year": 208,
+    "season": 3,
+    "anchor": "cao_south_208",
+    "condition": { "alive": true, "where": ["xiangyang", "xinye"] },
+    "timed": true,
+    "urgency": 20,
+    "situationFacts": [
+      "刘表新丧，其子刘琮举州降曹",
+      "刘皇叔弃新野、走樊城，百姓扶老携幼相随",
+      "曹军铁骑日夜兼行"
+    ],
+    "options": [
+      { "id": "follow_liu", "label": "随刘皇叔南走",
+        "tags": ["leave_home", "risk_life"],
+        "gate": { "stat": "physique", "minTier": 2 },
+        "partial": true,
+        "urgent": true,
+        "results": [
+          { "when": { "exec": "DONE", "tierAtLeast": { "physique": 3 } }, "outcome": "reached_jiangxia" },
+          { "when": { "exec": "DONE" }, "outcome": "survived_changban_lost_all" },
+          { "when": { "exec": "PARTIAL" }, "outcome": "sent_family_ahead" },
+          { "when": { "exec": "ATTEMPT_FAILED" }, "outcome": "collapsed_on_road" }
+        ] },
+      { "id": "stay", "label": "留在乡里",
+        "tags": ["submit_authority"],
+        "results": [
+          { "when": { "exec": "DONE", "tierAtLeast": { "physique": 3 } }, "outcome": "conscripted_to_fleet" },
+          { "when": { "exec": "DONE" }, "outcome": "stayed_under_cao" }
+        ] },
+      { "id": "hide_hills", "label": "入山暂避",
+        "tags": ["abandon_property"],
+        "results": [
+          { "when": { "exec": "DONE", "tierAtLeast": { "wit": 3 } }, "outcome": "hid_and_kept_grain" },
+          { "when": { "exec": "DONE" }, "outcome": "hid_house_looted" }
+        ] }
+    ],
+    "default": "by_traits",
+    "selfKnownLimits": ["physique"],
+    "fallbackLetter": "足下见字。城里乱了。都说刘荆州没了，他儿子把一州都献给了曹丞相。刘皇叔弃了新野往南走，街坊扶老携幼跟着去了一大半，路上哭声不断。又听说曹军的马队日夜不停，就快到了。我这几亩地、这间屋，是爹娘留下的。走，还是不走？要走就得是今夜。",
+    "personaQuestion": {
+      "prompt": "换了是你，舍得下这几亩地吗？",
+      "choices": [
+        { "text": "舍不得，地在人在", "delta": { "rootedness": 6 } },
+        { "text": "人活着，地可以再置", "delta": { "rootedness": -6, "boldness": 3 } }
+      ]
+    }
+  }
+]

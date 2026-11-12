@@ -1,0 +1,122 @@
+{
+  "match_envied": {
+    "effects": { "spouse": true, "wealth": 10, "standing": 5, "addFlags": ["envied_by_local_bully"] },
+    "facts": ["相看那日，县里一位豪强子弟也在座，多看了几眼", "亲事成了，那人却记下了这一家"],
+    "verdict": "mixed"
+  },
+  "wed_into_trade_house": {
+    "effects": { "spouse": true, "wealth": 20, "standing": 5, "addFlags": ["married_into_trade"] },
+    "facts": ["对方一眼相中，亲事很快定下", "那户人家做买卖，往后的生意多了一条路"],
+    "verdict": "right"
+  },
+  "wed_well_off": {
+    "effects": { "spouse": true, "wealth": 15, "standing": 5 },
+    "facts": ["对方相看之后十分满意，亲事很快定下", "陪嫁丰厚，家里宽裕了些"],
+    "verdict": "right"
+  },
+  "wed_modest": {
+    "effects": { "spouse": true, "wealth": 5 },
+    "facts": ["对方犹豫了些日子，终究应了", "婚事办得不算体面，倒也安稳"],
+    "verdict": "right"
+  },
+  "rebuffed_at_viewing": {
+    "effects": { "standing": -5 },
+    "facts": ["相看之后，对方托媒人回了话，说不合适", "这事在乡里传开，脸上不大好看"],
+    "verdict": "wrong"
+  },
+  "wed_neighbor": {
+    "effects": { "spouse": true },
+    "facts": ["与同村一户知根底的人家结了亲", "婚事办得简单，两家常来常往"],
+    "verdict": "right"
+  },
+  "saved_up_craft": {
+    "effects": { "craft": 8, "wealth": 5 },
+    "facts": ["推了这门亲，一心扑在手艺上", "几年下来，活计做得比从前精细"],
+    "verdict": "right"
+  },
+  "stayed_single": {
+    "effects": { "wealth": 5 },
+    "facts": ["推了这门亲，照旧下地做活", "老人叹了几回气"],
+    "verdict": "none"
+  },
+  "levied_as_artisan": {
+    "effects": { "craft": 10, "addFlags": ["served_levy", "levy_artisan"] },
+    "facts": ["册上记了会手艺，被派去修城门、烧砖", "活计不轻，倒也学了几手"],
+    "verdict": "right"
+  },
+  "drafted_as_soldier": {
+    "effects": { "health": -5, "standing": 3, "addFlags": ["served_levy", "levy_soldier"] },
+    "facts": ["身板结实，被拣去充了州兵，操练了一冬", "开春才放回家"],
+    "verdict": "mixed"
+  },
+  "levy_labor_hardship": {
+    "effects": { "health": -10, "physique": -3, "wealth": -5, "addFlags": ["served_levy"] },
+    "facts": ["被派去运粮，往返数百里", "回来时瘦了一圈，家里的地也荒了一季"],
+    "verdict": "mixed"
+  },
+  "exempted_cheaply": {
+    "effects": { "wealth": -5 },
+    "facts": ["寻到了门路，几句话、一点薄礼，名字便从册上勾掉了"],
+    "verdict": "right"
+  },
+  "exempted_costly": {
+    "effects": { "wealth": -20 },
+    "facts": ["名字是勾掉了，可前后打点花了不少钱"],
+    "verdict": "mixed"
+  },
+  "struck_the_clerk": {
+    "effects": { "health": -10, "standing": -15, "wealth": -10, "addFlags": ["served_levy", "flogged_for_levy"] },
+    "facts": ["说情不成，一时火起，与书佐争执推搡", "被拿去打了二十板，仍旧应了役"],
+    "verdict": "wrong"
+  },
+  "caught_pleading": {
+    "effects": { "wealth": -10, "standing": -5, "addFlags": ["served_levy"] },
+    "facts": ["托的人收了钱，事却没办成", "照旧应了役，钱也没回来"],
+    "verdict": "wrong"
+  },
+  "substitute_hired": {
+    "effects": { "wealth": -25 },
+    "facts": ["家里出了一笔钱，雇了邻村一个闲汉代役"],
+    "verdict": "right"
+  },
+  "reached_jiangxia": {
+    "effects": { "health": -5, "wealth": -20, "location": "jiangxia", "addFlags": ["followed_liu_south"] },
+    "facts": ["一路不敢停，抢在曹军追到之前过了汉津", "随刘皇叔的人马到了江夏"],
+    "verdict": "right"
+  },
+  "survived_changban_lost_all": {
+    "effects": { "health": -15, "wealth": -40, "location": "jiangxia", "addFlags": ["survived_changban"] },
+    "facts": ["当阳道上曹军追及，百姓死伤枕藉", "他弃了行李，随残众到了江夏"],
+    "verdict": "mixed"
+  },
+  "sent_family_ahead": {
+    "effects": { "wealth": -15, "addFlags": ["family_sent_south"] },
+    "facts": ["他把家里人托给南去的同乡，自己留下守着屋子", "后来听说当阳道上死了许多人，家里人一时没有音信"],
+    "verdict": "mixed"
+  },
+  "collapsed_on_road": {
+    "effects": { "alive": false, "addFlags": ["died_on_road_208"] },
+    "facts": ["行至当阳，他力竭倒在道旁"],
+    "verdict": "wrong"
+  },
+  "conscripted_to_fleet": {
+    "effects": { "health": -5, "location": "jiangling", "allegiance": "cao", "addFlags": ["conscripted_cao_fleet"] },
+    "facts": ["曹军入城，见他身板结实，编进了水军拉纤摇橹", "大军顺江东下，他也在船上"],
+    "verdict": "wrong"
+  },
+  "stayed_under_cao": {
+    "effects": { "wealth": -5, "addFlags": ["stayed_208"] },
+    "facts": ["他关门闭户，没有走", "曹军入城，出榜安民，日子照旧过"],
+    "verdict": "mixed"
+  },
+  "hid_and_kept_grain": {
+    "effects": { "wealth": -5, "addFlags": ["hid_in_hills_208"] },
+    "facts": ["他事先把粮食埋在后山", "在山里躲了一个多月，回来时粮还在"],
+    "verdict": "right"
+  },
+  "hid_house_looted": {
+    "effects": { "wealth": -30, "health": -5, "addFlags": ["hid_in_hills_208"] },
+    "facts": ["他在山里躲了一个多月", "回来时屋里被翻得精光"],
+    "verdict": "mixed"
+  }
+}

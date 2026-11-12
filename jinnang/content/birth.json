@@ -1,0 +1,9 @@
+{
+  "_note": "投生揭晓时说出那一档加成。{base} 加成前的形容词，{now} 加成后的形容词。",
+  "statNames": { "physique": "体魄", "wit": "机敏", "looks": "相貌" },
+  "carryReveal": {
+    "physique": { "low": "生来{base}，因你所愿，略胜一分，仍是{now}。", "mid": "生来{base}，因你所愿，长了一分力气，算得{now}。", "high": "生来{base}，因你所愿，又添一分筋骨，已称{now}。" },
+    "wit": { "low": "生来{base}，因你所愿，开了一窍，仍是{now}。", "mid": "生来{base}，因你所愿，多了一分心眼，算得{now}。", "high": "生来{base}，因你所愿，又添一分灵光，已称{now}。" },
+    "looks": { "low": "生来{base}，因你所愿，略好看些，仍是{now}。", "mid": "生来{base}，因你所愿，眉眼周正了些，算得{now}。", "high": "生来{base}，因你所愿，又添一分颜色，已称{now}。" }
+  }
+}

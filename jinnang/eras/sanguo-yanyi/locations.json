@@ -1,0 +1,32 @@
+[
+  { "id": "xiangyang", "name": "襄阳", "verify": "归属变化【待作者核对】",
+    "control": [
+      { "fromYear": 190, "fromSeason": 1, "faction": "liu_biao" },
+      { "fromYear": 208, "fromSeason": 3, "faction": "cao" }
+    ] },
+  { "id": "xinye", "name": "新野", "verify": "归属变化【待作者核对】",
+    "control": [
+      { "fromYear": 190, "fromSeason": 1, "faction": "liu_biao" },
+      { "fromYear": 208, "fromSeason": 3, "faction": "cao" }
+    ] },
+  { "id": "jiangling", "name": "江陵", "verify": "归属变化【待作者核对】",
+    "control": [
+      { "fromYear": 190, "fromSeason": 1, "faction": "liu_biao" },
+      { "fromYear": 208, "fromSeason": 3, "faction": "cao" },
+      { "fromYear": 209, "fromSeason": 1, "faction": "liu_bei" },
+      { "fromYear": 219, "fromSeason": 4, "faction": "sun" }
+    ] },
+  { "id": "changsha", "name": "长沙", "verify": "归属变化【待作者核对】",
+    "control": [
+      { "fromYear": 190, "fromSeason": 1, "faction": "liu_biao" },
+      { "fromYear": 208, "fromSeason": 4, "faction": "cao" },
+      { "fromYear": 209, "fromSeason": 1, "faction": "liu_bei" },
+      { "fromYear": 215, "fromSeason": 2, "faction": "sun" }
+    ] },
+  { "id": "jiangxia", "name": "江夏", "verify": "归属变化【待作者核对】",
+    "control": [
+      { "fromYear": 190, "fromSeason": 1, "faction": "liu_biao" },
+      { "fromYear": 207, "fromSeason": 1, "faction": "liu_qi" },
+      { "fromYear": 215, "fromSeason": 2, "faction": "sun" }
+    ] }
+]

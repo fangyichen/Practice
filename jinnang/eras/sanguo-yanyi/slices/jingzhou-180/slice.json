@@ -1,0 +1,11 @@
+{
+  "id": "jingzhou-180",
+  "title": "第一卷 · 荆州",
+  "birthYear": 180,
+  "startYear": 196,
+  "endYear": 223,
+  "birthLocations": ["xiangyang", "xinye"],
+  "birth": { "mode": "rolled" },
+  "nodes": ["matchmaker_call", "county_levy", "cao_marches_south"],
+  "note": "M0 只有 3 个难题。出生地暂时只开襄阳、新野，保证每条分支都经过 208 年去留；M1 补齐难题后恢复江陵、长沙。"
+}

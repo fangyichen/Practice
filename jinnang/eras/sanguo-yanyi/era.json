@@ -1,0 +1,40 @@
+{
+  "id": "sanguo-yanyi",
+  "title": "三国演义",
+  "canonNotice": "此间以《三国演义》为准。",
+  "playerAddress": "足下",
+  "styleHints": [
+    "半文半白，小民口吻，不用典故堆砌",
+    "对大人物只有道听途说的了解，用民间叫法",
+    "借东风、草船借箭、空城计在这里都是真事；与正史不同处以演义为准"
+  ],
+  "verify": "纪年表与势力名称【待作者核对】；220 年之后按所在地归属取年号",
+  "eraNames": [
+    { "name": "中平", "startYear": 184, "endYear": 189, "verify": "待作者核对" },
+    { "name": "初平", "startYear": 190, "endYear": 193, "verify": "待作者核对" },
+    { "name": "兴平", "startYear": 194, "endYear": 195, "verify": "待作者核对" },
+    { "name": "建安", "startYear": 196, "endYear": 220, "verify": "待作者核对（220 年另有延康）" },
+    { "name": "黄初", "startYear": 220, "endYear": 226, "faction": "cao", "verify": "待作者核对" },
+    { "name": "章武", "startYear": 221, "endYear": 223, "faction": "liu_bei", "verify": "待作者核对" },
+    { "name": "黄武", "startYear": 222, "endYear": 229, "faction": "sun", "verify": "待作者核对" }
+  ],
+  "factions": [
+    { "id": "liu_biao", "name": "刘表", "folkName": "刘荆州" },
+    { "id": "liu_qi", "name": "刘琦", "folkName": "刘公子" },
+    { "id": "liu_bei", "name": "刘备", "folkName": "刘皇叔" },
+    { "id": "cao", "name": "曹操", "folkName": "曹丞相" },
+    { "id": "sun", "name": "孙权", "folkName": "江东孙将军" }
+  ],
+  "names": {
+    "surnames": ["王", "李", "张", "陈", "黄", "周", "吴", "赵", "孙", "邓", "蔡", "习", "庞", "杨", "何", "朱", "胡", "郭", "许", "彭"],
+    "given": {
+      "m": ["大", "二", "石头", "阿牛", "顺", "安", "福", "厚", "平", "根", "满", "旺", "实", "忠", "全", "成", "来", "喜", "茂", "禾"],
+      "f": ["阿秀", "兰", "梅", "桂", "春", "巧", "翠", "芳", "莲", "珠", "月", "娥", "凤", "英", "苗", "荷", "惠", "宁", "玉", "素"]
+    }
+  },
+  "endowmentLabels": {
+    "physique": ["羸弱", "单薄", "寻常", "健壮", "魁伟"],
+    "wit": ["鲁钝", "朴拙", "寻常", "机警", "颖悟"],
+    "looks": ["貌寝", "平平", "中人之姿", "端正", "姿容甚伟"]
+  }
+}

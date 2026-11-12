@@ -1,0 +1,49 @@
+[
+  { "id": "job_offer_far", "prompt": "外地有个工资高一截的工作，要搬家。你会？",
+    "choices": [
+      { "text": "去，换个城市也挺好", "delta": { "rootedness": -8, "boldness": 5 } },
+      { "text": "算了，家人朋友都在这边", "delta": { "rootedness": 8 } }
+    ] },
+  { "id": "stranger_tip", "prompt": "群里一个不认识的人推荐了一只「稳赚」的基金。你会？",
+    "choices": [
+      { "text": "先查清楚这人是谁", "delta": { "skepticism": 8 } },
+      { "text": "小投一点试试", "delta": { "skepticism": -5, "boldness": 5 } },
+      { "text": "直接无视", "delta": { "skepticism": 5, "sociability": -5 } }
+    ] },
+  { "id": "friend_promise", "prompt": "答应朋友周末帮忙搬家，结果临时有个更想去的局。你会？",
+    "choices": [
+      { "text": "照约定去搬家", "delta": { "loyalty": 10 } },
+      { "text": "跟朋友商量改天", "delta": { "loyalty": -5, "impulsiveness": 5 } }
+    ] },
+  { "id": "sale_ends_tonight", "prompt": "看中一件贵东西，促销今晚截止。你会？",
+    "choices": [
+      { "text": "先下单再说", "delta": { "impulsiveness": 10 } },
+      { "text": "错过就错过，想清楚再买", "delta": { "impulsiveness": -10 } }
+    ] },
+  { "id": "party_alone", "prompt": "一个人去参加只认识主人的聚会。你通常？",
+    "choices": [
+      { "text": "主动找人聊", "delta": { "sociability": 10 } },
+      { "text": "找个角落待着，等熟人来", "delta": { "sociability": -8 } }
+    ] },
+  { "id": "boss_wrong", "prompt": "领导在会上说了一个明显错误的决定。你会？",
+    "choices": [
+      { "text": "当场提出来", "delta": { "boldness": 10 } },
+      { "text": "会后私下说", "delta": { "boldness": -3, "sociability": 3 } },
+      { "text": "照做，不是我的事", "delta": { "boldness": -8 } }
+    ] },
+  { "id": "old_house", "prompt": "老家的房子要拆迁，补偿还行。家里让你拿主意。",
+    "choices": [
+      { "text": "拿钱，去城里买房", "delta": { "rootedness": -8 } },
+      { "text": "能不拆就不拆，那是根", "delta": { "rootedness": 10 } }
+    ] },
+  { "id": "risky_trip", "prompt": "朋友约你去一条有点危险的徒步线路。你会？",
+    "choices": [
+      { "text": "去，人生就要刺激点", "delta": { "boldness": 10, "impulsiveness": 5 } },
+      { "text": "换条安全的路线吧", "delta": { "boldness": -8 } }
+    ] },
+  { "id": "group_project", "prompt": "小组合作，有个组员一直不出力。你会？",
+    "choices": [
+      { "text": "直接找他谈", "delta": { "boldness": 5, "sociability": 5 } },
+      { "text": "自己多干点算了", "delta": { "loyalty": 5, "boldness": -5 } }
+    ] }
+]

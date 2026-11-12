@@ -1,0 +1,497 @@
+[
+  {
+    "id": "yellow_turbans_184",
+    "year": 184,
+    "title": "黄巾起；桃园三结义",
+    "facts": [
+      "黄巾起",
+      "桃园三结义"
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "dong_zhuo_189",
+    "year": 189,
+    "title": "董卓入京，废少帝立献帝",
+    "facts": [
+      "董卓入京，废少帝立献帝"
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "coalition_190",
+    "year": 190,
+    "title": "诸侯讨董卓；三英战吕布；董卓焚洛阳，迁都长安",
+    "facts": [
+      "诸侯讨董卓",
+      "三英战吕布",
+      "董卓焚洛阳，迁都长安"
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "chain_scheme_192",
+    "year": 192,
+    "title": "王允连环计，吕布杀董卓",
+    "facts": [
+      "王允连环计，吕布杀董卓"
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "xuzhou_193",
+    "year": 193,
+    "yearEnd": 194,
+    "title": "曹操攻徐州；陶谦三让徐州",
+    "facts": [
+      "曹操攻徐州",
+      "陶谦三让徐州"
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "emperor_to_xu_196",
+    "year": 196,
+    "title": "曹操迎献帝，移驾许都",
+    "facts": [
+      "曹操迎献帝，移驾许都"
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "white_gate_198",
+    "year": 198,
+    "title": "白门楼吕布殒命",
+    "facts": [
+      "白门楼吕布殒命"
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "guandu_200",
+    "year": 200,
+    "title": "关羽千里走单骑；官渡之战；孙策亡，孙权继立",
+    "facts": [
+      "关羽千里走单骑",
+      "官渡之战",
+      "孙策亡，孙权继立"
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "liu_at_xinye_201",
+    "year": 201,
+    "title": "刘备投刘表，屯新野",
+    "facts": [
+      "刘备投刘表，屯新野"
+    ],
+    "effects": [
+      {
+        "where": [
+          "xinye"
+        ],
+        "pressure": {
+          "garrison": 40,
+          "conscription": 20
+        }
+      }
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "three_visits_207",
+    "year": 207,
+    "title": "三顾茅庐",
+    "facts": [
+      "三顾茅庐"
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "bowang_xinye_fire_208",
+    "year": 208,
+    "season": 2,
+    "title": "火烧博望；火烧新野",
+    "facts": [
+      "火烧博望",
+      "火烧新野"
+    ],
+    "effects": [
+      {
+        "where": [
+          "xinye"
+        ],
+        "pressure": {
+          "war": 60,
+          "displacement": 70
+        }
+      }
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "cao_south_208",
+    "year": 208,
+    "season": 3,
+    "title": "刘表亡，刘琮降曹；携民渡江，长坂坡",
+    "facts": [
+      "刘表亡，刘琮降曹",
+      "携民渡江，长坂坡"
+    ],
+    "effects": [
+      {
+        "where": [
+          "xiangyang",
+          "xinye"
+        ],
+        "pressure": {
+          "war": 70,
+          "displacement": 80
+        }
+      },
+      {
+        "where": [
+          "jiangling"
+        ],
+        "pressure": {
+          "war": 40
+        }
+      }
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "chibi_prelude_208",
+    "year": 208,
+    "season": 4,
+    "title": "舌战群儒；草船借箭；借东风",
+    "facts": [
+      "舌战群儒",
+      "草船借箭",
+      "借东风"
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "chibi",
+    "year": 208,
+    "season": 4,
+    "title": "赤壁鏖兵",
+    "facts": [
+      "曹操大军顺江东下",
+      "诸葛亮借东风，周瑜纵火破曹",
+      "曹操败走华容道"
+    ],
+    "effects": [
+      {
+        "where": [
+          "jiangxia",
+          "jiangling"
+        ],
+        "pressure": {
+          "war": 80,
+          "conscription": 60,
+          "epidemic": 40
+        }
+      },
+      {
+        "where": [
+          "xiangyang"
+        ],
+        "pressure": {
+          "conscription": 50
+        }
+      }
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "nanjun_209",
+    "year": 209,
+    "title": "孙刘争南郡；刘备取荆南四郡",
+    "facts": [
+      "孙刘争南郡",
+      "刘备取荆南四郡"
+    ],
+    "effects": [
+      {
+        "where": [
+          "jiangling"
+        ],
+        "pressure": {
+          "war": 70,
+          "siege": 60
+        }
+      },
+      {
+        "where": [
+          "changsha"
+        ],
+        "pressure": {
+          "war": 30
+        }
+      }
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "zhou_yu_dies_210",
+    "year": 210,
+    "title": "周瑜亡",
+    "facts": [
+      "周瑜亡"
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "into_shu_211",
+    "year": 211,
+    "title": "刘备入川；曹操破马超于潼关",
+    "facts": [
+      "刘备入川",
+      "曹操破马超于潼关"
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "chengdu_214",
+    "year": 214,
+    "title": "刘备取成都",
+    "facts": [
+      "刘备取成都"
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "xiang_river_215",
+    "year": 215,
+    "title": "单刀赴会；孙刘以湘水分荆州；曹操取汉中",
+    "facts": [
+      "单刀赴会",
+      "孙刘以湘水分荆州",
+      "曹操取汉中"
+    ],
+    "effects": [
+      {
+        "where": [
+          "changsha",
+          "jiangxia"
+        ],
+        "pressure": {
+          "war": 20
+        }
+      }
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "fancheng_219",
+    "year": 219,
+    "title": "定军山；刘备进位汉中王；水淹七军",
+    "facts": [
+      "定军山",
+      "刘备进位汉中王",
+      "水淹七军"
+    ],
+    "effects": [
+      {
+        "where": [
+          "xiangyang"
+        ],
+        "pressure": {
+          "flood": 80,
+          "war": 60,
+          "conscription": 50
+        }
+      }
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "maicheng_219",
+    "year": 219,
+    "season": 4,
+    "title": "吕蒙白衣渡江；关羽败走麦城",
+    "facts": [
+      "吕蒙白衣渡江",
+      "关羽败走麦城"
+    ],
+    "effects": [
+      {
+        "where": [
+          "jiangling"
+        ],
+        "pressure": {
+          "war": 50
+        }
+      }
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "cao_dies_220",
+    "year": 220,
+    "title": "曹操亡；曹丕代汉",
+    "facts": [
+      "曹操亡",
+      "曹丕代汉"
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "liu_emperor_221",
+    "year": 221,
+    "title": "刘备称帝；张飞遇害；起兵伐吴",
+    "facts": [
+      "刘备称帝",
+      "张飞遇害",
+      "起兵伐吴"
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "yiling_222",
+    "year": 222,
+    "title": "夷陵之战，火烧连营",
+    "facts": [
+      "夷陵之战，火烧连营"
+    ],
+    "effects": [
+      {
+        "where": [
+          "jiangling"
+        ],
+        "pressure": {
+          "war": 50,
+          "conscription": 50
+        }
+      }
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "baidi_223",
+    "year": 223,
+    "title": "白帝城托孤",
+    "facts": [
+      "白帝城托孤"
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "southern_campaign_225",
+    "year": 225,
+    "title": "诸葛亮南征，七擒孟获",
+    "facts": [
+      "诸葛亮南征，七擒孟获"
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "memorial_227",
+    "year": 227,
+    "title": "上出师表",
+    "facts": [
+      "上出师表"
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "qishan_228",
+    "year": 228,
+    "title": "首出祁山；失街亭，空城计，斩马谡",
+    "facts": [
+      "首出祁山",
+      "失街亭，空城计，斩马谡"
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "sun_emperor_229",
+    "year": 229,
+    "title": "孙权称帝",
+    "facts": [
+      "孙权称帝"
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "wuzhang_234",
+    "year": 234,
+    "title": "星落五丈原",
+    "facts": [
+      "星落五丈原"
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "sima_coup_249",
+    "year": 249,
+    "title": "司马懿夺权",
+    "facts": [
+      "司马懿夺权"
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "wei_conquers_shu_263",
+    "year": 263,
+    "title": "魏灭蜀",
+    "facts": [
+      "魏灭蜀"
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "jin_replaces_wei_265",
+    "year": 265,
+    "title": "司马炎代魏",
+    "facts": [
+      "司马炎代魏"
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  },
+  {
+    "id": "reunification_280",
+    "year": 280,
+    "title": "晋灭吴，三分归一统",
+    "facts": [
+      "晋灭吴，三分归一统"
+    ],
+    "publicKnowledgeDelay": 1,
+    "verify": "待作者核对"
+  }
+]
