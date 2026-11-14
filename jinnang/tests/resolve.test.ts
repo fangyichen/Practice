@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { renderReason, resolveTurn, step } from "../engine";
+import { DEFAULT_CONFIG, renderReason, resolveTurn, step } from "../engine";
 import { loadContent } from "../lib/pack";
 import type { Classification, Traits } from "../schemas";
 import { fixedBirth, pack, personaFromTraits, play, PERSONA_REPLIES, silentUntil, start } from "./helpers";
@@ -80,12 +80,30 @@ describe("8.2 各步", () => {
     expect(r.read).toBeNull();
   });
 
-  it("信任：照做且结果 right 时上涨，乘以机敏系数；回了信另 +2", () => {
+  it("信任：照做且结果 right 时上涨（乘以机敏系数），再向中间回落", () => {
     const s = toCao(T({ skepticism: 0, boldness: 100, rootedness: 0 }), { physique: 70, wit: 30, looks: 50 });
     const wit = s.twin.endowments.wit;
     const r = step(s, { reply: "随皇叔走", classification: sure("follow_liu") }, pack).log.at(-1)!;
     expect(r.outcome).toBe("reached_jiangxia");
-    expect(r.trustAfter - r.trustBefore).toBeCloseTo(Math.min(100 - r.trustBefore, (15 + 2) * (0.6 + wit * 0.008)), 1);
+    const { center, pull } = DEFAULT_CONFIG.trust.regression;
+    const raw = Math.min(100, r.trustBefore + 15 * (0.6 + wit * 0.008));
+    expect(r.trustAfter).toBeCloseTo(raw - (raw - center) * pull, 1);
+  });
+
+  it("信任是双向的：没照做而你说错了，他庆幸没听，信任下降", () => {
+    // 机敏低、胆小：你让他托人说情，他自知办不成（真去办会被拿住），没去
+    const s = silentUntil(start(personaFromTraits(T({ skepticism: 0, boldness: 20 })), "looks", fixedBirth({ baseEndowments: { physique: 70, wit: 10, looks: 70 } })), "county_levy");
+    const r = step(s, { reply: "托人说情", classification: sure("plead_exemption") }, pack).log.at(-1)!;
+    expect(["DECLINED_UNABLE", "UNWILLING"]).toContain(r.exec);
+    expect(r.reasons.some((x) => x.code === "RELIEF")).toBe(true);
+    expect(r.trustAfter).toBeLessThan(r.trustBefore);
+  });
+
+  it("信任满了也会回落：一直沉默，信任向中间靠拢", () => {
+    let s = start(personaFromTraits(T({ skepticism: 0 })), "wit", fixedBirth());
+    s = { ...s, twin: { ...s.twin, trust: 100 } };
+    for (let i = 0; i < 4; i++) s = step(s, { reply: "", classification: null }, pack);
+    expect(s.twin.trust).toBeLessThan(85);
   });
 
   it("非空回复必须带分类；分类里不得有未知选项", () => {

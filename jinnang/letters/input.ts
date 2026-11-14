@@ -1,5 +1,6 @@
 import { ageOf, knownEvents, tiers } from "../engine";
-import type { EraPack, GameState } from "../schemas";
+import type { EraPack, GameState, TurnRecord } from "../schemas";
+import lettersContent from "../content/letters.json";
 import type { LetterInput } from "./types";
 
 const LEVEL = ["极差", "差", "一般", "尚可", "好"];
@@ -22,6 +23,24 @@ function traitSummary(t: Record<string, number>): string[] {
   if (hi("sociability")) out.push("爱结交人");
   if (lo("sociability")) out.push("不爱与人打交道");
   return out;
+}
+
+type LettersContent = { opening: string; previous: Record<string, string>; regret: string; relief: string };
+const LC = lettersContent as LettersContent;
+
+/** 上一封的结果，用他的口吻说一句 */
+function previousLine(prev: TurnRecord, pack: EraPack): string {
+  const d = pack.dilemmas.find((x) => x.id === prev.dilemmaId);
+  const label = (id: string | null) => d?.options.find((o) => o.id === id)?.label ?? "";
+  const codes = new Set(prev.reasons.map((r) => r.code));
+  const key =
+    prev.exec === "NO_GUIDANCE" ? (codes.has("SILENCE") ? "NO_GUIDANCE.silence" : "NO_GUIDANCE.unclear") : prev.exec;
+  const tpl = LC.previous[key] ?? "";
+  const fact = (prev.facts[0] ?? "").replace(/[。，；]$/, "");
+  let line = tpl.replace("{advised}", label(prev.read)).replace("{option}", label(prev.chosen)).replace("{fact}", fact);
+  if (codes.has("REGRET")) line += LC.regret;
+  if (codes.has("RELIEF")) line += LC.relief;
+  return line;
 }
 
 export function buildLetterInput(state: GameState, pack: EraPack): LetterInput {
@@ -64,5 +83,10 @@ export function buildLetterInput(state: GameState, pack: EraPack): LetterInput {
       .map((e) => ({ title: e.title, facts: e.facts })),
     style: { hints: pack.era.styleHints, playerAddress: pack.era.playerAddress },
     fallbackLetter: d.fallbackLetter,
+    opening: LC.opening,
+    callbacks: [
+      ...pending.fulfilled.map((id) => pack.prophecies.find((p) => p.id === id)?.line ?? "").filter(Boolean),
+      ...(prev ? [previousLine(prev, pack)] : []),
+    ],
   };
 }

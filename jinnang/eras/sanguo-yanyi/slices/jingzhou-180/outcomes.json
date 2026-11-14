@@ -1253,5 +1253,109 @@
       "听说夷陵烧了七百里"
     ],
     "verdict": "none"
+  },
+  "bully_frontline": {
+    "effects": {
+      "health": -15,
+      "standing": -5,
+      "addFlags": [
+        "served_levy"
+      ]
+    },
+    "facts": [
+      "那年相看时记下他家的豪强子弟，在县里使了钱，把他的名字排在头一个",
+      "他被派去修城最险的一段，从墙上摔下来，伤了腿"
+    ],
+    "verdict": "wrong"
+  },
+  "wrote_own_petition": {
+    "effects": {
+      "wealth": -3,
+      "standing": 3
+    },
+    "facts": [
+      "他识得字，自己写了一张呈子递上去",
+      "书佐看了一眼，就把他的名字勾了"
+    ],
+    "verdict": "right"
+  },
+  "debt_collector_at_bedside": {
+    "effects": {
+      "wealth": -35,
+      "addFlags": [
+        "lost_land"
+      ]
+    },
+    "facts": [
+      "名医请来了，豪强的人也跟着上了门：当年那笔粮债，利滚利，该还了",
+      "田契被拿走了一半，老人的病倒是缓过来了"
+    ],
+    "verdict": "mixed"
+  },
+  "bully_claims_land": {
+    "effects": {
+      "wealth": -20,
+      "addFlags": [
+        "lost_land"
+      ]
+    },
+    "facts": [
+      "造册那天，豪强把他当年欠债的事报了上去",
+      "他家几亩田，就这样划到了豪强名下"
+    ],
+    "verdict": "wrong"
+  },
+  "stayed_friend_lost": {
+    "effects": {
+      "wealth": -5,
+      "addFlags": [
+        "stayed_208",
+        "friend_died_changban"
+      ]
+    },
+    "facts": [
+      "他留了下来，曹军过境，没有为难他",
+      "半个月后有人捎来一句话：那个一起摸鱼长大的玩伴，死在了长坂坡"
+    ],
+    "verdict": "mixed"
+  },
+  "rode_supply_cart": {
+    "effects": {
+      "wealth": -10,
+      "location": "jiangxia",
+      "addFlags": [
+        "followed_liu_south",
+        "at_jiangxia_208"
+      ]
+    },
+    "facts": [
+      "当年收过他粮的那位军需官认出了他，让他一家坐上了辎重车",
+      "当阳道上哭声一片，他们是少数没走散的"
+    ],
+    "verdict": "right"
+  },
+  "boat_to_jiangxia": {
+    "effects": {
+      "wealth": -5,
+      "location": "jiangxia",
+      "addFlags": [
+        "at_jiangxia_208"
+      ]
+    },
+    "facts": [
+      "他找到当年码头上认得的船家，一家人夜里顺江而下",
+      "天亮时已经过了关卡，到了江夏"
+    ],
+    "verdict": "right"
+  },
+  "frontline_hauler": {
+    "effects": {
+      "health": -20
+    },
+    "facts": [
+      "册上有过前科，他被派去最前头的营里运粮",
+      "连营起火那夜他离得最近，烧伤了半边身子"
+    ],
+    "verdict": "wrong"
   }
 }

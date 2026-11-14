@@ -25,6 +25,7 @@ import { getRandomness, type Randomness } from "./randomness";
 import { applyDelta, optionConflict } from "./traits";
 import { clamp, clone, round2 } from "./util";
 import { ageOf, findDilemma } from "./world";
+import { detectProphecies } from "./prophecy";
 
 export type TurnInput = {
   reply: string;
@@ -296,20 +297,34 @@ export function resolveTurn(
   if (followedAdvice) {
     delta += cfg.trust.verdict[result.outcome.verdict];
   } else if (read && exec !== "NO_GUIDANCE") {
-    // 他没照做：若事后证明你说得对，他会后悔，按 right 的一半计
+    // 他没照做：事后证明你说得对，他后悔（加）；证明你说错了，他庆幸没听（减）
     const cfExec: Exec = able(read, ctx) ? "DONE" : "ATTEMPT_FAILED";
     const cf = allowed(read, ctx) ? lookupOutcome(read, cfExec, ctx, pack) : null;
     if (cf && cf.outcome.verdict === "right") {
       delta += cfg.trust.verdict.right * cfg.trust.regretFactor;
       reasons.push({ code: "REGRET", counterfactual: cf.id });
+    } else if (cf && cf.outcome.verdict === "wrong") {
+      delta += cfg.trust.verdict.wrong * cfg.trust.reliefFactor;
+      reasons.push({ code: "RELIEF", counterfactual: cf.id });
     }
   }
   if (!silent) delta += cfg.trust.replyBonus;
   delta *= trustMultiplier(s.twin.endowments.wit, cfg);
 
   applyEffects(s, result.outcome, ctx.age, cfg);
-  s.twin.trust = round2(clamp(trustBefore + delta));
+  // 先加减，再向中间回落：要一直说对才能保持高位
+  const raw = clamp(trustBefore + delta);
+  const { center, pull } = cfg.trust.regression;
+  s.twin.trust = round2(clamp(raw - (raw - center) * pull));
   reasons.push({ code: "TRUST", before: round2(trustBefore), after: s.twin.trust });
+
+  // 预言：回信里说了尚未传开的演义后事，记下来，等应验
+  if (!silent) {
+    for (const id of detectProphecies(input.reply, state, pack)) {
+      s.prophecies.push({ id, turn: s.turn, reply: input.reply, status: "pending" });
+      reasons.push({ code: "PROPHECY", id });
+    }
+  }
 
   // 机敏：每经历一个难题 +witGrowthPerDilemma，累计不超过 witGrowthCap
   const { witGrowthPerDilemma: step1, witGrowthCap } = cfg.endowments;

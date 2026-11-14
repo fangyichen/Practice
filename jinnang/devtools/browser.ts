@@ -14,6 +14,7 @@ import {
   StationSchema,
   TimelineEntrySchema,
   TracesSchema,
+  ProphecySchema,
   type EraPack,
 } from "../schemas";
 import { createApi, type BirthContent } from "./api";
@@ -25,6 +26,7 @@ import stations from "../eras/sanguo-yanyi/stations.json";
 import slice from "../eras/sanguo-yanyi/slices/jingzhou-180/slice.json";
 import dilemmas from "../eras/sanguo-yanyi/slices/jingzhou-180/dilemmas.json";
 import traces from "../eras/sanguo-yanyi/traces.json";
+import prophecies from "../eras/sanguo-yanyi/prophecies.json";
 import outcomes from "../eras/sanguo-yanyi/slices/jingzhou-180/outcomes.json";
 import fixtures from "../fixtures/replies.json";
 import reasons from "../content/reasons.json";
@@ -39,6 +41,7 @@ const pack: EraPack = {
   dilemmas: z.array(DilemmaSchema).parse(dilemmas),
   outcomes: z.record(z.string(), OutcomeSchema).parse(outcomes),
   traces: TracesSchema.parse(traces),
+  prophecies: z.array(ProphecySchema).parse(prophecies),
 };
 
 const api = createApi({

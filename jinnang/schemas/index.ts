@@ -118,6 +118,8 @@ export const DilemmaInstanceSchema = z.object({
   year: z.number().int(),
   season: Season,
   letter: z.string().max(2000).nullable(),
+  /** 写这封信之前应验了的预言 id（信里要先回应） */
+  fulfilled: z.array(Id).default([]),
 });
 export type DilemmaInstance = z.infer<typeof DilemmaInstanceSchema>;
 
@@ -166,6 +168,18 @@ export const EndingSchema = z.object({
 });
 export type Ending = z.infer<typeof EndingSchema>;
 
+export const ProphecyRecordSchema = z.object({
+  id: Id,
+  turn: z.number().int().min(0),
+  reply: z.string().max(120),
+  status: z.enum(["pending", "hit", "void"]),
+  /** 应验时的年份与信任变化 */
+  year: z.number().int().optional(),
+  trustBefore: Score.optional(),
+  trustAfter: Score.optional(),
+});
+export type ProphecyRecord = z.infer<typeof ProphecyRecordSchema>;
+
 export const GameStateSchema = z.object({
   version: z.literal(3),
   seed: z.string().max(128),
@@ -181,6 +195,8 @@ export const GameStateSchema = z.object({
   pendingDilemma: DilemmaInstanceSchema.nullable(),
   log: z.array(TurnRecordSchema).max(100),
   ending: EndingSchema.nullable(),
+  /** 玩家在回信里说过的、指向演义后事的预言 */
+  prophecies: z.array(ProphecyRecordSchema).max(50).default([]),
   sig: z.string().max(256).optional(),
 });
 export type GameState = z.infer<typeof GameStateSchema>;
@@ -437,6 +453,7 @@ export const EPITAPH_KINDS = [
   "wrongMajority",
   "repeatedReply",
   "neverMarried",
+  "prophecyHit",
   "longLife",
   "fallback",
 ] as const;
@@ -493,6 +510,19 @@ export const TracesSchema = z
   .strict();
 export type Traces = z.infer<typeof TracesSchema>;
 
+/** 预言：回信里出现这些字眼，就算说了这件事；等 event（年表 id）为人所知时应验 */
+export const ProphecySchema = z
+  .object({
+    id: Id,
+    event: Id,
+    /** 任一组里的字全部出现即命中 */
+    any: z.array(z.array(z.string().min(1)).min(1)).min(1),
+    /** 应验后，下一封信开头他说的话 */
+    line: z.string().min(1),
+  })
+  .strict();
+export type Prophecy = z.infer<typeof ProphecySchema>;
+
 export type EraPack = {
   era: Era;
   timeline: TimelineEntry[];
@@ -502,6 +532,7 @@ export type EraPack = {
   dilemmas: Dilemma[];
   outcomes: Record<string, Outcome>;
   traces: Traces;
+  prophecies: Prophecy[];
 };
 
 // ---------------------------------------------------------------------------
@@ -535,6 +566,9 @@ export const EngineConfigSchema = z
         verdict: z.object({ right: z.number(), wrong: z.number(), mixed: z.number(), none: z.number() }).strict(),
         replyBonus: z.number(),
         regretFactor: z.number().min(0).max(1),
+        reliefFactor: z.number().min(0).max(1),
+        regression: z.object({ center: Score, pull: z.number().min(0).max(1) }).strict(),
+        prophecyHit: z.number().min(0),
         witMultiplier: z.object({ base: z.number().min(0), perPoint: z.number().min(0) }).strict(),
       })
       .strict(),

@@ -1,0 +1,17 @@
+{
+ "_note": "M2 之前的 mock 写信用：信的开头先回应上一封的结果与应验的预言，再接预写的降级信。{advised} 是你建议的选项，{option} 是他实际做的，{fact} 是结果的第一句。",
+ "opening": "足下见字。",
+ "previous": {
+  "DONE": "上回照足下说的，{advised}。{fact}。",
+  "PARTIAL": "上回足下让我{advised}，我只做了一半。{fact}。",
+  "ATTEMPT_FAILED": "上回听了足下的，去{advised}，没能成。{fact}。",
+  "DECLINED_UNABLE": "上回足下让我{advised}，我掂量了自己，没敢。{fact}。",
+  "UNWILLING": "上回足下让我{advised}，我没听，还是{option}。{fact}。",
+  "NOT_ALLOWED": "上回足下说的那条路，我这样的人走不了。{fact}。",
+  "TOO_LATE": "上回我犹豫了一夜，误了。{fact}。",
+  "NO_GUIDANCE.silence": "上回没等到足下的回信，我自己拿了主意，{option}。{fact}。",
+  "NO_GUIDANCE.unclear": "上回足下的话我没看懂，只好自己拿主意，{option}。{fact}。"
+ },
+ "regret": "如今想来，那回该听足下的。",
+ "relief": "幸好那回没听足下的。"
+}

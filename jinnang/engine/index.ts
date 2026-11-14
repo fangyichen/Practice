@@ -10,3 +10,4 @@ export { ageOf, controllerOf, knownEvents } from "./world";
 export { DEFAULT_CONFIG, parseEngineConfig, withConfig } from "./config";
 export type { ResolveOptions } from "./resolve";
 export { computeEnding, eraYear, zhNumber, hashPick } from "./ending";
+export { detectProphecies, settleProphecies } from "./prophecy";

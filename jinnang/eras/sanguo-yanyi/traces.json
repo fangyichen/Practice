@@ -511,6 +511,15 @@
    ]
   },
   {
+   "id": "prophecy",
+   "kind": "prophecyHit",
+   "n": 1,
+   "templates": [
+    "你对{ta}说过「{reply}」。后来果然如此。",
+    "「{reply}」——{ta}一直记得，是你先说的。"
+   ]
+  },
+  {
    "id": "never_left",
    "kind": "advisedTagNeverDone",
    "tag": "leave_home",

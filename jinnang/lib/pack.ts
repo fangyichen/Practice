@@ -11,6 +11,7 @@ import {
   StationSchema,
   TimelineEntrySchema,
   TracesSchema,
+  ProphecySchema,
   type EraPack,
 } from "../schemas";
 
@@ -33,6 +34,7 @@ export function loadEraPack(eraId = "sanguo-yanyi", sliceId = "jingzhou-180"): E
     dilemmas: z.array(DilemmaSchema).parse(readJson(join(sdir, "dilemmas.json"))),
     outcomes: z.record(z.string(), OutcomeSchema).parse(readJson(join(sdir, "outcomes.json"))),
     traces: TracesSchema.parse(readJson(join(dir, "traces.json"))),
+    prophecies: z.array(ProphecySchema).parse(readJson(join(dir, "prophecies.json"))),
   };
 }
 

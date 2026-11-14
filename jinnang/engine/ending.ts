@@ -157,6 +157,10 @@ function epitaphSlots(rule: EpitaphRule, ctx: EpitaphCtx): Record<string, string
       const best = [...count.entries()].sort((a, b) => b[1] - a[1])[0];
       return best && best[1] >= n ? { ...base, reply: best[0], n: z(best[1]) } : null;
     }
+    case "prophecyHit": {
+      const hits = state.prophecies.filter((p) => p.status === "hit");
+      return hits.length >= Math.max(1, n) ? { ...base, n: z(hits.length), reply: hits[0]!.reply } : null;
+    }
     case "neverMarried":
       return t.alive && !t.household.spouse ? base : null;
     case "longLife":

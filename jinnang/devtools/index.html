@@ -50,6 +50,20 @@ button:disabled { opacity: .5; cursor: default; }
 .chip.clear { border-color: var(--ok); } .chip.ambiguous { border-color: var(--warn); }
 .chip.prophecy { border-color: #6b5ca5; } .chip.noise { border-color: var(--muted); color: var(--muted); }
 .reason { font-size: 17px; padding: 10px 14px; background: var(--red-soft); border-radius: 6px; margin: 8px 0; }
+.moment { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 14px; align-items: center; margin: 6px 0 10px; }
+.stamp { width: 92px; height: 92px; border: 3px solid currentColor; border-radius: 8px; display: grid; place-items: center; text-align: center;
+  font-size: 22px; line-height: 1.15; font-weight: bold; transform: rotate(-6deg); padding: 6px; letter-spacing: .05em; }
+.stamp.good { color: var(--ok); } .stamp.bad { color: var(--red); } .stamp.mid { color: var(--warn); }
+@media (prefers-reduced-motion: no-preference) { .stamp.fresh { animation: stampIn .35s ease-out; } }
+@keyframes stampIn { from { transform: rotate(-6deg) scale(1.6); opacity: 0; } to { transform: rotate(-6deg) scale(1); opacity: 1; } }
+.verdict { font-size: 15px; font-weight: bold; }
+.verdict.good { color: var(--ok); } .verdict.bad { color: var(--red); } .verdict.mid { color: var(--warn); }
+.bigfacts { font-size: 17px; margin: 6px 0; padding-left: 18px; }
+.chips2 { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.chip2 { font-size: 13px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); }
+.chip2.up { color: var(--ok); border-color: var(--ok); } .chip2.down { color: var(--red); border-color: var(--red); } .chip2.note { color: var(--warn); border-color: var(--warn); }
+.oracle { border: 2px solid var(--red); background: var(--red-soft); border-radius: 8px; padding: 10px 14px; margin: 0 0 10px; }
+.oracle b { color: var(--red); font-size: 17px; }
 .badge { display: inline-block; font-family: var(--mono); font-size: 12px; padding: 1px 6px; border-radius: 4px; background: var(--warn-soft); color: var(--warn); }
 .badge.DONE, .badge.PARTIAL { background: var(--ok-soft); color: var(--ok); }
 .badge.ATTEMPT_FAILED, .badge.UNWILLING, .badge.NOT_ALLOWED, .badge.TOO_LATE, .badge.DECLINED_UNABLE { background: var(--red-soft); color: var(--red); }
@@ -146,6 +160,7 @@ details summary { cursor: pointer; color: var(--muted); font-size: 13px; }
 
       <div class="card" id="letterCard">
         <h2 id="letterTitle">来信</h2>
+        <div id="oracleBox"></div>
         <div class="letter" id="letter"></div>
         <details style="margin-top:8px"><summary>这一题的数据（选项、门槛、标签）</summary><div id="dilemmaInfo"></div></details>
 
@@ -419,7 +434,12 @@ function show(res) {
   // 上一轮结果
   const last = view.log[view.log.length - 1];
   $("lastTurn").classList.toggle("hidden", !last);
-  if (last) $("lastTurn").innerHTML = `<h2>上一封的结果</h2>${turnHtml(last, true)}`;
+  if (last) {
+    const prev = stack.length ? stack[stack.length - 1].state : null;
+    const fresh = !!prev && prev.log.length === state.log.length - 1;
+    $("lastTurn").innerHTML = `<h2>上一封的结果</h2>${momentHtml(last, prev, state, fresh)}
+      <details><summary>调试：回复、分类与分数</summary>${turnHtml(last, true)}</details>`;
+  }
 
   // 信 / 结局
   const d = view.dilemma;
@@ -458,9 +478,16 @@ function show(res) {
   $("rawState").textContent = JSON.stringify(state, null, 2);
 }
 
+function oracleHtml(state) {
+  const ids = state.pendingDilemma?.fulfilled || [];
+  if (!ids.length) return "";
+  const recs = state.prophecies.filter((p) => ids.includes(p.id));
+  return recs.map((p) => `<div class="oracle"><b>应验了。</b> 你在第 ${p.turn + 1} 封回信里说过“${esc(p.reply)}”。<span class="muted">（调试：信任 ${p.trustBefore} → ${p.trustAfter}）</span></div>`).join("");
+}
 function renderLetter(state, view, d) {
   $("letterTitle").textContent = `来信 · ${d.year} 年${SEASON[d.season]} · ${view.age} 岁 · 第 ${state.turn + 1} 封`;
   $("letter").textContent = state.pendingDilemma.letter || "（无信）";
+  $("oracleBox").innerHTML = oracleHtml(state);
   $("dilemmaInfo").innerHTML = `
     <div class="muted">id ${esc(d.id)}；${d.timed ? "限时" : "不限时"}；紧迫度 ${d.urgency}；他自知的短处：${d.selfKnownLimits.map((k) => STAT[k]).join("、") || "无"}</div>
     <ul class="facts">${d.situationFacts.map((f) => `<li>${esc(f)}</li>`).join("")}</ul>
@@ -484,6 +511,52 @@ function renderLetter(state, view, d) {
   $("reply").value = "";
   $("turnErr").textContent = "";
   updateCounter();
+}
+
+
+// ---------- 每封信的结果时刻：印章 + 一句对错 + 后果 + 状态变化 ----------
+const STAMP = {
+  DONE: ["照做了", "good"], PARTIAL: ["只做了<br>一半", "mid"], ATTEMPT_FAILED: ["想做<br>没做成", "bad"],
+  DECLINED_UNABLE: ["自知<br>做不到", "mid"], UNWILLING: ["没听", "bad"], NOT_ALLOWED: ["此路<br>不通", "bad"],
+  TOO_LATE: ["误了", "bad"], NO_GUIDANCE: ["自己<br>拿主意", "mid"],
+};
+function verdictLine(r) {
+  const codes = new Set(r.reasons.map((x) => x.code));
+  if (codes.has("SILENCE")) return ["你没有回信。", "mid"];
+  if (codes.has("NO_READING")) return ["你的话他没看懂。", "mid"];
+  const out = r.reasons.find((x) => x.code === "OUTCOME");
+  const followed = r.read && r.read === r.chosen && ["DONE", "PARTIAL", "ATTEMPT_FAILED"].includes(r.exec);
+  if (followed) {
+    return { right: ["事后看：你说对了。", "good"], wrong: ["事后看：你说错了。", "bad"], mixed: ["事后看：好坏参半。", "mid"], none: ["事后看：说不上对错。", "mid"] }[out?.verdict] || ["", "mid"];
+  }
+  if (codes.has("REGRET")) return ["他没听。事后看，你说对了。", "bad"];
+  if (codes.has("RELIEF")) return ["他没听。事后看，幸好没听。", "good"];
+  return ["他没听你的。", "mid"];
+}
+function changeChips(prev, state, r) {
+  const chips = [];
+  if (prev) {
+    const a = prev.twin, b = state.twin;
+    const d = (k, name) => { const x = b[k] - a[k]; if (Math.abs(x) >= 3) chips.push([`${name}${x > 0 ? "↑" : "↓"}`, x > 0 ? "up" : "down"]); };
+    d("health", "身子"); d("wealth", "家资"); d("standing", "名声"); d("craft", "手艺");
+    const t = b.trust - a.trust;
+    if (Math.abs(t) >= 2) chips.push([t > 0 ? "更信你了" : "不那么信你了", t > 0 ? "up" : "down"]);
+    if (a.location !== b.location) chips.push([`到了${game.view.locationName}`, "note"]);
+    if (!a.household.spouse && b.household.spouse) chips.push(["成了家", "up"]);
+    if (b.household.parentsAlive < a.household.parentsAlive) chips.push(["家里老人走了", "down"]);
+    if (a.alive && !b.alive) chips.push(["亡故", "down"]);
+  }
+  if (r.reasons.some((x) => x.code === "PROPHECY")) chips.push(["他记下了你的预言", "note"]);
+  return chips;
+}
+function momentHtml(r, prev, state, fresh) {
+  const [stamp, tone] = STAMP[r.exec] || ["？", "mid"];
+  const [vl, vt] = verdictLine(r);
+  const chips = changeChips(prev, state, r);
+  return `<div class="moment"><div class="stamp ${tone} ${fresh ? "fresh" : ""}">${stamp}</div>
+    <div><div class="verdict ${vt}">${esc(vl)}</div><div style="margin-top:4px">${esc(r.reasonText)}</div></div></div>
+    <ul class="bigfacts">${r.facts.map((f) => `<li>${esc(f)}</li>`).join("")}</ul>
+    ${chips.length ? `<div class="chips2">${chips.map(([t, c]) => `<span class="chip2 ${c}">${esc(t)}</span>`).join("")}</div>` : ""}`;
 }
 
 function turnHtml(r, big) {

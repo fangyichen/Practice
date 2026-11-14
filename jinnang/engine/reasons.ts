@@ -69,5 +69,9 @@ export function renderReason(rec: TurnRecord, dilemma: Dilemma, t: ReasonTemplat
   };
   const key = templateKey(rec);
   const tpl = t.templates[key] ?? t.templates["NO_GUIDANCE.unclear"] ?? "";
-  return fill(tpl, vars);
+  const extra = ["REGRET", "RELIEF", "PROPHECY"]
+    .filter((c) => rec.reasons.some((r) => r.code === c))
+    .map((c) => fill(t.templates[c] ?? "", vars))
+    .join("");
+  return fill(tpl, vars) + extra;
 }

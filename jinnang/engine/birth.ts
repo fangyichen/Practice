@@ -78,6 +78,7 @@ export function startLife(
     pendingDilemma: null,
     log: [],
     ending: null,
+    prophecies: [],
   };
   return advance(state, pack, cfg);
 }

@@ -18,6 +18,9 @@ export type LetterInput = {
   knownEvents: { title: string; facts: string[] }[];
   style: { hints: string[]; playerAddress: string };
   fallbackLetter: string;
+  /** 信的开头要先说的话：应验的预言、上一封的结果（已按模板拼好） */
+  callbacks: string[];
+  opening: string;
 };
 
 export interface LetterWriter {

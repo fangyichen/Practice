@@ -1,41 +1,56 @@
 {
-  "_note": "原因说明模板。占位符：{trust} 信任的粗略说法，{reply} 玩家原话，{advised} 他读到的建议，{read} 误读成的选项，{option} 他最后做的事，{tagPhrase} 最大的顾虑，{statFail}/{statKnow} 被哪项禀赋卡住。不得出现禀赋数值。",
-  "trustWords": ["半分也没有", "一成", "两成", "三成", "四成", "五成", "六成", "七成", "八成", "九成", "十成"],
-  "tagPhrases": {
-    "_default": "这件事他心里过不去",
-    "leave_home": "离乡这件事他终究舍不得",
-    "abandon_property": "家当丢不下，他也不敢赌",
-    "risk_life": "这是拿命去赌，他不敢",
-    "betray_lord": "背主的事他做不出来",
-    "break_promise": "答应过的事他不肯反悔",
-    "defy_authority": "跟官面上的人作对，他没那个胆",
-    "submit_authority": "低头听人摆布，他不甘心",
-    "trust_stranger": "生人的话他信不过",
-    "settle_down": "就这么被拴住一辈子，他不情愿",
-    "disappoint_family": "让家里老人失望，他狠不下这个心"
-  },
-  "statFail": {
-    "physique": "那条路，他的身子没能走完。",
-    "wit": "这件事要的心眼，他没有。",
-    "looks": "人家看了他一眼，便没了下文。"
-  },
-  "statKnow": {
-    "physique": "自知身子撑不住",
-    "wit": "自知没那份机灵",
-    "looks": "自知相貌入不了人家的眼"
-  },
-  "templates": {
-    "DONE": "他信了你{trust}，照你说的，{advised}。",
-    "PARTIAL": "他信了你{trust}。{tagPhrase}，只做了一半。",
-    "ATTEMPT_FAILED": "他听了你的。可{statFail}",
-    "DECLINED_UNABLE": "他肯听你的，只是{statKnow}，知难而退，改为{option}。",
-    "UNWILLING.conflict": "他信了你{trust}。{tagPhrase}，最后还是{option}。",
-    "UNWILLING.able": "他做得到，只是不肯。最后还是{option}。",
-    "UNWILLING.unable": "他本就做不到，也不想去试。最后还是{option}。",
-    "NOT_ALLOWED": "以他的身份，「{advised}」这条路走不通。他只得{option}。",
-    "TOO_LATE": "他想了又想。等他拿定主意，路已经断了。他只得{option}。",
-    "MISREAD_BY_TRAITS": "你写的是“{reply}”。他读成了「{read}」。",
-    "NO_GUIDANCE.silence": "你没有回信。他照自己的意思，{option}。",
-    "NO_GUIDANCE.unclear": "你的话他没看明白，只好照自己的意思，{option}。"
-  }
+ "_note": "原因说明模板。占位符：{trust} 信任的粗略说法，{reply} 玩家原话，{advised} 他读到的建议，{read} 误读成的选项，{option} 他最后做的事，{tagPhrase} 最大的顾虑，{statFail}/{statKnow} 被哪项禀赋卡住。不得出现禀赋数值。",
+ "trustWords": [
+  "半分也没有",
+  "一成",
+  "两成",
+  "三成",
+  "四成",
+  "五成",
+  "六成",
+  "七成",
+  "八成",
+  "九成",
+  "十成"
+ ],
+ "tagPhrases": {
+  "_default": "这件事他心里过不去",
+  "leave_home": "离乡这件事他终究舍不得",
+  "abandon_property": "家当丢不下，他也不敢赌",
+  "risk_life": "这是拿命去赌，他不敢",
+  "betray_lord": "背主的事他做不出来",
+  "break_promise": "答应过的事他不肯反悔",
+  "defy_authority": "跟官面上的人作对，他没那个胆",
+  "submit_authority": "低头听人摆布，他不甘心",
+  "trust_stranger": "生人的话他信不过",
+  "settle_down": "就这么被拴住一辈子，他不情愿",
+  "disappoint_family": "让家里老人失望，他狠不下这个心"
+ },
+ "statFail": {
+  "physique": "那条路，他的身子没能走完。",
+  "wit": "这件事要的心眼，他没有。",
+  "looks": "人家看了他一眼，便没了下文。"
+ },
+ "statKnow": {
+  "physique": "自知身子撑不住",
+  "wit": "自知没那份机灵",
+  "looks": "自知相貌入不了人家的眼"
+ },
+ "templates": {
+  "DONE": "他信了你{trust}，照你说的，{advised}。",
+  "PARTIAL": "他信了你{trust}。{tagPhrase}，只做了一半。",
+  "ATTEMPT_FAILED": "他听了你的。可{statFail}",
+  "DECLINED_UNABLE": "他肯听你的，只是{statKnow}，知难而退，改为{option}。",
+  "UNWILLING.conflict": "他信了你{trust}。{tagPhrase}，最后还是{option}。",
+  "UNWILLING.able": "他做得到，只是不肯。最后还是{option}。",
+  "UNWILLING.unable": "他本就做不到，也不想去试。最后还是{option}。",
+  "NOT_ALLOWED": "以他的身份，「{advised}」这条路走不通。他只得{option}。",
+  "TOO_LATE": "他想了又想。等他拿定主意，路已经断了。他只得{option}。",
+  "MISREAD_BY_TRAITS": "你写的是“{reply}”。他读成了「{read}」。",
+  "NO_GUIDANCE.silence": "你没有回信。他照自己的意思，{option}。",
+  "NO_GUIDANCE.unclear": "你的话他没看明白，只好照自己的意思，{option}。",
+  "REGRET": "事后看，你说得对，他有些后悔。",
+  "RELIEF": "事后看，你说错了，他庆幸没听。",
+  "PROPHECY": "你那句“{reply}”，他记在了心里。"
+ }
 }

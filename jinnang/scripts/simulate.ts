@@ -39,6 +39,10 @@ const endings = new Map<string, number>();
 const pathLen: Record<number, number> = {};
 const deathAt: Record<string, number> = {};
 let earlyDeaths = 0;
+let trustUp = 0;
+let trustDown = 0;
+let prophecyGames = 0;
+const trustByTurn: number[][] = [];
 let deaths = 0;
 let turns = 0;
 let followed = 0;
@@ -66,6 +70,9 @@ async function main() {
       perDilemma[r.dilemmaId]![r.exec] = (perDilemma[r.dilemmaId]![r.exec] ?? 0) + 1;
       outcomeCount[r.outcome] = (outcomeCount[r.outcome] ?? 0) + 1;
       if (["DONE", "PARTIAL", "ATTEMPT_FAILED"].includes(r.exec)) followed++;
+      if (r.trustAfter > r.trustBefore + 0.01) trustUp++;
+      else if (r.trustAfter < r.trustBefore - 0.01) trustDown++;
+      (trustByTurn[r.turn] ??= []).push(r.trustAfter);
     }
     if (!s.twin.alive) {
       deaths++;
@@ -75,6 +82,7 @@ async function main() {
     } else {
       pathLen[s.log.length] = (pathLen[s.log.length] ?? 0) + 1;
     }
+    if (s.prophecies.some((p) => p.status === "hit")) prophecyGames++;
     const e = s.ending!;
     tierCount[e.tier]!++;
     epitaphCount[e.epitaphRule] = (epitaphCount[e.epitaphRule] ?? 0) + 1;
@@ -89,6 +97,9 @@ async function main() {
   const pct = (a: number, b: number) => `${((100 * a) / b).toFixed(1)}%`;
   console.log(`模拟 ${N} 局，共 ${turns} 封信`);
   console.log(`死亡 ${deaths}（${pct(deaths, N)}）；替身照做（DONE/PARTIAL/ATTEMPT_FAILED）${pct(followed, turns)}`);
+  const med = (a: number[]) => [...a].sort((x, y) => x - y)[a.length >> 1] ?? 0;
+  console.log(`信任：每封信后升 ${pct(trustUp, turns)}、降 ${pct(trustDown, turns)}；各封信后的中位数 ${trustByTurn.map((a) => med(a).toFixed(0)).join(" → ")}`);
+  console.log(`说中过演义预言并应验的局：${pct(prophecyGames, N)}`);
   console.log(`前 3 个难题内的死亡：${earlyDeaths}`);
   console.log(`死在哪个难题：${JSON.stringify(deathAt)}`);
   console.log(`活到卷末的局，一局经历的难题数：${JSON.stringify(pathLen)}`);

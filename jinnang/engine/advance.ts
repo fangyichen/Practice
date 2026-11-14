@@ -2,6 +2,7 @@ import type { EngineConfig, EraPack, GameState } from "../schemas";
 import { DEFAULT_CONFIG } from "./config";
 import { craftGrowthPerYear } from "./endowments";
 import { computeEnding } from "./ending";
+import { settleProphecies } from "./prophecy";
 import { clamp, clone, round2, seasonIndex } from "./util";
 import { conditionHolds, findDilemma, findStation } from "./world";
 
@@ -44,6 +45,7 @@ export function advance(state: GameState, pack: EraPack, cfg: EngineConfig = DEF
   if (s.ending || s.pendingDilemma) return s;
 
   if (!s.twin.alive) {
+    settleProphecies(s, pack, cfg);
     s.ending = computeEnding(s, "death", pack, cfg);
     return s;
   }
@@ -56,13 +58,15 @@ export function advance(state: GameState, pack: EraPack, cfg: EngineConfig = DEF
     if (conditionHolds(d.condition, at, cfg)) {
       s = at;
       s.nodeIndex = i;
-      s.pendingDilemma = { dilemmaId: d.id, year: d.year, season: d.season, letter: null };
+      const fulfilled = settleProphecies(s, pack, cfg);
+      s.pendingDilemma = { dilemmaId: d.id, year: d.year, season: d.season, letter: null, fulfilled };
       return s;
     }
   }
 
   s = passTime(s, pack.slice.endYear, 4, pack, cfg);
   s.nodeIndex = nodes.length;
+  settleProphecies(s, pack, cfg);
   s.ending = computeEnding(s, "slice_end", pack, cfg);
   return s;
 }
